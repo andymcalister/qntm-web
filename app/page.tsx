@@ -24,6 +24,30 @@ export default function Home() {
     { pct: "10%", color: "text-mint", label: "Sentiment", body: "Short interest, insider buy ratio, institutional ownership" },
   ];
 
+  const tiers = [
+    {
+      label: "▲ HIGH",
+      score: "Score ≥ 60",
+      text: "text-mint",
+      border: "border-mint/30",
+      body: "Strongest factor profile in the universe. Historically associated with multi-month relative outperformance. In high-volatility or risk-off regimes the model tightens this threshold to 62 to stay selective. Not a recommendation to buy.",
+    },
+    {
+      label: "— MODERATE",
+      score: "Score 45–59",
+      text: "text-gold",
+      border: "border-gold/30",
+      body: "Mixed factor profile — neither strong nor deteriorating on the model's measures. Not a recommendation to hold.",
+    },
+    {
+      label: "▼ LOW",
+      score: "Score < 45",
+      text: "text-red-400",
+      border: "border-red-400/30",
+      body: "Weakest factor profile. The model flagged UNH here at month 3, ahead of a −49% full-year drawdown. Not a recommendation to sell.",
+    },
+  ];
+
   return (
     <main className="min-h-screen bg-bg text-slate-200">
       {/* Top nav */}
@@ -205,6 +229,17 @@ export default function Home() {
               <p className={`font-display font-extrabold text-4xl ${p.color}`}>{p.pct}</p>
               <p className="mt-3 font-bold text-slate-100">{p.label}</p>
               <p className="mt-2 text-sm text-slate-400 leading-relaxed">{p.body}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Conviction tiers */}
+        <div className="mt-12 grid md:grid-cols-3 gap-5">
+          {tiers.map((t) => (
+            <div key={t.label} className={`rounded-2xl border ${t.border} bg-card/40 p-8`}>
+              <p className={`font-mono text-sm tracking-widest ${t.text}`}>{t.label}</p>
+              <p className={`font-mono text-2xl mt-4 ${t.text}`}>{t.score}</p>
+              <p className="mt-5 text-slate-400 leading-relaxed">{t.body}</p>
             </div>
           ))}
         </div>
