@@ -48,6 +48,61 @@ export default function Home() {
     },
   ];
 
+  const beyondCards = [
+    { title: "Valuation range", color: "text-mint", badge: "FREE", body: "Every card shows where the price sits in its own value band — cheap or rich at a glance." },
+    { title: "Weekly recap", color: "text-mint", badge: "FREE", body: "A Saturday email on your watchlist and the macro backdrop behind the week's moves." },
+    { title: "Custom alerts", color: "text-gold", badge: "PRO", body: "Price, valuation and conviction alerts — per stock, or a whole watchlist at once." },
+    { title: "Hidden Gems", color: "text-gold", badge: null, body: "Under-followed mid- and small-caps the model rates highly, surfaced fresh each scan." },
+  ];
+
+  // Comparison table — "·" = ✓, "x" = ✗, "~" = partial
+  const compCols = ["QNTM Free", "QNTM Pro", "Motley Fool", "Seeking Alpha", "Morningstar", "TipRanks", "Bloomberg"];
+  const compRows = [
+    { feature: "Quant factor model", cells: ["·", "·", "x", "·", "~", "~", "·"] },
+    { feature: "Live macro regime overlay", cells: ["·", "·", "x", "x", "x", "x", "·"] },
+    { feature: "Multi-factor conviction score", cells: ["·", "·", "x", "·", "~", "~", "·"] },
+    { feature: "Plain-English signal rationale", cells: ["·", "·", "x", "~", "~", "~", "x"] },
+    { feature: "Valuation range on every card", cells: ["·", "·", "x", "~", "·", "~", "·"] },
+    { feature: "Weekly recap email", cells: ["·", "·", "·", "·", "~", "~", "x"] },
+    { feature: "Live model portfolio", cells: ["·", "·", "~", "~", "x", "x", "x"] },
+    { feature: "Daily signal refresh", cells: ["·", "·", "x", "·", "~", "~", "·"] },
+    { feature: "Full-universe screener", cells: ["~", "·", "x", "·", "·", "·", "·"] },
+    { feature: "Hidden-gem detection", cells: ["x", "·", "~", "x", "x", "x", "x"] },
+    { feature: "Portfolio simulator", cells: ["x", "·", "x", "x", "~", "~", "·"] },
+    { feature: "Custom price & conviction alerts", cells: ["x", "·", "x", "·", "~", "·", "·"] },
+    { feature: "Mobile optimized", cells: ["·", "·", "·", "·", "·", "·", "~"] },
+  ];
+  const compPrices = ["$0", "$29", "$17", "$25", "$21", "$30", "$2,665"];
+
+  // Renders one comparison cell based on its mark
+  function Cell({ mark }: { mark: string }) {
+    if (mark === "·") return <span className="text-mint">✓</span>;
+    if (mark === "x") return <span className="text-red-400">✗</span>;
+    return <span className="text-gold text-sm">partial</span>;
+  }
+
+  const freeFeatures = [
+    "Screener — top 50 of 1402",
+    "HIGH / MOD / LOW conviction signals",
+    "5-pillar breakdown + plain-English why",
+    "Valuation range on every card",
+    "Live macro regime overlay",
+    "Top 10 daily picks",
+    "Weekly recap email",
+    "Portfolio tracking (10 positions)",
+    "Live model portfolio (read only)",
+  ];
+  const proFeatures = [
+    "Everything in Free",
+    "Full 1402-stock screener",
+    "Unlimited portfolio positions",
+    "Hidden Gems detection",
+    "Portfolio Simulator (risk profiles)",
+    "Custom price, value & conviction alerts",
+    "Intraday conviction-drop emails",
+    "Founding member badge",
+  ];
+
   return (
     <main className="min-h-screen bg-bg text-slate-200">
       {/* Top nav */}
@@ -210,7 +265,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* The model — five pillars */}
+      {/* The model — five pillars + conviction tiers */}
       <section className="max-w-7xl mx-auto px-6 pt-0 pb-24">
         <p className="font-mono text-sm tracking-widest text-gold mb-6">— THE MODEL</p>
         <h2 className="font-display font-extrabold text-4xl sm:text-5xl leading-tight">
@@ -244,6 +299,205 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* Beyond the score */}
+      <section className="max-w-7xl mx-auto px-6 pt-0 pb-24">
+        <p className="font-mono text-sm tracking-widest text-gold mb-6">— BEYOND THE SCORE</p>
+        <h2 className="font-display font-extrabold text-4xl sm:text-5xl leading-tight">
+          <span className="text-white">More than a screener.</span>
+          <br />
+          <span className="text-gold">A research routine.</span>
+        </h2>
+        <p className="mt-6 text-lg text-slate-400 max-w-3xl leading-relaxed">
+          The score is the start. Valuation context, a weekly recap, and alerts keep you on the names that
+          matter — much of it free.
+        </p>
+
+        <div className="mt-12 grid sm:grid-cols-2 gap-5">
+          {beyondCards.map((c) => (
+            <div key={c.title} className="rounded-2xl border border-white/10 bg-card/40 p-8">
+              <div className="flex items-center justify-between">
+                <h3 className={`font-display font-bold text-2xl ${c.color}`}>{c.title}</h3>
+                {c.badge && (
+                  <span className="font-mono text-xs tracking-widest text-slate-400 border border-white/15 rounded px-2 py-1">
+                    {c.badge}
+                  </span>
+                )}
+              </div>
+              <p className="mt-3 text-slate-400">{c.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* VS the market — comparison table */}
+      <section className="max-w-7xl mx-auto px-6 pt-0 pb-24">
+        <p className="font-mono text-sm tracking-widest text-gold mb-6">— VS THE MARKET</p>
+        <h2 className="font-display font-extrabold text-4xl sm:text-5xl leading-tight">
+          <span className="text-white">Institutional tools.</span>
+          <br />
+          <span className="text-gold">Retail price.</span>
+        </h2>
+        <p className="mt-6 text-lg text-slate-400 max-w-3xl leading-relaxed">
+          Institutional-grade quant signals — at roughly 1% of a Bloomberg terminal.
+        </p>
+
+        <div className="mt-12 overflow-x-auto">
+          <table className="w-full min-w-[900px] border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-white/10">
+                <th className="text-left font-normal text-slate-500 py-4 pr-4"></th>
+                {compCols.map((c, i) => (
+                  <th
+                    key={c}
+                    className={`font-mono tracking-wider py-4 px-3 text-center ${
+                      i === 0 || i === 1 ? "text-gold" : "text-slate-300"
+                    }`}
+                  >
+                    {c}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-white/10">
+                <td className="text-slate-400 py-4 pr-4">Price / mo*</td>
+                {compPrices.map((p, i) => (
+                  <td
+                    key={i}
+                    className={`font-mono text-center py-4 px-3 ${
+                      i === 0 || i === 1 ? "text-gold font-bold" : "text-slate-400"
+                    }`}
+                  >
+                    {p}
+                  </td>
+                ))}
+              </tr>
+              {compRows.map((row) => (
+                <tr key={row.feature} className="border-b border-white/5">
+                  <td className="text-slate-300 py-4 pr-4">{row.feature}</td>
+                  {row.cells.map((mark, i) => (
+                    <td key={i} className="text-center py-4 px-3">
+                      <Cell mark={mark} />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="mt-6 text-xs text-slate-500 leading-relaxed">
+          *Monthly equivalent — most plans bill annually: Motley Fool $199/yr, Seeking Alpha $299/yr,
+          Morningstar $249/yr, TipRanks $360/yr (Premium); Bloomberg ≈$31,980/yr per terminal. Features &
+          pricing verified June 2026 from public sources. Partial = limited or higher-tier only.
+        </p>
+      </section>
+
+      {/* Pricing */}
+      <section className="max-w-7xl mx-auto px-6 pt-0 pb-24">
+        <p className="font-mono text-sm tracking-widest text-gold mb-6">— PRICING</p>
+        <h2 className="font-display font-extrabold text-4xl sm:text-5xl leading-tight">
+          <span className="text-white">Two tiers.</span>
+          <br />
+          <span className="text-gold">Both built for serious investors.</span>
+        </h2>
+        <p className="mt-6 text-lg text-slate-400 max-w-3xl leading-relaxed">
+          First 50 users get Founding Member access free — unlimited everything.
+        </p>
+
+        {/* Price cards */}
+        <div className="mt-12 grid md:grid-cols-2 gap-5">
+          {/* FREE */}
+          <div className="rounded-2xl border border-white/10 bg-card/40 p-8">
+            <p className="font-mono text-sm tracking-widest text-slate-300">FREE</p>
+            <p className="font-display font-extrabold text-5xl text-gold mt-3">$0</p>
+            <p className="font-mono text-xs text-slate-500 mt-2">forever · no card needed</p>
+            <ul className="mt-8 space-y-3">
+              {freeFeatures.map((f) => (
+                <li key={f} className="flex items-start gap-3 text-slate-300">
+                  <span className="text-slate-500 mt-1">○</span>
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
+            <button className="mt-8 w-full font-display font-bold text-slate-200 bg-card border border-white/10 hover:border-white/25 py-4 rounded-lg transition">
+              START FREE →
+            </button>
+          </div>
+
+          {/* PRO */}
+          <div className="rounded-2xl border border-gold/40 bg-gold/[0.04] p-8 relative">
+            <span className="absolute -top-3 left-8 bg-gold text-black font-mono text-xs tracking-widest px-3 py-1 rounded">
+              MOST POPULAR
+            </span>
+            <p className="font-mono text-sm tracking-widest text-slate-300">PRO</p>
+            <p className="font-display font-extrabold text-5xl text-gold mt-3">
+              $29<span className="text-2xl text-slate-400">/mo</span>
+            </p>
+            <p className="font-mono text-xs text-slate-500 mt-2">first 50 users get it free</p>
+            <ul className="mt-8 space-y-3">
+              {proFeatures.map((f) => (
+                <li key={f} className="flex items-start gap-3 text-slate-200">
+                  <span className="text-mint mt-1">●</span>
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
+            <button className="mt-8 w-full font-display font-bold text-black bg-gold hover:bg-gold-bright py-4 rounded-lg transition">
+              JOIN FREE — FOUNDING MEMBER →
+            </button>
+          </div>
+        </div>
+
+        <p className="mt-6 text-center font-mono text-sm text-gold">
+          ⚡ Founding member pricing — <span className="line-through text-slate-500">$29/mo</span> free while spots last · Limited availability
+        </p>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-6 py-16">
+          <div className="grid sm:grid-cols-3 gap-10">
+            <div>
+              <span className="font-display text-2xl font-extrabold tracking-tight text-gold">QNTM</span>
+              <p className="mt-4 text-slate-400 max-w-xs leading-relaxed">
+                Quantitative conviction factor model platform. Institutional-grade research for retail investors.
+              </p>
+            </div>
+            <div>
+              <p className="font-mono text-xs tracking-widest text-slate-500 mb-4">LEGAL</p>
+              <ul className="space-y-3 text-slate-400">
+                <li className="hover:text-slate-200 transition cursor-pointer">Privacy Policy</li>
+                <li className="hover:text-slate-200 transition cursor-pointer">Terms of Service</li>
+                <li className="hover:text-slate-200 transition cursor-pointer">Billing &amp; Refunds</li>
+                <li className="hover:text-slate-200 transition cursor-pointer">Investment Disclaimer</li>
+                <li className="hover:text-slate-200 transition cursor-pointer">Cookie Policy</li>
+              </ul>
+            </div>
+            <div>
+              <p className="font-mono text-xs tracking-widest text-slate-500 mb-4">CONTACT</p>
+              <p className="font-mono text-slate-400">COMING SOON</p>
+            </div>
+          </div>
+
+          <div className="mt-12 rounded-2xl border border-gold/20 bg-gold/[0.03] p-8">
+            <p className="font-mono text-sm tracking-widest text-gold mb-3">IMPORTANT DISCLAIMER</p>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              QNTM is a <span className="font-bold text-slate-300">quantitative research and factor analysis tool</span> for
+              informational and educational purposes only. It does <span className="font-bold text-slate-300">not</span> constitute
+              investment advice, a recommendation to buy or sell any security, or a guarantee of future performance. Past model
+              performance does not predict future results. All investments involve risk including possible loss of principal.
+              Always consult a qualified financial adviser.
+            </p>
+          </div>
+
+          <div className="mt-10 flex flex-wrap items-center justify-between gap-4 text-sm text-slate-500">
+            <span>© 2025 QNTM. All rights reserved.</span>
+            <span className="font-mono">Not investment advice · Quantitative research tool only</span>
+          </div>
+        </div>
+      </footer>
 
     </main>
   );
