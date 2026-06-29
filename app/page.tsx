@@ -7,6 +7,8 @@ export default function Home() {
     { ticker: "OSCR", score: 75, dir: "up" },
   ];
 
+  const tickerNames = ["MU", "TIGO", "VIRT", "MRX", "OSCR", "GTX", "VISN", "MSGE", "ENVA", "SNEX"];
+
   return (
     <main className="min-h-screen bg-bg text-slate-200">
       {/* Top nav */}
@@ -118,6 +120,34 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Today-in-QNTM summary bar */}
+      <div className="border-y border-white/10 bg-card/40">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-sm">
+          <span className="text-gold tracking-widest">TODAY IN QNTM</span>
+          <span className="text-mint">▲ Risk On</span>
+          <span className="text-slate-500">·</span>
+          <span><span className="text-slate-100 font-bold">100</span> <span className="text-slate-400">high</span></span>
+          <span className="text-slate-500">·</span>
+          <span><span className="text-red-400 font-bold">430</span> <span className="text-slate-400">low</span></span>
+          <span className="text-slate-500">·</span>
+          <span className="text-mint">💎 <span className="font-bold">12</span> hidden gems</span>
+          <span className="text-slate-500">·</span>
+          <span className="text-slate-400">1402 stocks scored</span>
+        </div>
+      </div>
+
+      {/* Scrolling ticker */}
+      <div className="overflow-hidden border-b border-white/10 bg-mint/[0.03] py-3">
+        <div className="animate-ticker flex w-max gap-8 font-mono text-sm text-mint whitespace-nowrap">
+          {[...tickerNames, ...tickerNames].map((name, i) => (
+            <span key={i} className="flex items-center gap-8">
+              {name} <span className="text-mint">HIGH</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
     </main>
   );
 }
