@@ -9,6 +9,13 @@ export default function Home() {
 
   const tickerNames = ["MU", "TIGO", "VIRT", "MRX", "OSCR", "GTX", "VISN", "MSGE", "ENVA", "SNEX"];
 
+  const whyCards = [
+    { title: "1402 stocks", color: "text-mint", body: "Russell 1000 + top Russell 2000 small-caps, rescored daily" },
+    { title: "5-factor model", color: "text-mint", body: "Momentum, Quality, Volume, Value, Sentiment" },
+    { title: "Plain-English", color: "text-gold", body: "A written rationale behind every conviction score" },
+    { title: "Live portfolio", color: "text-mint", body: "Rules-based entries & exits, marked daily vs SPY" },
+  ];
+
   return (
     <main className="min-h-screen bg-bg text-slate-200">
       {/* Top nav */}
@@ -147,6 +154,29 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      {/* Why QNTM */}
+      <section className="max-w-7xl mx-auto px-6 py-24">
+        <p className="font-mono text-sm tracking-widest text-gold mb-6">— WHY QNTM</p>
+        <h2 className="font-display font-extrabold text-4xl sm:text-5xl leading-tight">
+          <span className="text-white">A live model.</span>
+          <br />
+          <span className="text-gold">Transparent by design.</span>
+        </h2>
+        <p className="mt-6 text-lg text-slate-400 max-w-3xl leading-relaxed">
+          Every score is computed daily and shown with the reasoning behind it — no black box, and no
+          cherry-picked history. The track record we show is the live Model Portfolio, reported as it happens.
+        </p>
+
+        <div className="mt-12 grid sm:grid-cols-2 gap-5">
+          {whyCards.map((c) => (
+            <div key={c.title} className="rounded-2xl border border-white/10 bg-card/40 p-8">
+              <h3 className={`font-display font-extrabold text-3xl ${c.color}`}>{c.title}</h3>
+              <p className="mt-3 text-slate-400">{c.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
     </main>
   );
