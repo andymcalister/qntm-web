@@ -1,11 +1,12 @@
 export default function Home() {
   // ── Single source of truth for outbound links ───────────────────────────
-  // When the app moves to app.qntm.live at domain cutover, change APP_URL only.
+  // At domain cutover, change APP_URL only (→ app.qntm.live). Everything follows.
   const APP_URL = "https://qntm.live";
-  const SIGNIN_URL = APP_URL; // Streamlit holds auth state in session, not URL — no deep-link available
-  const JOIN_URL = APP_URL;   // same — lands on app home, user picks Sign In / Join Free there
+  const SIGNIN_URL = `${APP_URL}/?nav=signin`;          // opens app directly on Sign In
+  const JOIN_URL = `${APP_URL}/?nav=register`;          // opens app directly on Join Free
+  const JOIN_PRO_URL = `${APP_URL}/?nav=register&plan=pro`; // Join Free + auto-claims Pro/founding
 
-  // Legal links: Privacy/Terms are static pages on the legal site; the rest deep-link via the app's ?legal= param.
+  // Privacy/Terms are static pages on the legal site; rest deep-link via the app's ?legal= param.
   const LEGAL_URL = "https://legal.qntm.live";
   const legalLinks = [
     { label: "Privacy Policy", href: `${LEGAL_URL}/privacy.html` },
@@ -205,7 +206,7 @@ export default function Home() {
           </div>
 
           {/* View all CTA */}
-          <a href={APP_URL} className="inline-flex items-center justify-center w-full font-mono text-xs tracking-widest text-gold border border-gold/30 rounded-lg py-3 hover:bg-gold/5 transition">
+          <a href={JOIN_URL} className="inline-flex items-center justify-center w-full font-mono text-xs tracking-widest text-gold border border-gold/30 rounded-lg py-3 hover:bg-gold/5 transition">
             VIEW ALL HIGH CONVICTION SIGNALS →
           </a>
 
@@ -460,7 +461,7 @@ export default function Home() {
                 </li>
               ))}
             </ul>
-            <a href={JOIN_URL} className="inline-flex items-center justify-center mt-8 w-full font-display font-bold text-black bg-gold hover:bg-gold-bright py-4 rounded-lg transition">
+            <a href={JOIN_PRO_URL} className="inline-flex items-center justify-center mt-8 w-full font-display font-bold text-black bg-gold hover:bg-gold-bright py-4 rounded-lg transition">
               JOIN FREE — FOUNDING MEMBER →
             </a>
           </div>
