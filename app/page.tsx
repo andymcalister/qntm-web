@@ -1,4 +1,12 @@
 export default function Home() {
+  const topSignals = [
+    { ticker: "MU", score: 77, dir: "up" },
+    { ticker: "TIGO", score: 76, dir: "up" },
+    { ticker: "VIRT", score: 76, dir: "up" },
+    { ticker: "MRX", score: 76, dir: "up" },
+    { ticker: "OSCR", score: 75, dir: "up" },
+  ];
+
   return (
     <main className="min-h-screen bg-bg text-slate-200">
       {/* Top nav */}
@@ -52,9 +60,62 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Right column — placeholder, we build this next */}
-        <div className="hidden lg:flex min-h-[420px] rounded-2xl border border-white/5 items-center justify-center">
-          <span className="font-mono text-xs text-slate-600">Live panel — next step</span>
+        {/* Right column — live panel (placeholder data for now) */}
+        <div className="rounded-2xl border border-white/10 bg-card/60 p-5 space-y-6">
+          {/* Market regime card */}
+          <div className="rounded-xl border border-mint/20 bg-mint/5 p-5">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="font-mono text-xs tracking-widest text-slate-400">MARKET REGIME</p>
+                <p className="font-display text-3xl font-extrabold text-mint mt-2">▲ Risk On</p>
+              </div>
+              <div className="text-right">
+                <p className="font-mono text-xl text-gold">75/25</p>
+                <p className="font-mono text-xs text-slate-500">quant/macro</p>
+              </div>
+            </div>
+            <p className="font-mono text-sm text-slate-400 mt-4">VIX 18.3 &nbsp; Event: War Deescalation</p>
+          </div>
+
+          {/* Top signals */}
+          <div>
+            <p className="font-mono text-xs tracking-widest text-slate-400 mb-3">TOP SIGNALS TODAY</p>
+            <div className="divide-y divide-white/5">
+              {topSignals.map((s) => (
+                <div key={s.ticker} className="flex items-center justify-between py-3">
+                  <span className="font-display font-bold text-lg text-slate-100">{s.ticker}</span>
+                  <span className={`font-mono ${s.dir === "up" ? "text-mint" : "text-red-400"}`}>
+                    {s.score} {s.dir === "up" ? "▲" : "▼"}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* View all CTA */}
+          <button className="w-full font-mono text-xs tracking-widest text-gold border border-gold/30 rounded-lg py-3 hover:bg-gold/5 transition">
+            VIEW ALL HIGH CONVICTION SIGNALS →
+          </button>
+
+          {/* Stat grid */}
+          <div className="grid grid-cols-2 gap-y-5 pt-2">
+            <div>
+              <p className="font-mono text-xs tracking-widest text-slate-500">UNIVERSE</p>
+              <p className="font-display text-2xl font-extrabold text-gold mt-1">1402</p>
+            </div>
+            <div>
+              <p className="font-mono text-xs tracking-widest text-slate-500">FACTORS</p>
+              <p className="font-display text-2xl font-extrabold text-slate-100 mt-1">5</p>
+            </div>
+            <div>
+              <p className="font-mono text-xs tracking-widest text-slate-500">REFRESH</p>
+              <p className="font-display text-2xl font-extrabold text-mint mt-1">Daily</p>
+            </div>
+            <div>
+              <p className="font-mono text-xs tracking-widest text-slate-500">SIGNALS</p>
+              <p className="font-display text-2xl font-extrabold text-slate-100 mt-1">Live</p>
+            </div>
+          </div>
         </div>
       </section>
     </main>
