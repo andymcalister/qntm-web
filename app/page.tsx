@@ -16,6 +16,14 @@ export default function Home() {
     { title: "Live portfolio", color: "text-mint", body: "Rules-based entries & exits, marked daily vs SPY" },
   ];
 
+  const pillars = [
+    { pct: "30%", color: "text-gold", label: "Momentum", body: "Price trend, RSI, MACD, MA crossovers, 52-week proximity" },
+    { pct: "25%", color: "text-mint", label: "Quality", body: "ROE, profit margin, revenue growth, EPS beat rate, FCF yield" },
+    { pct: "20%", color: "text-mint", label: "Volume", body: "Relative volume, OBV, Chaikin Money Flow, accumulation/dist." },
+    { pct: "15%", color: "text-gold", label: "Value", body: "Forward P/E, PEG ratio, EV/EBITDA, Price-to-Sales, FCF yield" },
+    { pct: "10%", color: "text-mint", label: "Sentiment", body: "Short interest, insider buy ratio, institutional ownership" },
+  ];
+
   return (
     <main className="min-h-screen bg-bg text-slate-200">
       {/* Top nav */}
@@ -173,6 +181,30 @@ export default function Home() {
             <div key={c.title} className="rounded-2xl border border-white/10 bg-card/40 p-8">
               <h3 className={`font-display font-extrabold text-3xl ${c.color}`}>{c.title}</h3>
               <p className="mt-3 text-slate-400">{c.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* The model — five pillars */}
+      <section className="max-w-7xl mx-auto px-6 pt-0 pb-24">
+        <p className="font-mono text-sm tracking-widest text-gold mb-6">— THE MODEL</p>
+        <h2 className="font-display font-extrabold text-4xl sm:text-5xl leading-tight">
+          <span className="text-white">Five pillars.</span>
+          <br />
+          <span className="text-gold">One conviction score.</span>
+        </h2>
+        <p className="mt-6 text-lg text-slate-400 max-w-3xl leading-relaxed">
+          36 factors scored daily across 5 research-backed pillars — plus a 75/25 macro overlay. The model
+          tells you exactly what to enter, maintain, or exit. And why.
+        </p>
+
+        <div className="mt-12 grid grid-cols-2 lg:grid-cols-5 gap-5">
+          {pillars.map((p) => (
+            <div key={p.label} className="rounded-2xl border border-white/10 bg-card/40 p-6">
+              <p className={`font-display font-extrabold text-4xl ${p.color}`}>{p.pct}</p>
+              <p className="mt-3 font-bold text-slate-100">{p.label}</p>
+              <p className="mt-2 text-sm text-slate-400 leading-relaxed">{p.body}</p>
             </div>
           ))}
         </div>
