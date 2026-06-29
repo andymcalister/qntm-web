@@ -1,4 +1,20 @@
 export default function Home() {
+  // ── Single source of truth for outbound links ───────────────────────────
+  // When the app moves to app.qntm.live at domain cutover, change APP_URL only.
+  const APP_URL = "https://qntm.live";
+  const SIGNIN_URL = APP_URL; // Streamlit holds auth state in session, not URL — no deep-link available
+  const JOIN_URL = APP_URL;   // same — lands on app home, user picks Sign In / Join Free there
+
+  // Legal links: Privacy/Terms are static pages on the legal site; the rest deep-link via the app's ?legal= param.
+  const LEGAL_URL = "https://legal.qntm.live";
+  const legalLinks = [
+    { label: "Privacy Policy", href: `${LEGAL_URL}/privacy.html` },
+    { label: "Terms of Service", href: `${LEGAL_URL}/terms.html` },
+    { label: "Billing & Refunds", href: `${APP_URL}/?legal=billing` },
+    { label: "Investment Disclaimer", href: `${APP_URL}/?legal=disclaimer` },
+    { label: "Cookie Policy", href: `${APP_URL}/?legal=cookies` },
+  ];
+
   const topSignals = [
     { ticker: "MU", score: 77, dir: "up" },
     { ticker: "TIGO", score: 76, dir: "up" },
@@ -109,12 +125,12 @@ export default function Home() {
       <header className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
         <span className="font-display text-2xl font-extrabold tracking-tight text-gold">QNTM</span>
         <nav className="flex items-center gap-3">
-          <button className="font-mono text-xs tracking-widest text-slate-300 px-5 py-2.5 rounded-md border border-white/10 hover:border-white/25 transition">
+          <a href={SIGNIN_URL} className="inline-flex items-center justify-center font-mono text-xs tracking-widest text-slate-300 px-5 py-2.5 rounded-md border border-white/10 hover:border-white/25 transition">
             SIGN IN
-          </button>
-          <button className="font-mono text-xs tracking-widest font-medium text-black px-5 py-2.5 rounded-md bg-gold hover:bg-gold-bright transition">
+          </a>
+          <a href={JOIN_URL} className="inline-flex items-center justify-center font-mono text-xs tracking-widest font-medium text-black px-5 py-2.5 rounded-md bg-gold hover:bg-gold-bright transition">
             JOIN FREE
-          </button>
+          </a>
         </nav>
       </header>
 
@@ -143,12 +159,12 @@ export default function Home() {
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <button className="font-display font-bold text-black bg-gold hover:bg-gold-bright px-8 py-4 rounded-lg transition">
+            <a href={JOIN_URL} className="inline-flex items-center justify-center font-display font-bold text-black bg-gold hover:bg-gold-bright px-8 py-4 rounded-lg transition">
               JOIN FREE →
-            </button>
-            <button className="font-display font-bold text-slate-200 bg-card border border-white/10 hover:border-white/25 px-8 py-4 rounded-lg transition">
+            </a>
+            <a href={SIGNIN_URL} className="inline-flex items-center justify-center font-display font-bold text-slate-200 bg-card border border-white/10 hover:border-white/25 px-8 py-4 rounded-lg transition">
               SIGN IN
-            </button>
+            </a>
           </div>
 
           <p className="mt-4 font-mono text-xs text-slate-500">
@@ -189,9 +205,9 @@ export default function Home() {
           </div>
 
           {/* View all CTA */}
-          <button className="w-full font-mono text-xs tracking-widest text-gold border border-gold/30 rounded-lg py-3 hover:bg-gold/5 transition">
+          <a href={APP_URL} className="inline-flex items-center justify-center w-full font-mono text-xs tracking-widest text-gold border border-gold/30 rounded-lg py-3 hover:bg-gold/5 transition">
             VIEW ALL HIGH CONVICTION SIGNALS →
-          </button>
+          </a>
 
           {/* Stat grid */}
           <div className="grid grid-cols-2 gap-y-5 pt-2">
@@ -421,9 +437,9 @@ export default function Home() {
                 </li>
               ))}
             </ul>
-            <button className="mt-8 w-full font-display font-bold text-slate-200 bg-card border border-white/10 hover:border-white/25 py-4 rounded-lg transition">
+            <a href={JOIN_URL} className="inline-flex items-center justify-center mt-8 w-full font-display font-bold text-slate-200 bg-card border border-white/10 hover:border-white/25 py-4 rounded-lg transition">
               START FREE →
-            </button>
+            </a>
           </div>
 
           {/* PRO */}
@@ -444,9 +460,9 @@ export default function Home() {
                 </li>
               ))}
             </ul>
-            <button className="mt-8 w-full font-display font-bold text-black bg-gold hover:bg-gold-bright py-4 rounded-lg transition">
+            <a href={JOIN_URL} className="inline-flex items-center justify-center mt-8 w-full font-display font-bold text-black bg-gold hover:bg-gold-bright py-4 rounded-lg transition">
               JOIN FREE — FOUNDING MEMBER →
-            </button>
+            </a>
           </div>
         </div>
 
@@ -468,11 +484,11 @@ export default function Home() {
             <div>
               <p className="font-mono text-xs tracking-widest text-slate-500 mb-4">LEGAL</p>
               <ul className="space-y-3 text-slate-400">
-                <li className="hover:text-slate-200 transition cursor-pointer">Privacy Policy</li>
-                <li className="hover:text-slate-200 transition cursor-pointer">Terms of Service</li>
-                <li className="hover:text-slate-200 transition cursor-pointer">Billing &amp; Refunds</li>
-                <li className="hover:text-slate-200 transition cursor-pointer">Investment Disclaimer</li>
-                <li className="hover:text-slate-200 transition cursor-pointer">Cookie Policy</li>
+                {legalLinks.map((l) => (
+                  <li key={l.label}>
+                    <a href={l.href} className="hover:text-slate-200 transition">{l.label}</a>
+                  </li>
+                ))}
               </ul>
             </div>
             <div>
