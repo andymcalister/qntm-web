@@ -117,6 +117,9 @@ export default function MacroBanner({ m }: { m: Macro }) {
                 </div>
               )
             )}
+
+            {/* collapsible: every active-event headline */}
+            <HeadlinesDropdown m={m} />
           </div>
         </div>
 
@@ -130,5 +133,31 @@ export default function MacroBanner({ m }: { m: Macro }) {
         </div>
       </div>
     </div>
+  );
+}
+
+// Collapsed-by-default disclosure listing every active-event headline (matches
+// the Streamlit banner's headlines expander). The inline preview above shows two
+// per driver; this reveals the full set.
+function HeadlinesDropdown({ m }: { m: Macro }) {
+  const groups = Object.entries(m.event_headlines).filter(([, hs]) => hs.length > 0);
+  const total = groups.reduce((n, [, hs]) => n + hs.length, 0);
+  if (total === 0) return null;
+  return (
+    <details style={{ marginTop: 10 }}>
+      <summary style={{ cursor: "pointer", listStyle: "none", fontFamily: FONT_MONO, fontSize: 12, color: "#9fabc0", letterSpacing: ".06em" }}>
+        ▸ Show all headlines ({total})
+      </summary>
+      <div style={{ marginTop: 8, display: "flex", flexDirection: "column", gap: 10 }}>
+        {groups.map(([ev, hs]) => (
+          <div key={ev}>
+            <div style={{ fontSize: 11, color: "#6b7686", letterSpacing: ".05em", marginBottom: 3, textTransform: "uppercase" }}>{niceEvent(ev)}</div>
+            {hs.map((h, i) => (
+              <div key={i} style={{ color: "#8b97aa", fontSize: 12, lineHeight: 1.55, padding: "2px 0 2px 11px", marginLeft: 2, borderLeft: "1px solid rgba(255,255,255,.07)" }}>·&nbsp;{h}</div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </details>
   );
 }

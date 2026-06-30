@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import FactorCard from "./FactorCard";
 import MacroBanner, { Macro } from "./MacroBanner";
+import NavBar from "./NavBar";
 import {
   Row, Regime, FONT_DISPLAY, FONT_MONO, blendBuy, blendSell, valueCallout, pctRankFn,
 } from "./lib";
@@ -22,6 +23,7 @@ export default function Screener() {
   const [macro, setMacro] = useState<Macro | null>(null);
   const [asOf, setAsOf] = useState<string | null>(null);
   const [plan, setPlan] = useState<string>("free");
+  const [uid, setUid] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -35,14 +37,18 @@ export default function Screener() {
       setLoading(true);
       setError(null);
       try {
-        const meP = fetch("/api/me").then((r) => r.json()).catch(() => ({ plan: "free" }));
+        // Resolve session first (fast cookie decode) so the nav renders with the
+        // right links even while the universe is still loading.
+        const me = await fetch("/api/me").then((r) => r.json()).catch(() => ({ plan: "free" }));
+        setPlan(me?.plan || "free");
+        setUid(me?.user_id || "");
+
         const scrP = fetch(`${API_BASE}/api/screener?limit=2000`, { cache: "no-store" }).then((r) => {
           if (!r.ok) throw new Error(`API ${r.status}`);
           return r.json();
         });
         const macroP = fetch(`${API_BASE}/api/macro`, { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
-        const [me, scr, mac] = await Promise.all([meP, scrP, macroP]);
-        setPlan(me?.plan || "free");
+        const [scr, mac] = await Promise.all([scrP, macroP]);
         setRows(scr.rows || []);
         setRegime(scr.regime || null);
         setAsOf(scr.as_of || null);
@@ -71,15 +77,21 @@ export default function Screener() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: "100vh", background: "var(--color-bg,#060709)", color: "#94a3b8", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: FONT_MONO, fontSize: 14 }}>
-        Loading the universe… (first load may take ~30s while the API wakes)
+      <div style={{ minHeight: "100vh", background: "var(--color-bg,#060709)" }}>
+        <NavBar uid={uid} plan={plan} onSignOut={signOut} />
+        <div style={{ color: "#94a3b8", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: FONT_MONO, fontSize: 14, padding: "120px 20px" }}>
+          Loading the universe… (first load may take ~30s while the API wakes)
+        </div>
       </div>
     );
   }
   if (error) {
     return (
-      <div style={{ minHeight: "100vh", background: "var(--color-bg,#060709)", color: "#f87171", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: FONT_MONO, fontSize: 14 }}>
-        {error} <button onClick={() => location.reload()} style={{ marginLeft: 10, textDecoration: "underline", color: "#94a3b8" }}>retry</button>
+      <div style={{ minHeight: "100vh", background: "var(--color-bg,#060709)" }}>
+        <NavBar uid={uid} plan={plan} onSignOut={signOut} />
+        <div style={{ color: "#f87171", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: FONT_MONO, fontSize: 14, padding: "120px 20px" }}>
+          {error} <button onClick={() => location.reload()} style={{ marginLeft: 10, textDecoration: "underline", color: "#94a3b8" }}>retry</button>
+        </div>
       </div>
     );
   }
@@ -88,6 +100,7 @@ export default function Screener() {
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--color-bg,#060709)", color: "#cbd5e1" }}>
+      <NavBar uid={uid} plan={plan} onSignOut={signOut} />
       <div style={{ maxWidth: 1180, margin: "0 auto", padding: "28px 24px 60px" }}>
         {/* header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, flexWrap: "wrap" }}>
@@ -98,9 +111,6 @@ export default function Screener() {
             </h1>
             {asOf && <p style={{ fontFamily: FONT_MONO, fontSize: 13, color: "#64748b", margin: "4px 0 0" }}>as of {asOf}</p>}
           </div>
-          <button onClick={signOut} style={{ fontFamily: FONT_MONO, fontSize: 11, letterSpacing: ".15em", color: "#94a3b8", border: "1px solid rgba(255,255,255,.1)", borderRadius: 8, padding: "8px 12px", background: "transparent", cursor: "pointer" }}>
-            SIGN OUT
-          </button>
         </div>
 
         {/* breadth strip */}
