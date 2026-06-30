@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import FactorCard from "./FactorCard";
 import MacroBanner, { Macro } from "./MacroBanner";
 import NavBar from "./NavBar";
+import Hero, { Mover } from "./Hero";
 import {
   Row, Regime, FONT_DISPLAY, FONT_MONO, blendBuy, blendSell, valueCallout, pctRankFn,
 } from "./lib";
@@ -21,6 +22,7 @@ export default function Screener() {
   const [rows, setRows] = useState<Row[]>([]);
   const [regime, setRegime] = useState<Regime | null>(null);
   const [macro, setMacro] = useState<Macro | null>(null);
+  const [movers, setMovers] = useState<Mover[]>([]);
   const [asOf, setAsOf] = useState<string | null>(null);
   const [plan, setPlan] = useState<string>("free");
   const [uid, setUid] = useState<string>("");
@@ -48,11 +50,13 @@ export default function Screener() {
           return r.json();
         });
         const macroP = fetch(`${API_BASE}/api/macro`, { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
-        const [scr, mac] = await Promise.all([scrP, macroP]);
+        const moversP = fetch(`${API_BASE}/api/movers`, { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+        const [scr, mac, mov] = await Promise.all([scrP, macroP, moversP]);
         setRows(scr.rows || []);
         setRegime(scr.regime || null);
         setAsOf(scr.as_of || null);
         setMacro(mac && mac.regime ? mac : null);
+        setMovers(mov?.movers || []);
       } catch (e: any) {
         setError(e?.message || "Could not load the screener.");
       } finally {
@@ -127,6 +131,13 @@ export default function Screener() {
             <span style={{ color: "#94a3b8" }}>UNIV {breadth.univ}</span>
           </span>
         </div>
+
+        {/* hero: today at a glance + conviction moves */}
+        <Hero
+          movers={movers}
+          regime={macro?.regime || regime?.label || "NEUTRAL"}
+          fallback={[...rows].filter((r) => r.action === "BUY").sort((a, b) => b.score - a.score)}
+        />
 
         {/* macro banner (full) — falls back to the simple regime strip */}
         {macro ? (
