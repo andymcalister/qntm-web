@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import FactorCard from "./FactorCard";
+import MacroBanner, { Macro } from "./MacroBanner";
 import {
   Row, Regime, FONT_DISPLAY, FONT_MONO, blendBuy, blendSell, valueCallout, pctRankFn,
 } from "./lib";
@@ -18,6 +19,7 @@ type Tab = "top10" | "full" | "sector";
 export default function Screener() {
   const [rows, setRows] = useState<Row[]>([]);
   const [regime, setRegime] = useState<Regime | null>(null);
+  const [macro, setMacro] = useState<Macro | null>(null);
   const [asOf, setAsOf] = useState<string | null>(null);
   const [plan, setPlan] = useState<string>("free");
   const [loading, setLoading] = useState(true);
@@ -38,11 +40,13 @@ export default function Screener() {
           if (!r.ok) throw new Error(`API ${r.status}`);
           return r.json();
         });
-        const [me, scr] = await Promise.all([meP, scrP]);
+        const macroP = fetch(`${API_BASE}/api/macro`, { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+        const [me, scr, mac] = await Promise.all([meP, scrP, macroP]);
         setPlan(me?.plan || "free");
         setRows(scr.rows || []);
         setRegime(scr.regime || null);
         setAsOf(scr.as_of || null);
+        setMacro(mac && mac.regime ? mac : null);
       } catch (e: any) {
         setError(e?.message || "Could not load the screener.");
       } finally {
@@ -114,14 +118,16 @@ export default function Screener() {
           </span>
         </div>
 
-        {/* regime strip (full hero + macro banner = next layer) */}
-        {regime && (
+        {/* macro banner (full) — falls back to the simple regime strip */}
+        {macro ? (
+          <MacroBanner m={macro} />
+        ) : regime ? (
           <div style={{ marginTop: 14, borderRadius: 14, border: "1px solid rgba(255,255,255,.08)", background: "rgba(13,14,22,.5)", padding: "16px 20px", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "8px 32px" }}>
             <RegimeCell label="REGIME" value={regime.label.replace(/_/g, " ")} valColor={regimeTone(regime.label)} big />
             {regime.vix != null && <RegimeCell label="VIX" value={regime.vix.toFixed(1)} />}
             {regime.event && <RegimeCell label="EVENT" value={regime.event} />}
           </div>
-        )}
+        ) : null}
 
         {/* tabs */}
         <div style={{ display: "flex", gap: 4, marginTop: 22, borderBottom: "1px solid rgba(255,255,255,.08)" }}>
