@@ -1,4 +1,14 @@
-export default function Home() {
+import { getHeroData } from "./lib/qntm-data";
+
+// ISR: regenerate this page at most every 30 min (matches the macro cron).
+// Live numbers get baked into static HTML — great for crawlers, fast for users,
+// and no client-side DB calls.
+export const revalidate = 1800;
+
+export default async function Home() {
+  // ── Live data (server-side; falls back to safe defaults if the DB read fails) ─
+  const hero = await getHeroData();
+
   // ── Single source of truth for outbound links ───────────────────────────
   // At domain cutover, change APP_URL only (→ app.qntm.live). Everything follows.
   const APP_URL = "https://app.qntm.live";
@@ -16,15 +26,29 @@ export default function Home() {
     { label: "Cookie Policy", href: `${APP_URL}/?legal=cookies` },
   ];
 
-  const topSignals = [
+  // Static fallback used only if the live DB read fails (hero.ok === false).
+  const fallbackSignals = [
     { ticker: "MU", score: 77, dir: "up" },
     { ticker: "TIGO", score: 76, dir: "up" },
     { ticker: "VIRT", score: 76, dir: "up" },
     { ticker: "MRX", score: 76, dir: "up" },
     { ticker: "OSCR", score: 75, dir: "up" },
   ];
+  const fallbackTickerNames = ["MU", "TIGO", "VIRT", "MRX", "OSCR", "GTX", "VISN", "MSGE", "ENVA", "SNEX"];
 
-  const tickerNames = ["MU", "TIGO", "VIRT", "MRX", "OSCR", "GTX", "VISN", "MSGE", "ENVA", "SNEX"];
+  // ── Derived live display values ─────────────────────────────────────────
+  const regime = hero.regime;
+  const regimeText =
+    regime.tone === "up" ? "text-mint" : regime.tone === "down" ? "text-red-400" : "text-gold";
+
+  const panelSignals = hero.signals.length
+    ? hero.signals.slice(0, 5).map((s) => ({ ticker: s.ticker, score: s.score, dir: "up" }))
+    : fallbackSignals;
+
+  const tickerNames = hero.signals.length ? hero.signals.map((s) => s.ticker) : fallbackTickerNames;
+
+  const gemsCount = hero.gems ?? 12;
+  const totalCount = hero.total ?? 1402;
 
   const whyCards = [
     { title: "1402 stocks", color: "text-mint", body: "Russell 1000 + top Russell 2000 small-caps, rescored daily" },
@@ -173,28 +197,30 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Right column — live panel (placeholder data for now) */}
+        {/* Right column — live panel */}
         <div className="rounded-2xl border border-white/10 bg-card/60 p-5 space-y-6">
           {/* Market regime card */}
           <div className="rounded-xl border border-mint/20 bg-mint/5 p-5">
             <div className="flex items-start justify-between">
               <div>
                 <p className="font-mono text-xs tracking-widest text-slate-400">MARKET REGIME</p>
-                <p className="font-display text-3xl font-extrabold text-mint mt-2">▲ Risk On</p>
+                <p className={`font-display text-3xl font-extrabold ${regimeText} mt-2`}>{regime.icon} {regime.label}</p>
               </div>
               <div className="text-right">
-                <p className="font-mono text-xl text-gold">75/25</p>
-                <p className="font-mono text-xs text-slate-500">quant/macro</p>
+                <p className="font-mono text-xl text-gold">{regime.vix !== null ? regime.vix.toFixed(1) : "—"}</p>
+                <p className="font-mono text-xs text-slate-500">VIX</p>
               </div>
             </div>
-            <p className="font-mono text-sm text-slate-400 mt-4">VIX 18.3 &nbsp; Event: War Deescalation</p>
+            <p className="font-mono text-sm text-slate-400 mt-4">
+              {regime.event ? `Event: ${regime.event}` : "Live macro overlay active"}
+            </p>
           </div>
 
           {/* Top signals */}
           <div>
             <p className="font-mono text-xs tracking-widest text-slate-400 mb-3">TOP SIGNALS TODAY</p>
             <div className="divide-y divide-white/5">
-              {topSignals.map((s) => (
+              {panelSignals.map((s) => (
                 <div key={s.ticker} className="flex items-center justify-between py-3">
                   <span className="font-display font-bold text-lg text-slate-100">{s.ticker}</span>
                   <span className={`font-mono ${s.dir === "up" ? "text-mint" : "text-red-400"}`}>
@@ -214,7 +240,7 @@ export default function Home() {
           <div className="grid grid-cols-2 gap-y-5 pt-2">
             <div>
               <p className="font-mono text-xs tracking-widest text-slate-500">UNIVERSE</p>
-              <p className="font-display text-2xl font-extrabold text-gold mt-1">1402</p>
+              <p className="font-display text-2xl font-extrabold text-gold mt-1">{totalCount.toLocaleString()}</p>
             </div>
             <div>
               <p className="font-mono text-xs tracking-widest text-slate-500">FACTORS</p>
@@ -236,15 +262,13 @@ export default function Home() {
       <div className="border-y border-white/10 bg-card/40">
         <div className="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-sm">
           <span className="text-gold tracking-widest">TODAY IN QNTM</span>
-          <span className="text-mint">▲ Risk On</span>
+          <span className={regime.tone === "up" ? "text-mint" : regime.tone === "down" ? "text-red-400" : "text-gold"}>
+            {regime.icon} {regime.label}
+          </span>
           <span className="text-slate-500">·</span>
-          <span><span className="text-slate-100 font-bold">100</span> <span className="text-slate-400">high</span></span>
+          <span className="text-mint">💎 <span className="font-bold">{gemsCount}</span> hidden gems</span>
           <span className="text-slate-500">·</span>
-          <span><span className="text-red-400 font-bold">430</span> <span className="text-slate-400">low</span></span>
-          <span className="text-slate-500">·</span>
-          <span className="text-mint">💎 <span className="font-bold">12</span> hidden gems</span>
-          <span className="text-slate-500">·</span>
-          <span className="text-slate-400">1402 stocks scored</span>
+          <span className="text-slate-400">{totalCount.toLocaleString()} stocks scored</span>
         </div>
       </div>
 
