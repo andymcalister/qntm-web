@@ -1,7 +1,7 @@
 export default function Home() {
   // ── Single source of truth for outbound links ───────────────────────────
   // At domain cutover, change APP_URL only (→ app.qntm.live). Everything follows.
-  const APP_URL = "https://qntm.live";
+  const APP_URL = "https://app.qntm.live";
   const SIGNIN_URL = `${APP_URL}/?nav=signin`;          // opens app directly on Sign In
   const JOIN_URL = `${APP_URL}/?nav=register`;          // opens app directly on Join Free
   const JOIN_PRO_URL = `${APP_URL}/?nav=register&plan=pro`; // Join Free + auto-claims Pro/founding
