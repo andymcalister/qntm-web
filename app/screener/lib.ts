@@ -33,10 +33,14 @@ export type Regime = {
 };
 
 // ── Colors (exact Streamlit values) ──────────────────────────────────────────
+// .c = the "signal" color used for the score, conviction label, arrows and card
+// edge — brightened a touch from the base #34d399/#f87171 so heavy colored text
+// reads as vivid as the Streamlit cards regardless of font-weight rendering.
+// .bg / .brd keep the subtle Streamlit values (badge fills stay understated).
 export const ACT = {
-  BUY: { c: "#34d399", bg: "rgba(52,211,153,.08)", brd: "rgba(52,211,153,.22)" },
+  BUY: { c: "#2fe3a0", bg: "rgba(52,211,153,.08)", brd: "rgba(52,211,153,.22)" },
   HOLD: { c: "#fbbf24", bg: "rgba(251,191,36,.06)", brd: "rgba(251,191,36,.2)" },
-  SELL: { c: "#f87171", bg: "rgba(248,113,113,.08)", brd: "rgba(248,113,113,.2)" },
+  SELL: { c: "#ff6363", bg: "rgba(248,113,113,.08)", brd: "rgba(248,113,113,.2)" },
 } as const;
 
 export const ACTION_LABEL = { BUY: "High Conviction", HOLD: "Moderate", SELL: "Low Conviction" } as const;
