@@ -162,7 +162,7 @@ export default async function Home() {
       </header>
 
       {/* Hero */}
-      <section className="max-w-7xl mx-auto px-6 pt-10 pb-24 grid lg:grid-cols-2 gap-12 items-start">
+      <section className="max-w-7xl mx-auto px-6 pt-8 pb-12 grid lg:grid-cols-2 gap-12 items-center">
         {/* Left column */}
         <div>
           <div className="inline-flex items-center gap-2 rounded-full border border-gold/20 bg-gold/5 px-4 py-1.5 mb-4">
@@ -317,8 +317,8 @@ export default async function Home() {
           <span className="text-gold">One conviction score.</span>
         </h2>
         <p className="mt-6 text-lg text-slate-400 max-w-3xl leading-relaxed">
-          36 factors scored daily across 5 research-backed pillars — plus a 75/25 macro overlay. The model
-          tells you exactly what to enter, maintain, or exit. And why.
+          36 factors scored daily across 5 research-backed pillars — then blended 75% conviction score / 25%
+          macro overlay. The model tells you exactly what to enter, maintain, or exit. And why.
         </p>
 
         <div className="mt-12 grid grid-cols-2 lg:grid-cols-5 gap-5">
@@ -536,7 +536,7 @@ export default async function Home() {
           </div>
 
           <div className="mt-10 flex flex-wrap items-center justify-between gap-4 text-sm text-slate-500">
-            <span>© 2025 QNTM. All rights reserved.</span>
+            <span>© 2026 QNTM. All rights reserved.</span>
             <span className="font-mono">Not investment advice · Quantitative research tool only</span>
           </div>
         </div>
