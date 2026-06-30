@@ -1,4 +1,5 @@
 import { getHeroData } from "./lib/qntm-data";
+import SessionBounce from "./SessionBounce";
 
 // ISR: regenerate this page at most every 30 min (matches the macro cron).
 // Live numbers get baked into static HTML — great for crawlers, fast for users,
@@ -146,6 +147,7 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-bg text-slate-200">
+      <SessionBounce />
       {/* Top nav */}
       <header className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
         <span className="font-display text-2xl font-extrabold tracking-tight text-gold">QNTM</span>
