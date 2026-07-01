@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import NavBar from "../screener/NavBar";
 import FactorCard from "../screener/FactorCard";
 import { Row, pctRankFn, searchUniverse, companyName, FONT_DISPLAY, FONT_MONO } from "../screener/lib";
+import { useWatchlist } from "../screener/useWatchlist";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://qntm-api.onrender.com";
 const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "https://app.qntm.live";
@@ -40,6 +41,7 @@ export default function Portfolio() {
   const [adding, setAdding] = useState(false);
   const [addMsg, setAddMsg] = useState<string | null>(null);
   const [upsell, setUpsell] = useState(false);
+  const { watched, toggleWatch } = useWatchlist();
 
   async function loadPortfolio() {
     const r = await fetch("/api/portfolio");
@@ -257,7 +259,7 @@ export default function Portfolio() {
           ) : (
             holdings.map((h) => (
               <div key={h.ticker}>
-                <FactorCard r={h} isGem={h.is_hidden_gem} pctRank={pctRank(h.score)} callout={null} />
+                <FactorCard r={h} isGem={h.is_hidden_gem} pctRank={pctRank(h.score)} callout={null} isWatched={watched.has(h.ticker)} onToggleWatch={toggleWatch} />
                 <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "4px 12px", fontFamily: FONT_MONO, fontSize: 12, color: "#8896ac", margin: "-2px 0 12px 3px" }}>
                   <span>{h.shares.toLocaleString(undefined, { maximumFractionDigits: 4 })} sh @ {money(h.avg_cost)}</span>
                   <span style={{ color: "#6b7686" }}>·</span>
