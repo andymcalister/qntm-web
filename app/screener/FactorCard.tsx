@@ -7,7 +7,7 @@ import {
 } from "./lib";
 
 export default function FactorCard({
-  r, isGem, pctRank, callout, isWatched, onToggleWatch,
+  r, isGem, pctRank, callout, isWatched, onToggleWatch, defaultOpen, detailHref,
 }: {
   r: Row;
   isGem: boolean;
@@ -15,6 +15,8 @@ export default function FactorCard({
   callout: "cheap" | "rich" | null;
   isWatched?: boolean;
   onToggleWatch?: (ticker: string) => void;
+  defaultOpen?: boolean;
+  detailHref?: string;
 }) {
   const act = ACT[r.action];
   const actC = act.c;
@@ -34,7 +36,7 @@ export default function FactorCard({
   );
 
   return (
-    <details name="qntm-cards" style={{
+    <details name="qntm-cards" open={defaultOpen} style={{
       marginBottom: 6, background: "rgba(255,255,255,.02)",
       border: "1px solid rgba(255,255,255,.06)", borderLeft: `3px solid ${actC}`,
       borderRadius: 8, overflow: "hidden",
@@ -82,7 +84,11 @@ export default function FactorCard({
           )}
           <span style={{ fontFamily: FONT_MONO, fontSize: 20, fontWeight: 700, color: actC }}>{r.score.toFixed(0)}</span>
           <span style={{ fontSize: 14, color: actC }}>{arrow}</span>
-          <span style={{ fontSize: 13, color: "#94a3b8" }}>›</span>
+          {detailHref ? (
+            <a href={detailHref} onClick={(e) => e.stopPropagation()} title="Open full detail" style={{ fontSize: 15, color: "#94a3b8", textDecoration: "none", padding: "0 2px" }}>›</a>
+          ) : (
+            <span style={{ fontSize: 13, color: "#94a3b8" }}>›</span>
+          )}
         </div>
       </summary>
 

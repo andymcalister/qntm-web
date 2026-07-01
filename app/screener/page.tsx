@@ -234,12 +234,12 @@ function Top10({ rows, gemSet, pctRank, watched, onToggleWatch }: { rows: Row[];
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: 20 }}>
         <div>
           <div style={{ fontFamily: FONT_MONO, fontSize: 13, color: "#34d399", letterSpacing: ".12em", margin: "0 0 6px", paddingBottom: 4, borderBottom: "1px solid rgba(255,255,255,.05)" }}>▲ HIGH CONVICTION</div>
-          {buys.map((r) => <FactorCard key={r.ticker} r={r} isGem={gemSet.has(r.ticker)} pctRank={pctRank(r.score)} callout={valueCallout(r)} isWatched={watched.has(r.ticker)} onToggleWatch={onToggleWatch} />)}
+          {buys.map((r) => <FactorCard key={r.ticker} r={r} isGem={gemSet.has(r.ticker)} pctRank={pctRank(r.score)} callout={valueCallout(r)} isWatched={watched.has(r.ticker)} onToggleWatch={onToggleWatch} detailHref={`/stock/${r.ticker}`} />)}
           {buys.length === 0 && <Empty />}
         </div>
         <div>
           <div style={{ fontFamily: FONT_MONO, fontSize: 13, color: "#f87171", letterSpacing: ".12em", margin: "0 0 6px", paddingBottom: 4, borderBottom: "1px solid rgba(255,255,255,.05)" }}>▼ LOW CONVICTION</div>
-          {sells.map((r) => <FactorCard key={r.ticker} r={r} isGem={gemSet.has(r.ticker)} pctRank={pctRank(r.score)} callout={valueCallout(r)} isWatched={watched.has(r.ticker)} onToggleWatch={onToggleWatch} />)}
+          {sells.map((r) => <FactorCard key={r.ticker} r={r} isGem={gemSet.has(r.ticker)} pctRank={pctRank(r.score)} callout={valueCallout(r)} isWatched={watched.has(r.ticker)} onToggleWatch={onToggleWatch} detailHref={`/stock/${r.ticker}`} />)}
           {sells.length === 0 && <Empty />}
         </div>
       </div>
@@ -285,7 +285,7 @@ function FullUniverse(props: {
         {showGate ? ` · Showing ${FREE_LIMIT} of ${totalFiltered}` : showRenderCap ? ` · Showing ${RENDER_LIMIT} of ${totalFiltered} — filter to see all` : ""}
       </div>
 
-      {shown.map((r) => <FactorCard key={r.ticker} r={r} isGem={gemSet.has(r.ticker)} pctRank={pctRank(r.score)} callout={null} isWatched={watched.has(r.ticker)} onToggleWatch={onToggleWatch} />)}
+      {shown.map((r) => <FactorCard key={r.ticker} r={r} isGem={gemSet.has(r.ticker)} pctRank={pctRank(r.score)} callout={null} isWatched={watched.has(r.ticker)} onToggleWatch={onToggleWatch} detailHref={`/stock/${r.ticker}`} />)}
       {shown.length === 0 && <Empty />}
 
       {showGate && (
