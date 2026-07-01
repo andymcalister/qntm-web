@@ -159,34 +159,76 @@ export function capLabel(mktcap: string | null): string | null {
 
 // ── Company names (same KNOWN map Streamlit uses for fast lookups) ────────────
 export const KNOWN: Record<string, string> = {
-  AAPL: "Apple Inc.", MSFT: "Microsoft Corporation", NVDA: "NVIDIA Corporation",
-  GOOGL: "Alphabet Inc.", GOOG: "Alphabet Inc.", META: "Meta Platforms Inc.",
-  AMZN: "Amazon.com Inc.", TSLA: "Tesla Inc.", NFLX: "Netflix Inc.",
-  AMD: "Advanced Micro Devices", INTC: "Intel Corporation", CSCO: "Cisco Systems",
-  ORCL: "Oracle Corporation", CRM: "Salesforce Inc.", ADBE: "Adobe Inc.",
-  INTU: "Intuit Inc.", QCOM: "Qualcomm Inc.", TXN: "Texas Instruments",
-  AVGO: "Broadcom Inc.", MU: "Micron Technology", AMAT: "Applied Materials",
-  JPM: "JPMorgan Chase & Co.", BAC: "Bank of America", GS: "Goldman Sachs",
-  MS: "Morgan Stanley", V: "Visa Inc.", MA: "Mastercard Inc.",
-  BLK: "BlackRock Inc.", AXP: "American Express", PYPL: "PayPal Holdings",
-  UNH: "UnitedHealth Group", LLY: "Eli Lilly and Company", JNJ: "Johnson & Johnson",
-  ABBV: "AbbVie Inc.", MRK: "Merck & Co.", PFE: "Pfizer Inc.",
-  TMO: "Thermo Fisher Scientific", AMGN: "Amgen Inc.", GILD: "Gilead Sciences",
-  WMT: "Walmart Inc.", COST: "Costco Wholesale", PG: "Procter & Gamble",
-  KO: "The Coca-Cola Company", PEP: "PepsiCo Inc.", HD: "Home Depot",
-  MCD: "McDonald's Corporation", NKE: "Nike Inc.", SBUX: "Starbucks Corporation",
-  XOM: "Exxon Mobil Corporation", CVX: "Chevron Corporation",
-  BRK: "Berkshire Hathaway", PLTR: "Palantir Technologies",
-  COIN: "Coinbase Global", HOOD: "Robinhood Markets",
-  SNOW: "Snowflake Inc.", DDOG: "Datadog Inc.", NET: "Cloudflare Inc.",
-  ZS: "Zscaler Inc.", CRWD: "CrowdStrike Holdings", PANW: "Palo Alto Networks",
-  NOW: "ServiceNow Inc.", WDAY: "Workday Inc.", TEAM: "Atlassian Corporation",
-  UBER: "Uber Technologies", LYFT: "Lyft Inc.", ABNB: "Airbnb Inc.",
-  DASH: "DoorDash Inc.", SPOT: "Spotify Technology",
+  AAPL: "Apple Inc.", ABBV: "AbbVie Inc.", ABNB: "Airbnb Inc.",
+  ADBE: "Adobe Inc.", AMAT: "Applied Materials", AMD: "Advanced Micro Devices",
+  AMGN: "Amgen Inc.", AMZN: "Amazon.com Inc.", APA: "APA Corp",
+  ARM: "Arm Holdings", AVGO: "Broadcom Inc.", AXP: "American Express",
+  BA: "Boeing", BAC: "Bank of America", BKNG: "Booking",
+  BLK: "BlackRock Inc.", BMY: "Bristol Myers Squibb", BRK: "Berkshire Hathaway",
+  BRK.B: "Berkshire Hathaway", C: "Citigroup", CAT: "Caterpillar",
+  CHRD: "Chord Energy", CMCSA: "Comcast", COF: "Capital One",
+  COIN: "Coinbase Global", COP: "ConocoPhillips", COST: "Costco Wholesale",
+  CRGY: "Crescent Energy", CRM: "Salesforce Inc.", CRWD: "CrowdStrike Holdings",
+  CSCO: "Cisco Systems", CVS: "CVS Health", CVX: "Chevron Corporation",
+  DASH: "DoorDash Inc.", DDOG: "Datadog Inc.", DE: "Deere",
+  DELL: "Dell", DINO: "HF Sinclair", DIS: "Disney",
+  ET: "Energy Transfer", F: "Ford", FTNT: "Fortinet",
+  GD: "General Dynamics", GE: "GE Aerospace", GILD: "Gilead Sciences",
+  GM: "General Motors", GOOG: "Alphabet Inc.", GOOGL: "Alphabet Inc.",
+  GS: "Goldman Sachs", HD: "Home Depot", HON: "Honeywell",
+  HOOD: "Robinhood Markets", HPQ: "HP", IBM: "IBM",
+  INTC: "Intel Corporation", INTU: "Intuit Inc.", JNJ: "Johnson & Johnson",
+  JPM: "JPMorgan Chase & Co.", KMI: "Kinder Morgan", KO: "The Coca-Cola Company",
+  KOS: "Kosmos Energy", LLY: "Eli Lilly and Company", LMT: "Lockheed Martin",
+  LOW: "Lowe's", LYFT: "Lyft Inc.", MA: "Mastercard Inc.",
+  MAR: "Marriott", MCD: "McDonald's Corporation", META: "Meta Platforms Inc.",
+  MMM: "3M", MPC: "Marathon Petroleum", MRK: "Merck & Co.",
+  MRVL: "Marvell", MS: "Morgan Stanley", MSFT: "Microsoft Corporation",
+  MU: "Micron Technology", NET: "Cloudflare Inc.", NFLX: "Netflix Inc.",
+  NKE: "Nike Inc.", NOC: "Northrop Grumman", NOW: "ServiceNow Inc.",
+  NVDA: "NVIDIA Corporation", ORCL: "Oracle Corporation", OXY: "Occidental",
+  PANW: "Palo Alto Networks", PARA: "Paramount", PEP: "PepsiCo Inc.",
+  PFE: "Pfizer Inc.", PG: "Procter & Gamble", PLTR: "Palantir Technologies",
+  PSX: "Phillips 66", PYPL: "PayPal Holdings", QCOM: "Qualcomm Inc.",
+  QCOM : "Qualcomm", RTX: "RTX (Raytheon)", SBUX: "Starbucks Corporation",
+  SHOP: "Shopify", SLB: "Schlumberger", SM: "SM Energy",
+  SMCI: "Super Micro", SNOW: "Snowflake Inc.", SPOT: "Spotify Technology",
+  SQ: "Block (Square)", T: "AT&T", TEAM: "Atlassian Corporation",
+  TGT: "Target", TMO: "Thermo Fisher Scientific", TMUS: "T-Mobile",
+  TSLA: "Tesla Inc.", TXN: "Texas Instruments", UBER: "Uber Technologies",
+  UNH: "UnitedHealth Group", V: "Visa Inc.", VLO: "Valero Energy",
+  VZ: "Verizon", WBD: "Warner Bros Discovery", WDAY: "Workday Inc.",
+  WFC: "Wells Fargo", WMB: "Williams", WMT: "Walmart Inc.",
+  XOM: "Exxon Mobil Corporation", ZS: "Zscaler Inc.",
 };
 export function companyName(ticker: string): string | null {
   const n = KNOWN[ticker];
   return n && n !== ticker ? n : null;
+}
+
+// Client-side universe search for the add-position box: match the user's text
+// against ticker symbols (all names) and known company names (the big ~120), and
+// rank exact-ticker > ticker-prefix > name-prefix > substring. No network.
+export function searchUniverse(
+  q: string, tickers: string[], limit = 8
+): { ticker: string; name: string | null }[] {
+  const query = q.trim().toUpperCase();
+  if (!query) return [];
+  const nameQ = q.trim().toLowerCase();
+  const scored: { ticker: string; name: string | null; rank: number }[] = [];
+  for (const t of tickers) {
+    const name = companyName(t);
+    const nl = name ? name.toLowerCase() : "";
+    let rank = -1;
+    if (t === query) rank = 0;
+    else if (t.startsWith(query)) rank = 1;
+    else if (nl && nl.startsWith(nameQ)) rank = 2;
+    else if (t.includes(query)) rank = 3;
+    else if (nl && nl.includes(nameQ)) rank = 4;
+    if (rank >= 0) scored.push({ ticker: t, name, rank });
+  }
+  scored.sort((a, b) => a.rank - b.rank || a.ticker.localeCompare(b.ticker));
+  return scored.slice(0, limit).map(({ ticker, name }) => ({ ticker, name }));
 }
 
 // ── Percentile rank over the universe ────────────────────────────────────────
