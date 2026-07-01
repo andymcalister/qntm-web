@@ -22,7 +22,7 @@ const ITEMS: { key: string; icon: string; label: string }[] = [
 ];
 
 // Routes already migrated to the Next app (internal links).
-const NEXT_ROUTES: Record<string, string> = { screener: "/screener", watchlist: "/watchlist", portfolio: "/portfolio" };
+const NEXT_ROUTES: Record<string, string> = { screener: "/screener", watchlist: "/watchlist", portfolio: "/portfolio", model_portfolio: "/model-portfolio" };
 
 export default function NavBar({
   uid, plan, active = "screener", onSignOut,
