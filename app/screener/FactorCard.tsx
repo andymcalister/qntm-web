@@ -9,7 +9,7 @@ import {
 } from "./lib";
 
 export default function FactorCard({
-  r, isGem, pctRank, callout, isWatched, onToggleWatch,
+  r, isGem, pctRank, callout, isWatched, onToggleWatch, defaultOpen, standalone,
 }: {
   r: Row;
   isGem: boolean;
@@ -17,8 +17,10 @@ export default function FactorCard({
   callout: "cheap" | "rich" | null;
   isWatched?: boolean;
   onToggleWatch?: (ticker: string) => void;
+  defaultOpen?: boolean;
+  standalone?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(!!defaultOpen);
   const act = ACT[r.action];
   const actC = act.c;
   const arrow = ACTION_ARROW[r.action];
@@ -37,7 +39,7 @@ export default function FactorCard({
   );
 
   return (
-    <details name="qntm-cards" onToggle={(e) => setOpen((e.currentTarget as HTMLDetailsElement).open)} style={{
+    <details {...(standalone ? {} : { name: "qntm-cards" })} open={open} onToggle={(e) => setOpen((e.currentTarget as HTMLDetailsElement).open)} style={{
       marginBottom: 6, background: "rgba(255,255,255,.02)",
       border: "1px solid rgba(255,255,255,.06)", borderLeft: `3px solid ${actC}`,
       borderRadius: 8, overflow: "hidden",

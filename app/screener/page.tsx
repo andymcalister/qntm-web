@@ -7,6 +7,7 @@ import NavBar from "./NavBar";
 import Hero, { Mover } from "./Hero";
 import {
   Row, Regime, FONT_DISPLAY, FONT_MONO, blendBuy, blendSell, valueCallout, pctRankFn,
+  searchUniverse,
 } from "./lib";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://qntm-api.onrender.com";
@@ -72,6 +73,16 @@ export default function Screener() {
   }, []);
 
   const pctRank = useMemo(() => pctRankFn(rows.map((r) => r.score)), [rows]);
+
+  // ── ticker/company search (opens the picked stock in an expanded card) ──
+  const [sQuery, setSQuery] = useState("");
+  const [sPicked, setSPicked] = useState("");
+  const [sShowSug, setSShowSug] = useState(false);
+  const sTickers = useMemo(() => rows.map((r) => r.ticker), [rows]);
+  const sSuggestions = useMemo(() => (sShowSug && sQuery.trim() && !sPicked ? searchUniverse(sQuery, sTickers) : []), [sShowSug, sQuery, sPicked, sTickers]);
+  const pickedRow = useMemo(() => (sPicked ? rows.find((r) => r.ticker === sPicked) || null : null), [sPicked, rows]);
+  function pickTicker(t: string) { setSPicked(t); setSQuery(t); setSShowSug(false); }
+  function clearPick() { setSPicked(""); setSQuery(""); setSShowSug(false); }
   const gemSet = useMemo(() => new Set(rows.filter((r) => r.is_hidden_gem).map((r) => r.ticker)), [rows]);
 
   const breadth = useMemo(() => {
@@ -132,7 +143,41 @@ export default function Screener() {
             </h1>
             {asOf && <p style={{ fontFamily: FONT_MONO, fontSize: 13, color: "#64748b", margin: "4px 0 0" }}>as of {asOf}</p>}
           </div>
+
+          {/* search box */}
+          <div style={{ position: "relative", width: 260, maxWidth: "100%" }}>
+            <input
+              value={sQuery}
+              onChange={(e) => { setSQuery(e.target.value); setSPicked(""); setSShowSug(true); const up = e.target.value.trim().toUpperCase(); if (sTickers.includes(up)) pickTicker(up); }}
+              onFocus={() => { if (sQuery.trim() && !sPicked) setSShowSug(true); }}
+              onBlur={() => setTimeout(() => setSShowSug(false), 120)}
+              onKeyDown={(e) => { if (e.key === "Enter" && sSuggestions.length) { e.preventDefault(); pickTicker(sSuggestions[0].ticker); } }}
+              placeholder="🔍  Find a stock — NVDA, Apple…"
+              style={{ width: "100%", background: "rgba(13,14,22,.8)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 8, padding: "9px 12px", fontSize: 14, color: "#e2e8f0", fontFamily: FONT_MONO, letterSpacing: ".03em" }}
+            />
+            {sSuggestions.length > 0 && (
+              <div style={{ position: "absolute", top: "calc(100% + 4px)", left: 0, right: 0, zIndex: 30, background: "#0d0e16", border: "1px solid rgba(255,255,255,.12)", borderRadius: 8, overflow: "hidden", boxShadow: "0 8px 24px rgba(0,0,0,.5)" }}>
+                {sSuggestions.map((s) => (
+                  <button key={s.ticker} onMouseDown={(e) => { e.preventDefault(); pickTicker(s.ticker); }} style={{ display: "flex", alignItems: "baseline", gap: 8, width: "100%", textAlign: "left", padding: "8px 12px", background: "transparent", border: "none", borderBottom: "1px solid rgba(255,255,255,.05)", cursor: "pointer", color: "#e2e8f0" }}>
+                    <span style={{ fontFamily: FONT_MONO, fontSize: 13, fontWeight: 600, minWidth: 52 }}>{s.ticker}</span>
+                    <span style={{ fontSize: 12, color: "#8896ac", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{s.name || ""}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
+
+        {/* search result — expanded card for the picked stock */}
+        {pickedRow && (
+          <div style={{ marginTop: 16, padding: "4px 0" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+              <span style={{ fontFamily: FONT_MONO, fontSize: 12, color: "#8896ac", letterSpacing: ".08em" }}>SEARCH RESULT</span>
+              <button onClick={clearPick} style={{ background: "transparent", border: "1px solid rgba(255,255,255,.12)", borderRadius: 6, color: "#94a3b8", fontFamily: FONT_MONO, fontSize: 11, padding: "3px 10px", cursor: "pointer" }}>✕ clear</button>
+            </div>
+            <FactorCard r={pickedRow} isGem={gemSet.has(pickedRow.ticker)} pctRank={pctRank(pickedRow.score)} callout={valueCallout(pickedRow)} isWatched={watched.has(pickedRow.ticker)} onToggleWatch={toggleWatch} defaultOpen standalone />
+          </div>
+        )}
 
         {/* breadth strip */}
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap", alignItems: "center", padding: "12px 0 10px", marginTop: 8, marginBottom: 4, borderBottom: "1px solid rgba(255,255,255,.04)" }}>
