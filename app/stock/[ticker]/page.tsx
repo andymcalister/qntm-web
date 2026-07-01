@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import NavBar from "../../screener/NavBar";
 import FactorCard from "../../screener/FactorCard";
+import RelSpyChart from "../RelSpyChart";
 import { Row, valueCallout, FONT_DISPLAY, FONT_MONO } from "../../screener/lib";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://qntm-api.onrender.com";
@@ -85,6 +86,7 @@ export default function StockDetail() {
         ) : (
           <div style={{ marginTop: 14 }}>
             <FactorCard r={data} isGem={data.is_hidden_gem} pctRank={data.pct_rank} callout={valueCallout(data)} isWatched={watched} onToggleWatch={toggleWatch} defaultOpen />
+            <RelSpyChart ticker={data.ticker} />
             {data.changes && <WhatsChanged c={data.changes} />}
           </div>
         )}
