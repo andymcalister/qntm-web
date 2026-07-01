@@ -68,9 +68,16 @@ export default function FactorCard({
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); onToggleWatch(r.ticker); }}
               title={isWatched ? "Remove from watchlist" : "Add to watchlist"}
               aria-label={isWatched ? "Remove from watchlist" : "Add to watchlist"}
-              style={{ background: "transparent", border: "none", cursor: "pointer", fontSize: 17, lineHeight: 1, padding: "0 2px", color: isWatched ? "#d4a843" : "#4b5563" }}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 4,
+                background: isWatched ? "rgba(212,168,67,.1)" : "transparent",
+                border: `1px solid ${isWatched ? "rgba(212,168,67,.4)" : "rgba(255,255,255,.14)"}`,
+                cursor: "pointer", fontFamily: FONT_MONO, fontSize: 11, letterSpacing: ".03em",
+                color: isWatched ? "#d4a843" : "#9fabc0", borderRadius: 6, padding: "3px 8px", lineHeight: 1, whiteSpace: "nowrap",
+              }}
             >
-              {isWatched ? "★" : "☆"}
+              <span style={{ fontSize: 13 }}>{isWatched ? "★" : "☆"}</span>
+              {isWatched ? "Remove" : "Add"}
             </button>
           )}
           <span style={{ fontFamily: FONT_MONO, fontSize: 20, fontWeight: 700, color: actC }}>{r.score.toFixed(0)}</span>
