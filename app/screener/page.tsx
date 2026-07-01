@@ -23,6 +23,7 @@ export default function Screener() {
   const [regime, setRegime] = useState<Regime | null>(null);
   const [macro, setMacro] = useState<Macro | null>(null);
   const [movers, setMovers] = useState<Mover[]>([]);
+  const [watched, setWatched] = useState<Set<string>>(new Set());
   const [asOf, setAsOf] = useState<string | null>(null);
   const [plan, setPlan] = useState<string>("free");
   const [uid, setUid] = useState<string>("");
@@ -57,6 +58,11 @@ export default function Screener() {
         setAsOf(scr.as_of || null);
         setMacro(mac && mac.regime ? mac : null);
         setMovers(mov?.movers || []);
+
+        // watchlist membership for the star toggles (non-blocking)
+        fetch("/api/watchlist").then((r) => (r.ok ? r.json() : null)).then((d) => {
+          if (d?.items) setWatched(new Set(d.items.map((i: { ticker: string }) => i.ticker)));
+        }).catch(() => {});
       } catch (e: any) {
         setError(e?.message || "Could not load the screener.");
       } finally {
@@ -77,6 +83,17 @@ export default function Screener() {
   async function signOut() {
     try { await fetch("/api/session", { method: "DELETE" }); } catch {}
     window.location.href = LOGIN_URL;
+  }
+
+  async function toggleWatch(ticker: string) {
+    const has = watched.has(ticker);
+    setWatched((prev) => { const n = new Set(prev); if (has) n.delete(ticker); else n.add(ticker); return n; });
+    try {
+      if (has) await fetch(`/api/watchlist/${encodeURIComponent(ticker)}`, { method: "DELETE" });
+      else await fetch("/api/watchlist", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ticker }) });
+    } catch {
+      setWatched((prev) => { const n = new Set(prev); if (has) n.add(ticker); else n.delete(ticker); return n; });
+    }
   }
 
   if (loading) {
@@ -163,12 +180,13 @@ export default function Screener() {
         </div>
 
         <div style={{ marginTop: 18 }}>
-          {tab === "top10" && <Top10 rows={rows} gemSet={gemSet} pctRank={pctRank} />}
+          {tab === "top10" && <Top10 rows={rows} gemSet={gemSet} pctRank={pctRank} watched={watched} onToggleWatch={toggleWatch} />}
           {tab === "full" && (
             <FullUniverse
               rows={rows} gemSet={gemSet} pctRank={pctRank} plan={plan}
               sectors={sectors} fSec={fSec} setFSec={setFSec}
               fConv={fConv} setFConv={setFConv} fMin={fMin} setFMin={setFMin}
+              watched={watched} onToggleWatch={toggleWatch}
             />
           )}
           {tab === "sector" && <SectorBreakdown rows={rows} />}
@@ -201,7 +219,7 @@ function RegimeCell({ label, value, valColor, big }: { label: string; value: str
 }
 
 // TAB 1: TOP 10
-function Top10({ rows, gemSet, pctRank }: { rows: Row[]; gemSet: Set<string>; pctRank: (s: number) => number }) {
+function Top10({ rows, gemSet, pctRank, watched, onToggleWatch }: { rows: Row[]; gemSet: Set<string>; pctRank: (s: number) => number; watched: Set<string>; onToggleWatch: (t: string) => void }) {
   const buys = rows.filter((r) => r.action === "BUY").sort((a, b) => blendBuy(b) - blendBuy(a)).slice(0, 10);
   const sells = rows.filter((r) => r.action === "SELL").sort((a, b) => blendSell(a) - blendSell(b)).slice(0, 10);
 
@@ -216,12 +234,12 @@ function Top10({ rows, gemSet, pctRank }: { rows: Row[]; gemSet: Set<string>; pc
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: 20 }}>
         <div>
           <div style={{ fontFamily: FONT_MONO, fontSize: 13, color: "#34d399", letterSpacing: ".12em", margin: "0 0 6px", paddingBottom: 4, borderBottom: "1px solid rgba(255,255,255,.05)" }}>▲ HIGH CONVICTION</div>
-          {buys.map((r) => <FactorCard key={r.ticker} r={r} isGem={gemSet.has(r.ticker)} pctRank={pctRank(r.score)} callout={valueCallout(r)} />)}
+          {buys.map((r) => <FactorCard key={r.ticker} r={r} isGem={gemSet.has(r.ticker)} pctRank={pctRank(r.score)} callout={valueCallout(r)} isWatched={watched.has(r.ticker)} onToggleWatch={onToggleWatch} />)}
           {buys.length === 0 && <Empty />}
         </div>
         <div>
           <div style={{ fontFamily: FONT_MONO, fontSize: 13, color: "#f87171", letterSpacing: ".12em", margin: "0 0 6px", paddingBottom: 4, borderBottom: "1px solid rgba(255,255,255,.05)" }}>▼ LOW CONVICTION</div>
-          {sells.map((r) => <FactorCard key={r.ticker} r={r} isGem={gemSet.has(r.ticker)} pctRank={pctRank(r.score)} callout={valueCallout(r)} />)}
+          {sells.map((r) => <FactorCard key={r.ticker} r={r} isGem={gemSet.has(r.ticker)} pctRank={pctRank(r.score)} callout={valueCallout(r)} isWatched={watched.has(r.ticker)} onToggleWatch={onToggleWatch} />)}
           {sells.length === 0 && <Empty />}
         </div>
       </div>
@@ -234,8 +252,9 @@ function FullUniverse(props: {
   rows: Row[]; gemSet: Set<string>; pctRank: (s: number) => number; plan: string;
   sectors: string[]; fSec: string; setFSec: (v: string) => void;
   fConv: string; setFConv: (v: string) => void; fMin: string; setFMin: (v: string) => void;
+  watched: Set<string>; onToggleWatch: (t: string) => void;
 }) {
-  const { rows, gemSet, pctRank, plan, sectors, fSec, setFSec, fConv, setFConv, fMin, setFMin } = props;
+  const { rows, gemSet, pctRank, plan, sectors, fSec, setFSec, fConv, setFConv, fMin, setFMin, watched, onToggleWatch } = props;
 
   let filtered = rows;
   if (fSec !== "All") filtered = filtered.filter((r) => r.sector === fSec);
@@ -266,7 +285,7 @@ function FullUniverse(props: {
         {showGate ? ` · Showing ${FREE_LIMIT} of ${totalFiltered}` : showRenderCap ? ` · Showing ${RENDER_LIMIT} of ${totalFiltered} — filter to see all` : ""}
       </div>
 
-      {shown.map((r) => <FactorCard key={r.ticker} r={r} isGem={gemSet.has(r.ticker)} pctRank={pctRank(r.score)} callout={null} />)}
+      {shown.map((r) => <FactorCard key={r.ticker} r={r} isGem={gemSet.has(r.ticker)} pctRank={pctRank(r.score)} callout={null} isWatched={watched.has(r.ticker)} onToggleWatch={onToggleWatch} />)}
       {shown.length === 0 && <Empty />}
 
       {showGate && (

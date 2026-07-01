@@ -7,12 +7,14 @@ import {
 } from "./lib";
 
 export default function FactorCard({
-  r, isGem, pctRank, callout,
+  r, isGem, pctRank, callout, isWatched, onToggleWatch,
 }: {
   r: Row;
   isGem: boolean;
   pctRank: number;
   callout: "cheap" | "rich" | null;
+  isWatched?: boolean;
+  onToggleWatch?: (ticker: string) => void;
 }) {
   const act = ACT[r.action];
   const actC = act.c;
@@ -61,6 +63,16 @@ export default function FactorCard({
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0, marginLeft: 8 }}>
+          {onToggleWatch && (
+            <button
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onToggleWatch(r.ticker); }}
+              title={isWatched ? "Remove from watchlist" : "Add to watchlist"}
+              aria-label={isWatched ? "Remove from watchlist" : "Add to watchlist"}
+              style={{ background: "transparent", border: "none", cursor: "pointer", fontSize: 17, lineHeight: 1, padding: "0 2px", color: isWatched ? "#d4a843" : "#4b5563" }}
+            >
+              {isWatched ? "★" : "☆"}
+            </button>
+          )}
           <span style={{ fontFamily: FONT_MONO, fontSize: 20, fontWeight: 700, color: actC }}>{r.score.toFixed(0)}</span>
           <span style={{ fontSize: 14, color: actC }}>{arrow}</span>
           <span style={{ fontSize: 13, color: "#94a3b8" }}>›</span>
