@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import RelSpyChart from "./RelSpyChart";
 import {
   Row, ACT, ACTION_LABEL, ACTION_ARROW, FONT_DISPLAY, FONT_MONO,
   PILLARS, pillarColor, driverLine, buildWhy, macroDelta, capLabel,
@@ -7,7 +9,7 @@ import {
 } from "./lib";
 
 export default function FactorCard({
-  r, isGem, pctRank, callout, isWatched, onToggleWatch, defaultOpen, detailHref,
+  r, isGem, pctRank, callout, isWatched, onToggleWatch,
 }: {
   r: Row;
   isGem: boolean;
@@ -15,9 +17,8 @@ export default function FactorCard({
   callout: "cheap" | "rich" | null;
   isWatched?: boolean;
   onToggleWatch?: (ticker: string) => void;
-  defaultOpen?: boolean;
-  detailHref?: string;
 }) {
+  const [open, setOpen] = useState(false);
   const act = ACT[r.action];
   const actC = act.c;
   const arrow = ACTION_ARROW[r.action];
@@ -36,7 +37,7 @@ export default function FactorCard({
   );
 
   return (
-    <details name="qntm-cards" open={defaultOpen} style={{
+    <details name="qntm-cards" onToggle={(e) => setOpen((e.currentTarget as HTMLDetailsElement).open)} style={{
       marginBottom: 6, background: "rgba(255,255,255,.02)",
       border: "1px solid rgba(255,255,255,.06)", borderLeft: `3px solid ${actC}`,
       borderRadius: 8, overflow: "hidden",
@@ -84,11 +85,7 @@ export default function FactorCard({
           )}
           <span style={{ fontFamily: FONT_MONO, fontSize: 20, fontWeight: 700, color: actC }}>{r.score.toFixed(0)}</span>
           <span style={{ fontSize: 14, color: actC }}>{arrow}</span>
-          {detailHref ? (
-            <a href={detailHref} onClick={(e) => e.stopPropagation()} title="Open full detail" style={{ fontSize: 15, color: "#94a3b8", textDecoration: "none", padding: "0 2px" }}>›</a>
-          ) : (
-            <span style={{ fontSize: 13, color: "#94a3b8" }}>›</span>
-          )}
+          <span style={{ fontSize: 13, color: "#94a3b8" }}>›</span>
         </div>
       </summary>
 
@@ -157,6 +154,9 @@ export default function FactorCard({
             ))}
           </div>
         )}
+
+        {/* vs-SPY sparkline — fetched only once the card is actually expanded */}
+        {open && <RelSpyChart ticker={r.ticker} />}
       </div>
     </details>
   );

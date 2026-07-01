@@ -122,7 +122,7 @@ export default function Watchlist() {
           ) : (
             items.map((it) => (
               <div key={it.ticker}>
-                <FactorCard r={it} isGem={it.is_hidden_gem} pctRank={pctRank(it.score)} callout={null} isWatched onToggleWatch={remove} detailHref={`/stock/${it.ticker}`} />
+                <FactorCard r={it} isGem={it.is_hidden_gem} pctRank={pctRank(it.score)} callout={null} isWatched onToggleWatch={remove} />
                 {(it.price_at_add != null || it.added_at) && (
                   <div style={{ fontFamily: FONT_MONO, fontSize: 12, color: "#6b7686", margin: "-2px 0 10px 3px" }}>
                     {it.added_at ? `Added ${it.added_at}` : "Added"}

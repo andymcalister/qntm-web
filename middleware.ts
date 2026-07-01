@@ -38,5 +38,5 @@ export function middleware(req: NextRequest) {
 // Guard only the product routes. Marketing pages and the /auth/handoff bridge
 // stay public (handoff is how you GET a session in the first place).
 export const config = {
-  matcher: ["/screener", "/screener/(.*)", "/watchlist", "/watchlist/(.*)", "/stock/(.*)"],
+  matcher: ["/screener", "/screener/(.*)", "/watchlist", "/watchlist/(.*)"],
 };
