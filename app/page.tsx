@@ -16,7 +16,6 @@ export default async function Home() {
   const SIGNIN_URL = `${APP_URL}/?nav=signin`;          // opens app directly on Sign In
   const JOIN_URL = `${APP_URL}/?nav=register`;          // opens app directly on Join Free
   const JOIN_PRO_URL = `${APP_URL}/?nav=register&plan=pro`; // Join Free + auto-claims Pro/founding
-  const HOW_IT_WORKS_URL = "/how-it-works"; // public methodology page on this site (crawlable)
 
   // Privacy/Terms are static pages on the legal site; rest deep-link via the app's ?legal= param.
   const LEGAL_URL = "https://legal.qntm.live";
@@ -149,24 +148,20 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-bg text-slate-200">
       <SessionBounce />
-      {/* Top nav — sticky so Sign In / Join Free persist as you scroll */}
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-bg/85 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <a href="/" aria-label="QNTM home" className="inline-flex">
-            <img src="/qntm-wordmark.png" alt="QNTM" className="h-6 w-auto" />
+      {/* Top nav */}
+      <header className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+        <span className="font-display text-2xl font-extrabold tracking-tight text-gold">QNTM</span>
+        <nav className="flex items-center gap-3">
+          <a href="/how-it-works" className="hidden sm:inline-flex items-center justify-center font-mono text-xs tracking-widest text-slate-300 px-5 py-2.5 rounded-md border border-white/10 hover:border-white/25 transition">
+            HOW IT WORKS
           </a>
-          <nav className="flex items-center gap-3">
-            <a href={HOW_IT_WORKS_URL} className="hidden sm:inline-flex items-center justify-center font-mono text-xs tracking-widest text-slate-300 px-4 py-2.5 rounded-md hover:text-white transition">
-              HOW IT WORKS
-            </a>
-            <a href={SIGNIN_URL} className="inline-flex items-center justify-center font-mono text-xs tracking-widest text-slate-300 px-5 py-2.5 rounded-md border border-white/10 hover:border-white/25 transition">
-              SIGN IN
-            </a>
-            <a href={JOIN_URL} className="inline-flex items-center justify-center font-mono text-xs tracking-widest font-medium text-black px-5 py-2.5 rounded-md bg-gold hover:bg-gold-bright transition">
-              JOIN FREE
-            </a>
-          </nav>
-        </div>
+          <a href={SIGNIN_URL} className="inline-flex items-center justify-center font-mono text-xs tracking-widest text-slate-300 px-5 py-2.5 rounded-md border border-white/10 hover:border-white/25 transition">
+            SIGN IN
+          </a>
+          <a href={JOIN_URL} className="inline-flex items-center justify-center font-mono text-xs tracking-widest font-medium text-black px-5 py-2.5 rounded-md bg-gold hover:bg-gold-bright transition">
+            JOIN FREE
+          </a>
+        </nav>
       </header>
 
       {/* Hero */}
@@ -349,13 +344,6 @@ export default async function Home() {
             </div>
           ))}
         </div>
-
-        {/* Learn more → full methodology (public, crawlable) */}
-        <div className="mt-10">
-          <a href={HOW_IT_WORKS_URL} className="inline-flex items-center justify-center font-mono text-sm tracking-widest text-gold border border-gold/30 rounded-lg px-6 py-3 hover:bg-gold/5 transition">
-            SEE THE FULL METHODOLOGY →
-          </a>
-        </div>
       </section>
 
       {/* Beyond the score */}
@@ -518,7 +506,7 @@ export default async function Home() {
         <div className="max-w-7xl mx-auto px-6 py-16">
           <div className="grid sm:grid-cols-3 gap-10">
             <div>
-              <img src="/qntm-wordmark.png" alt="QNTM" className="h-7 w-auto" />
+              <span className="font-display text-2xl font-extrabold tracking-tight text-gold">QNTM</span>
               <p className="mt-4 text-slate-400 max-w-xs leading-relaxed">
                 Quantitative conviction factor model platform. Institutional-grade research for retail investors.
               </p>
