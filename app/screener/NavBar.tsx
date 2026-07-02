@@ -19,7 +19,7 @@ const ITEMS: { key: string; icon: string; label: string }[] = [
   { key: "methodology", icon: "📖", label: "How It Works" },
 ];
 
-const NEXT_ROUTES: Record<string, string> = { screener: "/screener", watchlist: "/watchlist", portfolio: "/portfolio", model_portfolio: "/model-portfolio", gems: "/hidden-gems", simulator: "/simulator" };
+const NEXT_ROUTES: Record<string, string> = { screener: "/screener", watchlist: "/watchlist", portfolio: "/portfolio", model_portfolio: "/model-portfolio", gems: "/hidden-gems", simulator: "/simulator", alerts: "/alerts" };
 
 export default function NavBar({
   uid, plan, active = "screener", onSignOut,
