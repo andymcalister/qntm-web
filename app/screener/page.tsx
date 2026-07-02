@@ -133,7 +133,7 @@ export default function Screener() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--color-bg,#060709)", color: "#cbd5e1" }}>
       <NavBar uid={uid} plan={plan} onSignOut={signOut} />
-      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "28px 24px 60px" }}>
+      <div style={{ maxWidth: 1440, margin: "0 auto", padding: "28px 24px 60px" }}>
         {/* header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, flexWrap: "wrap" }}>
           <div>

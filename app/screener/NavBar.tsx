@@ -38,7 +38,7 @@ export default function NavBar({
 
   return (
     <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(8,9,12,.9)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", borderBottom: "1px solid rgba(255,255,255,.07)" }}>
-      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "10px 24px", display: "flex", alignItems: "center", gap: 16 }}>
+      <div style={{ maxWidth: 1440, margin: "0 auto", padding: "10px 24px", display: "flex", alignItems: "center", gap: 16 }}>
         <a href="/screener" style={{ textDecoration: "none", flexShrink: 0 }}>
           <img src="/qntm-wordmark.png" alt="QNTM" style={{ height: 20, display: "block", width: "auto" }} />
         </a>

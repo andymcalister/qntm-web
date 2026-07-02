@@ -104,7 +104,7 @@ export default function Account() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--color-bg,#060709)", color: "#cbd5e1" }}>
       <NavBar uid={uid} plan={plan} active="account" onSignOut={signOut} />
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "28px 24px 60px" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 24px 60px" }}>
         <p style={{ fontFamily: FONT_MONO, fontSize: 13, letterSpacing: ".2em", color: "#d4a843", margin: 0 }}>⚙️ ACCOUNT</p>
         <h1 style={{ fontFamily: FONT_DISPLAY, fontWeight: 800, fontSize: 30, color: "#fff", margin: "8px 0 0" }}>Account settings</h1>
 

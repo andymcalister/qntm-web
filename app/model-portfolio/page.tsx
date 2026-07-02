@@ -98,7 +98,7 @@ export default function ModelPortfolio() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--color-bg,#060709)", color: "#cbd5e1" }}>
       <NavBar uid={uid} plan={plan} active="model_portfolio" onSignOut={signOut} />
-      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "28px 24px 60px" }}>
+      <div style={{ maxWidth: 1440, margin: "0 auto", padding: "28px 24px 60px" }}>
         <p style={{ fontFamily: FONT_MONO, fontSize: 13, letterSpacing: ".2em", color: "#d4a843", margin: 0 }}>🏆 PORTFOLIO &amp; TRACK RECORD</p>
         <h1 style={{ fontFamily: FONT_DISPLAY, fontWeight: 800, fontSize: 30, color: "#fff", margin: "8px 0 0" }}>Live model portfolio vs SPY</h1>
         <p style={{ fontFamily: FONT_MONO, fontSize: 13, color: "#64748b", margin: "4px 0 0" }}>
