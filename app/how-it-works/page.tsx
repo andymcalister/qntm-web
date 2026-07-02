@@ -101,7 +101,7 @@ export default function HowItWorks() {
       <header style={{ borderBottom: "1px solid rgba(255,255,255,.07)", background: "rgba(8,9,12,.9)" }}>
         <div style={{ maxWidth: 860, margin: "0 auto", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <a href="/" style={{ textDecoration: "none" }}>
-            <span style={{ fontFamily: FONT_DISPLAY, fontWeight: 800, fontSize: 20, color: "#d4a843", letterSpacing: ".02em" }}>QNTM</span>
+            <img src="/qntm-wordmark.png" alt="QNTM" style={{ height: 24, display: "block", width: "auto" }} />
           </a>
           <nav style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <a href={APP_URL} style={{ fontFamily: FONT_MONO, fontSize: 12.5, color: "#9fabc0", textDecoration: "none", padding: "8px 12px" }}>Sign in</a>

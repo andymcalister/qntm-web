@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FONT_DISPLAY, FONT_MONO } from "./lib";
+import { FONT_MONO } from "./lib";
 
 const LOGIN_BASE = process.env.NEXT_PUBLIC_LOGIN_URL || "https://app.qntm.live";
 
@@ -40,7 +40,7 @@ export default function NavBar({
     <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(8,9,12,.9)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", borderBottom: "1px solid rgba(255,255,255,.07)" }}>
       <div style={{ maxWidth: 1180, margin: "0 auto", padding: "10px 24px", display: "flex", alignItems: "center", gap: 16 }}>
         <a href="/screener" style={{ textDecoration: "none", flexShrink: 0 }}>
-          <span style={{ fontFamily: FONT_DISPLAY, fontWeight: 800, fontSize: 18, color: "#d4a843", letterSpacing: ".02em" }}>QNTM</span>
+          <img src="/qntm-wordmark.png" alt="QNTM" style={{ height: 20, display: "block", width: "auto" }} />
         </a>
 
         {/* desktop: inline nav */}
