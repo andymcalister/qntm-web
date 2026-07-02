@@ -2,12 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-// Cutover hand-off catcher. Classic redirects here to qntm.live/#bt=<jwt> after
-// login; this reads the token from the fragment (fragments never hit the server
-// or logs), exchanges it for an httpOnly session via /api/session, then lands on
-// the screener. It RETRIES through a cold API (Render spin-up), and on failure
-// shows a retry — it must NEVER auto-redirect to classic, because classic would
-// immediately re-bounce here and create an infinite loop.
 const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "https://app.qntm.live";
 const FONT_MONO = "var(--font-dm-mono,'DM Mono'),monospace";
 const FONT_DISPLAY = "var(--font-syne,'Syne'),sans-serif";
@@ -20,7 +14,6 @@ export default function SessionBounce() {
     const token = tokenRef.current;
     if (!token) return;
     setPhase("working");
-    // Backoff schedule (~17s total) to ride out a cold API without giving up.
     const delays = [0, 1500, 3000, 5000, 8000];
     for (let i = 0; i < delays.length; i++) {
       if (delays[i]) await new Promise((r) => setTimeout(r, delays[i]));
@@ -34,11 +27,9 @@ export default function SessionBounce() {
           window.location.replace("/screener");
           return;
         }
-        // 401 = bad/expired token; retrying the same token won't help.
         if (res.status === 401) break;
-        // 502 / 5xx = API waking up → keep retrying.
       } catch {
-        /* network blip → retry */
+        /* network blip -> retry */
       }
     }
     setPhase("error");
