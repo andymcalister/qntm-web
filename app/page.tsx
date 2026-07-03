@@ -1,5 +1,4 @@
 import { getHeroData } from "./lib/qntm-data";
-import SessionBounce from "./SessionBounce";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -27,9 +26,7 @@ export default async function Home() {
   const hero = await getHeroData();
 
   // ── Single source of truth for outbound links ───────────────────────────
-  // At domain cutover, change APP_URL only (→ app.qntm.live). Everything follows.
   const APP_URL = "/login";
-  const CLASSIC_URL = "https://app.qntm.live";
   const SIGNIN_URL = "/login";
   const JOIN_URL = "/register";
   const JOIN_PRO_URL = "/register"; // Join Free + auto-claims Pro/founding
@@ -164,7 +161,6 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-bg text-slate-200">
-      <SessionBounce />
       {/* Top nav */}
       <header className="sticky top-0 z-50 bg-bg border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
