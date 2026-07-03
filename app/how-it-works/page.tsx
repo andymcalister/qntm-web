@@ -8,7 +8,7 @@ import HowItWorksBody from "./HowItWorksContent";
 
 const FONT_DISPLAY = "var(--font-syne, 'Syne'), sans-serif";
 const FONT_MONO = "var(--font-dm-mono, 'DM Mono'), monospace";
-const APP_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "https://app.qntm.live";
+const APP_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "/login";
 const SITE = "https://qntm.live";
 
 export const metadata: Metadata = {

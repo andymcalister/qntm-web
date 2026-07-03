@@ -7,7 +7,7 @@ import { Row, pctRankFn, searchUniverse, companyName, FONT_DISPLAY, FONT_MONO } 
 import { useWatchlist } from "../screener/useWatchlist";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://qntm-api.onrender.com";
-const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "https://app.qntm.live";
+const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "/login";
 
 type Holding = Row & {
   shares: number; avg_cost: number; entry_date: string | null; notes: string | null;

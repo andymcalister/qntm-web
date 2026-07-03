@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { FONT_MONO } from "./lib";
 
-const LOGIN_BASE = process.env.NEXT_PUBLIC_LOGIN_URL || "https://app.qntm.live";
+const LOGIN_BASE = process.env.NEXT_PUBLIC_LOGIN_URL || "/login";
 
 // Mirrors the Streamlit nav set. As each page migrates, flip its href from the
 // Streamlit URL (NEXT_ROUTES below) to the new Next route.

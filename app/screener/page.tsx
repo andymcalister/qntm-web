@@ -11,7 +11,7 @@ import {
 } from "./lib";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://qntm-api.onrender.com";
-const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "https://app.qntm.live";
+const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "/login";
 
 const CONV_OPTS = ["All", "High", "Moderate", "Low"] as const;
 const CONV_ACTION: Record<string, string> = { High: "BUY", Moderate: "HOLD", Low: "SELL" };

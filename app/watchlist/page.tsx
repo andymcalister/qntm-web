@@ -6,7 +6,7 @@ import FactorCard from "../screener/FactorCard";
 import { Row, pctRankFn, FONT_DISPLAY, FONT_MONO } from "../screener/lib";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://qntm-api.onrender.com";
-const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "https://app.qntm.live";
+const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "/login";
 
 type WItem = Row & { price_at_add: number | null; added_at: string | null; change_pct: number | null };
 

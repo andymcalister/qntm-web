@@ -7,7 +7,7 @@ import { Row, pctRankFn, valueCallout, FONT_DISPLAY, FONT_MONO } from "../screen
 import { useWatchlist } from "../screener/useWatchlist";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://qntm-api.onrender.com";
-const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "https://app.qntm.live";
+const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "/login";
 
 type Gem = Row & { gem_reasons: string[]; gem_regime: string | null };
 type GemsResp = { locked: boolean; regime: string; threshold: number; as_of: string | null; count: number; gems: Gem[]; teaser_reasons: string[] };

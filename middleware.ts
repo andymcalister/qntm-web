@@ -29,7 +29,7 @@ function isValid(token: string | undefined): boolean {
 export function middleware(req: NextRequest) {
   const token = req.cookies.get(COOKIE)?.value;
   if (!isValid(token)) {
-    const url = new URL(LOGIN_URL);
+    const url = new URL(LOGIN_URL, req.url);
     return NextResponse.redirect(url);
   }
   return NextResponse.next();

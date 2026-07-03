@@ -8,7 +8,7 @@ import { useWatchlist } from "../screener/useWatchlist";
 import EquityChart, { CurvePoint, DayMove } from "./EquityChart";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://qntm-api.onrender.com";
-const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "https://app.qntm.live";
+const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "/login";
 
 type Position = Row & {
   entry_date: string | null; entry_price: number | null; entry_score: number | null;

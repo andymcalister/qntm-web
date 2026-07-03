@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "https://app.qntm.live";
+const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "/login";
 
 // /auth/handoff#token=<jwt>
 // Streamlit drops a logged-in user here with a short-lived token in the URL

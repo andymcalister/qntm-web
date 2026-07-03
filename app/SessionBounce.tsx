@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "https://app.qntm.live";
+const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "/login";
 const FONT_MONO = "var(--font-dm-mono,'DM Mono'),monospace";
 const FONT_DISPLAY = "var(--font-syne,'Syne'),sans-serif";
 

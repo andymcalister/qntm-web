@@ -5,7 +5,7 @@ import NavBar from "../screener/NavBar";
 import { Row, searchUniverse, companyName, FONT_DISPLAY, FONT_MONO } from "../screener/lib";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://qntm-api.onrender.com";
-const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "https://app.qntm.live";
+const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "/login";
 
 type SimTeaser = { sector: string; tier: string };
 type SimResp = { locked: boolean; profile: string; as_of: string | null; count: number; picks: Row[]; teaser: SimTeaser[] };

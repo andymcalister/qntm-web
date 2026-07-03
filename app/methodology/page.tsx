@@ -8,7 +8,7 @@ import HowItWorksBody from "../how-it-works/HowItWorksContent";
 // wrapped in the app shell (NavBar, session intact) so a logged-in user reading
 // it never leaves the product or looks signed out. Guarded by middleware.
 
-const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "https://app.qntm.live";
+const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "/login";
 const FONT_MONO = "var(--font-dm-mono, 'DM Mono'), monospace";
 
 export default function Methodology() {

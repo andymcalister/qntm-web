@@ -5,7 +5,7 @@ import NavBar from "../screener/NavBar";
 import { Row, searchUniverse, companyName, FONT_DISPLAY, FONT_MONO } from "../screener/lib";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://qntm-api.onrender.com";
-const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "https://app.qntm.live";
+const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "/login";
 
 type Notif = { id: string; ticker: string | null; notification_type: string | null; title: string | null; body: string | null; is_read: boolean; created_at: string | null };
 type Alert = { id: string; ticker: string | null; kind: string | null; kind_label: string | null; threshold: number | null; scope: string | null; active: boolean; armed: boolean; created_at: string | null };

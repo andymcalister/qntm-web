@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import NavBar from "../screener/NavBar";
 import { FONT_DISPLAY, FONT_MONO } from "../screener/lib";
 
-const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "https://app.qntm.live";
+const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "/login";
 
 type Prefs = { email: boolean; signals: boolean; alerts: boolean; low_alert_email: boolean; alert_email: boolean; alert_sms: boolean };
 type PrefsResp = { locked: boolean; prefs: Prefs; phone: string; phone_verified: boolean };
