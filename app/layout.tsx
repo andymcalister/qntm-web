@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import ServiceWorkerRegister from "./ServiceWorkerRegister";
 import { Syne, DM_Mono, Inter } from "next/font/google";
 import "./globals.css";
@@ -8,9 +8,14 @@ const dmMono = DM_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
+  appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "QNTM" },
   title: "QNTM — Know where conviction is strongest",
   description:
     "A multi-factor quantitative model scoring 1,402 stocks daily, blended with a live macro regime overlay.",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#08090c",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
