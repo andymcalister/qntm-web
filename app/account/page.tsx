@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import NavBar from "../screener/NavBar";
+import ProfileSecurity from "./ProfileSecurity";
+import BillingCard from "./BillingCard";
 import { FONT_DISPLAY, FONT_MONO } from "../screener/lib";
 
 const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "/login";
@@ -108,21 +110,7 @@ export default function Account() {
         <p style={{ fontFamily: FONT_MONO, fontSize: 13, letterSpacing: ".2em", color: "#d4a843", margin: 0 }}>⚙️ ACCOUNT</p>
         <h1 style={{ fontFamily: FONT_DISPLAY, fontWeight: 800, fontSize: 30, color: "#fff", margin: "8px 0 0" }}>Account settings</h1>
 
-        {/* Plan summary */}
-        <div style={card}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
-            <div>
-              <div style={h2}>Plan</div>
-              <div style={{ fontFamily: FONT_MONO, fontSize: 13, color: "#9fabc0", marginTop: 6 }}>
-                You're on the <span style={{ color: isPro ? "#34d399" : "#cbd5e1", fontWeight: 700 }}>{isPro ? "Pro" : "Free"}</span> plan.
-                {isPro ? " Unlimited holdings, Hidden Gems, Simulator, and price/value alerts." : " Upgrade for Hidden Gems, the Simulator, and alerts."}
-              </div>
-            </div>
-            <a href={`${LOGIN_URL}/?qnav=account&uid=${encodeURIComponent(uid)}&plan=${encodeURIComponent(plan)}&ck=1`} style={{ ...linkBtn, flexShrink: 0 }}>
-              {isPro ? "Manage billing" : "Upgrade to Pro"}
-            </a>
-          </div>
-        </div>
+        <BillingCard />
 
         {/* Notification preferences */}
         <div style={card}>
@@ -186,14 +174,7 @@ export default function Account() {
           )}
         </div>
 
-        {/* Staged sections — still on the classic account page */}
-        <div style={card}>
-          <div style={h2}>Profile, security &amp; billing</div>
-          <div style={{ fontFamily: FONT_MONO, fontSize: 12.5, color: "#9fabc0", margin: "8px 0 10px", lineHeight: 1.7 }}>
-            Editing your name and email, changing your password, two-factor authentication, and subscription management are handled on the classic account page for now.
-          </div>
-          <a href={`${LOGIN_URL}/?qnav=account&uid=${encodeURIComponent(uid)}&plan=${encodeURIComponent(plan)}&ck=1`} style={linkBtn}>Open classic account →</a>
-        </div>
+        <ProfileSecurity />
       </div>
     </div>
   );
