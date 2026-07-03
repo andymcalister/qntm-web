@@ -12,19 +12,20 @@ export default async function Home() {
 
   // ── Single source of truth for outbound links ───────────────────────────
   // At domain cutover, change APP_URL only (→ app.qntm.live). Everything follows.
-  const APP_URL = "https://app.qntm.live";
-  const SIGNIN_URL = `${APP_URL}/?nav=signin`;          // opens app directly on Sign In
-  const JOIN_URL = `${APP_URL}/?nav=register`;          // opens app directly on Join Free
-  const JOIN_PRO_URL = `${APP_URL}/?nav=register&plan=pro`; // Join Free + auto-claims Pro/founding
+  const APP_URL = "/login";
+  const CLASSIC_URL = "https://app.qntm.live";
+  const SIGNIN_URL = "/login";
+  const JOIN_URL = "/register";
+  const JOIN_PRO_URL = `${CLASSIC_URL}/?nav=register&plan=pro`; // Join Free + auto-claims Pro/founding
 
   // Privacy/Terms are static pages on the legal site; rest deep-link via the app's ?legal= param.
   const LEGAL_URL = "https://legal.qntm.live";
   const legalLinks = [
     { label: "Privacy Policy", href: `${LEGAL_URL}/privacy.html` },
     { label: "Terms of Service", href: `${LEGAL_URL}/terms.html` },
-    { label: "Billing & Refunds", href: `${APP_URL}/?legal=billing` },
-    { label: "Investment Disclaimer", href: `${APP_URL}/?legal=disclaimer` },
-    { label: "Cookie Policy", href: `${APP_URL}/?legal=cookies` },
+    { label: "Billing & Refunds", href: `${CLASSIC_URL}/?legal=billing` },
+    { label: "Investment Disclaimer", href: `${CLASSIC_URL}/?legal=disclaimer` },
+    { label: "Cookie Policy", href: `${CLASSIC_URL}/?legal=cookies` },
   ];
 
   // Static fallback used only if the live DB read fails (hero.ok === false).

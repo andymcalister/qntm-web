@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 // Where to send users who aren't signed in — the Streamlit app's login.
-const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "https://app.qntm.live";
+const LOGIN_URL = "/login";
 const COOKIE = "qntm_session";
 
 // Decode a base64url JWT segment (no signature check — that's the API's job).
