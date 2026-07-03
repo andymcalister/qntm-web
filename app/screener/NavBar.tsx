@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FONT_MONO } from "./lib";
 
 const LOGIN_BASE = process.env.NEXT_PUBLIC_LOGIN_URL || "/login";
@@ -27,6 +27,21 @@ export default function NavBar({
   uid: string; plan: string; active?: string; onSignOut: () => void;
 }) {
   const [open, setOpen] = useState(false);
+  const [pill, setPill] = useState<{ label: string; color: string; bg: string; border: string } | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const me = await fetch("/api/me", { cache: "no-store" }).then((r) => r.json());
+        const paying = !!me?.billing_active;
+        const founder = !!me?.founding_member;
+        const isPro = me?.plan === "pro" || me?.plan === "institutional";
+        if (founder && !paying) setPill({ label: "FOUNDING MEMBER", color: "#0b0c10", bg: "#d4a843", border: "#d4a843" });
+        else if (paying || isPro) setPill({ label: "PRO", color: "#04120c", bg: "#34d399", border: "#34d399" });
+        else setPill({ label: "FREE", color: "#9fabc0", bg: "transparent", border: "rgba(255,255,255,.14)" });
+      } catch { /* no pill on error */ }
+    })();
+  }, []);
 
   const streamlitHref = (key: string) => {
     const p = encodeURIComponent(plan || "free");
@@ -75,6 +90,11 @@ export default function NavBar({
           </button>
         </div>
 
+        {pill && (
+          <span style={{ flexShrink: 0, fontFamily: FONT_MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: ".1em", color: pill.color, background: pill.bg, border: `1px solid ${pill.border}`, borderRadius: 999, padding: "5px 11px", whiteSpace: "nowrap" }}>
+            {pill.label}
+          </span>
+        )}
         <button onClick={onSignOut} style={{ flexShrink: 0, fontFamily: FONT_MONO, fontSize: 11, letterSpacing: ".12em", color: "#94a3b8", border: "1px solid rgba(255,255,255,.1)", borderRadius: 8, padding: "7px 11px", background: "transparent", cursor: "pointer", whiteSpace: "nowrap" }}>
           SIGN OUT
         </button>
