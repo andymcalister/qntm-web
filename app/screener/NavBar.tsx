@@ -14,12 +14,13 @@ const ITEMS: { key: string; icon: string; label: string }[] = [
   { key: "portfolio", icon: "💼", label: "Portfolio" },
   { key: "simulator", icon: "🧮", label: "Simulator" },
   { key: "model_portfolio", icon: "🏆", label: "Track Record" },
+  { key: "outlook", icon: "🗞️", label: "Market Outlook" },
   { key: "alerts", icon: "🔔", label: "Alerts" },
   { key: "account", icon: "⚙️", label: "Account" },
   { key: "methodology", icon: "📖", label: "How It Works" },
 ];
 
-const NEXT_ROUTES: Record<string, string> = { screener: "/screener", watchlist: "/watchlist", portfolio: "/portfolio", model_portfolio: "/model-portfolio", gems: "/hidden-gems", simulator: "/simulator", alerts: "/alerts", account: "/account", methodology: "/methodology" };
+const NEXT_ROUTES: Record<string, string> = { screener: "/screener", watchlist: "/watchlist", portfolio: "/portfolio", model_portfolio: "/model-portfolio", outlook: "/market-outlook", gems: "/hidden-gems", simulator: "/simulator", alerts: "/alerts", account: "/account", methodology: "/methodology" };
 
 export default function NavBar({
   uid, plan, active = "screener", onSignOut,
