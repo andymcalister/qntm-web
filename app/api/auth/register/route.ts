@@ -5,7 +5,7 @@ const COOKIE = "qntm_session";
 const MAXAGE = 7 * 24 * 3600;
 
 export async function POST(req: NextRequest) {
-  let body: { email?: string; password?: string; full_name?: string } = {};
+  let body: { email?: string; password?: string; full_name?: string; disclaimer_ack?: boolean; claim_founding?: boolean } = {};
   try { body = await req.json(); } catch { /* */ }
   if (!body.email || !body.password) {
     return NextResponse.json({ ok: false, error: "Email and password are required." }, { status: 400 });
@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     const r = await fetch(`${API_BASE}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: body.email, password: body.password, full_name: body.full_name || "" }),
+      body: JSON.stringify({ email: body.email, password: body.password, full_name: body.full_name || "", disclaimer_ack: !!body.disclaimer_ack, claim_founding: !!body.claim_founding }),
       cache: "no-store",
     });
     status = r.status;
