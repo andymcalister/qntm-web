@@ -69,6 +69,7 @@ export default function Login() {
               <input style={input} type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" required />
               <label style={{ fontFamily: FONT_MONO, fontSize: 12, color: "#9fabc0", display: "block", margin: "14px 0 6px" }}>Password</label>
               <input style={input} type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" required />
+              <div style={{ textAlign: "right", marginTop: 8 }}><a href="/forgot-password" style={{ fontFamily: FONT_MONO, fontSize: 12, color: "#9fabc0", textDecoration: "none" }}>Forgot password?</a></div>
               {err && <div style={{ fontFamily: FONT_MONO, fontSize: 12.5, color: "#f87171", marginTop: 12 }}>{err}</div>}
               <div style={{ marginTop: 20 }}><button style={btn} disabled={busy}>{busy ? "Signing in…" : "Sign in"}</button></div>
             </form>
