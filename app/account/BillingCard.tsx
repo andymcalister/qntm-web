@@ -80,8 +80,15 @@ export default function BillingCard() {
     try {
       const r = await fetch("/api/account/cancel", { method: "POST" });
       const d = await r.json().catch(() => ({}));
-      if (!r.ok || !d.ok) setMsg(d.detail || "Couldn't process that.");
-      else { setConfirmRevert(false); await loadBilling(); }
+      if (!r.ok || !d.ok) { setMsg(d.detail || "Couldn't process that."); return; }
+      setConfirmRevert(false);
+      const endIso = d.end_ts || null;
+      // Optimistically reflect the scheduled revert (Stripe's poll can lag a beat).
+      setB((prev) => (prev ? { ...prev, cancel_at: endIso } : prev));
+      setMsg(endIso
+        ? `Done — your paid support ends ${endIso}. You keep Pro free as a Founding Member.`
+        : "Done — your paid support has been cancelled. You keep Pro free as a Founding Member.");
+      loadBilling();
     } catch { setMsg("Something went wrong."); }
     finally { setBusy(false); }
   }
