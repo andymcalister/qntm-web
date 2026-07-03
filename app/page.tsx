@@ -168,7 +168,7 @@ export default async function Home() {
       {/* Top nav */}
       <header className="sticky top-0 z-50 bg-bg border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <span className="font-display text-2xl font-extrabold tracking-tight text-gold">QNTM</span>
+        <a href="/" className="flex-shrink-0"><img src="/qntm-wordmark.png" alt="QNTM" className="h-7 w-auto" /></a>
         <nav className="flex items-center gap-3">
           <a href="/how-it-works" className="hidden sm:inline-flex items-center justify-center font-mono text-xs tracking-widest text-slate-300 px-5 py-2.5 rounded-md border border-white/10 hover:border-white/25 transition">
             HOW IT WORKS
