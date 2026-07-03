@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ServiceWorkerRegister from "./ServiceWorkerRegister";
 import { Syne, DM_Mono, Inter } from "next/font/google";
 import "./globals.css";
 
@@ -16,6 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${syne.variable} ${dmMono.variable} ${inter.variable} antialiased`}>
+        <ServiceWorkerRegister />
         {children}
       </body>
     </html>
