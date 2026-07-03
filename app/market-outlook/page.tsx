@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import SubscribeForm from "./SubscribeForm";
 
 export const revalidate = 600;
 
@@ -62,6 +63,8 @@ export default async function MarketOutlook() {
         <p style={{ fontFamily: "var(--font-dm-mono,monospace)", fontSize: 11, color: "#64748b", margin: "0 0 24px" }}>
           Quantitative research and education — not investment advice.
         </p>
+
+        <SubscribeForm />
 
         {items.length === 0 && (
           <div style={{ fontFamily: "var(--font-dm-mono,monospace)", fontSize: 14, color: "#64748b", padding: "40px 0" }}>
