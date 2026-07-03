@@ -1,5 +1,21 @@
 import { getHeroData } from "./lib/qntm-data";
 import SessionBounce from "./SessionBounce";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: { absolute: "QNTM — Quantitative Stock Conviction Scores for 1,400+ US Stocks" },
+  description:
+    "QNTM scores 1,400+ US stocks daily with a five-pillar factor model (momentum, quality, volume, value, sentiment) and a live macro overlay — transparent conviction tiers, hidden-gem detection, and a live model portfolio. Quantitative research, not investment advice.",
+  alternates: { canonical: "https://qntm.live" },
+  openGraph: {
+    title: "QNTM — Quantitative Stock Conviction",
+    description: "Five-pillar factor model + live macro overlay scoring 1,400+ US stocks daily. Transparent methodology.",
+    url: "https://qntm.live",
+    siteName: "QNTM",
+    type: "website",
+  },
+  robots: { index: true, follow: true },
+};
 
 // ISR: regenerate this page at most every 30 min (matches the macro cron).
 // Live numbers get baked into static HTML — great for crawlers, fast for users,
@@ -150,7 +166,8 @@ export default async function Home() {
     <main className="min-h-screen bg-bg text-slate-200">
       <SessionBounce />
       {/* Top nav */}
-      <header className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+      <header className="sticky top-0 z-50 bg-bg border-b border-white/5">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <span className="font-display text-2xl font-extrabold tracking-tight text-gold">QNTM</span>
         <nav className="flex items-center gap-3">
           <a href="/how-it-works" className="hidden sm:inline-flex items-center justify-center font-mono text-xs tracking-widest text-slate-300 px-5 py-2.5 rounded-md border border-white/10 hover:border-white/25 transition">
@@ -163,6 +180,7 @@ export default async function Home() {
             JOIN FREE
           </a>
         </nav>
+        </div>
       </header>
 
       {/* Hero */}
