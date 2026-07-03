@@ -37,6 +37,7 @@ export default function Register() {
   return (
     <div style={{ minHeight: "100vh", background: "#060709", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
       <div style={{ width: "100%", maxWidth: 380 }}>
+        <a href="/" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: FONT_MONO, fontSize: 12.5, color: "#9fabc0", textDecoration: "none", marginBottom: 18 }}>← Home</a>
         <a href="/" style={{ display: "block", textAlign: "center", marginBottom: 24 }}>
           <img src="/qntm-wordmark.png" alt="QNTM" style={{ height: 30, width: "auto" }} />
         </a>
