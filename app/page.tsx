@@ -16,16 +16,16 @@ export default async function Home() {
   const CLASSIC_URL = "https://app.qntm.live";
   const SIGNIN_URL = "/login";
   const JOIN_URL = "/register";
-  const JOIN_PRO_URL = `${CLASSIC_URL}/?nav=register&plan=pro`; // Join Free + auto-claims Pro/founding
+  const JOIN_PRO_URL = "/register"; // Join Free + auto-claims Pro/founding
 
   // Privacy/Terms are static pages on the legal site; rest deep-link via the app's ?legal= param.
   const LEGAL_URL = "https://legal.qntm.live";
   const legalLinks = [
     { label: "Privacy Policy", href: `${LEGAL_URL}/privacy.html` },
     { label: "Terms of Service", href: `${LEGAL_URL}/terms.html` },
-    { label: "Billing & Refunds", href: `${CLASSIC_URL}/?legal=billing` },
-    { label: "Investment Disclaimer", href: `${CLASSIC_URL}/?legal=disclaimer` },
-    { label: "Cookie Policy", href: `${CLASSIC_URL}/?legal=cookies` },
+    { label: "Billing & Refunds", href: `${LEGAL_URL}/billing.html` },
+    { label: "Investment Disclaimer", href: `${LEGAL_URL}/disclaimer.html` },
+    { label: "Cookie Policy", href: `${LEGAL_URL}/cookies.html` },
   ];
 
   // Static fallback used only if the live DB read fails (hero.ok === false).
