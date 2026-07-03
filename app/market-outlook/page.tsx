@@ -33,7 +33,14 @@ function renderNarrative(text: string) {
   // minimal, safe markdown: escape first, then bold + paragraphs
   const html = esc(text)
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-    .split(/\n{2,}/).map((p) => `<p>${p.replace(/\n/g, "<br/>")}</p>`).join("");
+    .split(/\n{2,}/)
+    .map((para) => {
+      // web-search citations inject mid-sentence newlines — flow them into prose,
+      // don't turn them into line breaks; then tidy stray spaces before punctuation.
+      const t = para.replace(/\n+/g, " ").replace(/\s+/g, " ").replace(/\s+([.,;:!?])/g, "$1").trim();
+      return t ? `<p style="margin:0 0 14px">${t}</p>` : "";
+    })
+    .join("");
   return { __html: html };
 }
 
