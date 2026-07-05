@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import NavBar from "../screener/NavBar";
 import FactorCard from "../screener/FactorCard";
 import { Row, pctRankFn, FONT_DISPLAY, FONT_MONO } from "../screener/lib";
+import UntrackedNotice from "../UntrackedNotice";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://qntm-api.onrender.com";
 const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "/login";
@@ -85,6 +86,8 @@ export default function Watchlist() {
           {loading ? "Loading…" : `${items.length} name${items.length === 1 ? "" : "s"} tracked`}
         </h1>
         <p style={{ fontFamily: FONT_MONO, fontSize: 13, color: "#64748b", margin: "4px 0 0" }}>Conviction scores update daily · change shown since you added</p>
+
+        <UntrackedNotice items={items} kind="watchlist" onRemoved={(tk) => setItems((prev) => prev.filter((i) => i.ticker !== tk))} />
 
         {/* add box */}
         <div style={{ display: "flex", gap: 8, marginTop: 18, flexWrap: "wrap", alignItems: "center" }}>

@@ -5,6 +5,7 @@ import NavBar from "../screener/NavBar";
 import FactorCard from "../screener/FactorCard";
 import { Row, pctRankFn, searchUniverse, companyName, FONT_DISPLAY, FONT_MONO } from "../screener/lib";
 import { useWatchlist } from "../screener/useWatchlist";
+import UntrackedNotice from "../UntrackedNotice";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://qntm-api.onrender.com";
 const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "/login";
@@ -156,6 +157,8 @@ export default function Portfolio() {
           {loading ? "Loading…" : `${holdings.length} position${holdings.length === 1 ? "" : "s"}`}
         </h1>
         <p style={{ fontFamily: FONT_MONO, fontSize: 13, color: "#64748b", margin: "4px 0 0" }}>Position-level conviction scores · updated daily</p>
+
+        <UntrackedNotice items={holdings} kind="portfolio" onRemoved={() => loadPortfolio()} />
 
         {summary && holdings.length > 0 && (
           <div style={{ display: "flex", flexWrap: "wrap", gap: 24, alignItems: "center", justifyContent: "space-between", marginTop: 18, padding: "16px 20px", background: "rgba(255,255,255,.02)", border: "1px solid rgba(255,255,255,.07)", borderRadius: 12 }}>
