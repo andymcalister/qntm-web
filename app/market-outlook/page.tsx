@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import OutlookHeader from "./OutlookHeader";
 import PortfolioBrief from "./PortfolioBrief";
 import SubscribeForm from "./SubscribeForm";
 
@@ -54,14 +55,7 @@ export default async function MarketOutlook() {
 
   return (
     <main style={{ minHeight: "100vh", background: "#060709", color: "#e2e8f0", padding: "0 0 60px" }}>
-      <header style={{ maxWidth: 820, margin: "0 auto", padding: "28px 24px 8px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <a href="/"><img src="/qntm-wordmark.png" alt="QNTM" style={{ height: 24 }} /></a>
-        <nav style={{ display: "flex", gap: 14, fontFamily: "var(--font-dm-mono,monospace)", fontSize: 12.5 }}>
-          <a href="/how-it-works" style={{ color: "#9fabc0", textDecoration: "none" }}>HOW IT WORKS</a>
-          <a href="/login" style={{ color: "#9fabc0", textDecoration: "none" }}>SIGN IN</a>
-          <a href="/register" style={{ color: "#d4a843", textDecoration: "none" }}>JOIN FREE</a>
-        </nav>
-      </header>
+      <OutlookHeader />
 
       <div style={{ maxWidth: 820, margin: "0 auto", padding: "20px 24px" }}>
         <h1 style={{ fontFamily: "var(--font-syne,sans-serif)", fontWeight: 800, fontSize: 32, color: "#fff", margin: "8px 0 4px" }}>Market Outlook</h1>
