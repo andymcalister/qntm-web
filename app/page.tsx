@@ -22,6 +22,12 @@ export const metadata: Metadata = {
 export const revalidate = 1800;
 
 export default async function Home() {
+  const API_BASE = process.env.API_BASE || process.env.NEXT_PUBLIC_API_BASE || "https://qntm-api.onrender.com";
+  let foundingRemaining = 42, foundingLimit = 50;
+  try {
+    const _r = await fetch(`${API_BASE}/api/auth/founding-spots`, { cache: "no-store" });
+    if (_r.ok) { const _d = await _r.json(); foundingRemaining = _d.remaining ?? foundingRemaining; foundingLimit = _d.limit ?? foundingLimit; }
+  } catch {}
   // ── Live data (server-side; falls back to safe defaults if the DB read fails) ─
   const hero = await getHeroData();
 
@@ -193,7 +199,11 @@ export default async function Home() {
 
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-mint/20 bg-mint/5 px-4 py-1.5 mb-8">
-              <span className="font-mono text-sm tracking-wide text-mint">🎯 40 of 50 founding spots left · FREE TODAY</span>
+              <span className="font-mono text-sm tracking-wide text-mint">
+                {foundingRemaining > 0
+                  ? `🎯 ${foundingRemaining} of ${foundingLimit} founding spots left · FREE TODAY`
+                  : "Founding spots are gone — start free"}
+              </span>
             </div>
           </div>
 
