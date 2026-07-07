@@ -18,6 +18,7 @@ type Stats = {
   inception: string | null; model_value: number; spy_value: number;
   model_ret: number; spy_ret: number; alpha: number; day_model: number; day_spy: number;
   basis: number; n_sessions: number;
+  pre_post?: { session: "pre" | "post"; model: number; spy: number | null; coverage: number; held: number } | null;
 };
 type Exit = { ticker: string; sector: string; entry_date: string; exit_date: string; ret: number; reason: string };
 type SectorCount = { sector: string; count: number };
@@ -130,6 +131,28 @@ export default function ModelPortfolio() {
                 <StatCard label="% RETURN" value={pct(s.model_ret)} valueColor={pcol(s.model_ret)} />
                 <StatCard label="$ vs SPY" value={dollarSigned(dollarVsSpy)} valueColor={pcol(dollarVsSpy)} />
                 <StatCard label="% vs SPY" value={pct(s.alpha)} valueColor={pcol(s.alpha)} />
+              </div>
+            )}
+
+            {s?.pre_post && (
+              <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "6px 14px", marginTop: 10, padding: "10px 14px", background: "rgba(56,120,255,.06)", border: "1px solid rgba(120,160,255,.18)", borderRadius: 8 }}>
+                <span style={{ fontFamily: FONT_MONO, fontSize: 11.5, letterSpacing: ".1em", color: "#93b4ff", fontWeight: 700 }}>
+                  {s.pre_post.session === "pre" ? "PRE-MARKET" : "AFTER-HOURS"}
+                </span>
+                <span style={{ fontFamily: FONT_MONO, fontSize: 13, color: "#cbd5e1" }}>
+                  Model <strong style={{ color: pcol(s.pre_post.model) }}>{pct(s.pre_post.model, 2)}</strong>
+                </span>
+                <span style={{ color: "#4b5568" }}>·</span>
+                <span style={{ fontFamily: FONT_MONO, fontSize: 13, color: "#cbd5e1" }}>
+                  SPY <strong style={{ color: pcol(s.pre_post.spy) }}>{pct(s.pre_post.spy, 2)}</strong>
+                </span>
+                <span style={{ color: "#4b5568" }}>·</span>
+                <span style={{ fontFamily: FONT_MONO, fontSize: 12, color: "#8896ac" }}>
+                  {s.pre_post.coverage}/{s.pre_post.held} holdings trading
+                </span>
+                <span style={{ fontFamily: FONT_MONO, fontSize: 11, color: "#64748b", flexBasis: "100%" }}>
+                  Extended-hours indicator · doesn&apos;t change portfolio value until the open
+                </span>
               </div>
             )}
 
