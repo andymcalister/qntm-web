@@ -9,10 +9,27 @@ const dmMono = DM_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://qntm.live"),
   appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "QNTM" },
   title: "QNTM — Know where conviction is strongest",
   description:
     "A multi-factor quantitative model scoring 1,402 stocks daily, blended with a live macro regime overlay.",
+  openGraph: {
+    type: "website",
+    url: "https://qntm.live",
+    siteName: "QNTM",
+    title: "QNTM — Know where conviction is strongest",
+    description:
+      "A multi-factor quantitative model scoring 1,402 stocks daily, blended with a live macro regime overlay.",
+    images: [{ url: "/social-card.png", width: 1200, height: 630, alt: "QNTM — Quantitative Stock Conviction" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "QNTM — Know where conviction is strongest",
+    description:
+      "A multi-factor quantitative model scoring 1,402 stocks daily, blended with a live macro regime overlay.",
+    images: ["/social-card.png"],
+  },
 };
 
 export const viewport: Viewport = {
