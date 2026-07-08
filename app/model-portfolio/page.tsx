@@ -81,7 +81,25 @@ export default function ModelPortfolio() {
     if (isNaN(dt.getTime())) return null;
     const mins = Math.floor((Date.now() - dt.getTime()) / 60000);
     const t = dt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-    return { t, stale: mins > 20, mins };
+    // Current ET session (DST-aware via Intl) — the "stale/lagging" warning only
+    // makes sense during the regular session; outside it, prices are meant to sit.
+    const et = new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
+    const wd = et.getDay(); // 0 Sun .. 6 Sat
+    const m = et.getHours() * 60 + et.getMinutes();
+    let session: "pre" | "regular" | "post" | "closed" = "closed";
+    if (wd >= 1 && wd <= 5) {
+      if (m >= 4 * 60 && m < 9 * 60 + 30) session = "pre";
+      else if (m >= 9 * 60 + 30 && m <= 16 * 60) session = "regular";
+      else if (m > 16 * 60 && m <= 20 * 60) session = "post";
+    }
+    const warn = session === "regular" && mins > 20;
+    const note =
+      warn ? " · stale, refresh may be lagging"
+      : session === "pre" ? " · pre-market · regular prices resume at 9:30 ET"
+      : session === "post" ? " · after-hours · marked at the 4:00 ET close"
+      : session === "regular" ? ""
+      : " · market closed · last session's close";
+    return { t, warn, note, mins };
   }, [data]);
 
   async function signOut() {
@@ -157,8 +175,8 @@ export default function ModelPortfolio() {
             )}
 
             {asOf && (
-              <div style={{ fontFamily: FONT_MONO, fontSize: 12, color: asOf.stale ? "#f59e0b" : "#8896ac", margin: "10px 0 0 2px" }}>
-                prices as of {asOf.t}{asOf.stale ? " · stale, refresh cron may be lagging" : ""}
+              <div style={{ fontFamily: FONT_MONO, fontSize: 12, color: asOf.warn ? "#f59e0b" : "#8896ac", margin: "10px 0 0 2px" }}>
+                prices as of {asOf.t}{asOf.note}
               </div>
             )}
 
