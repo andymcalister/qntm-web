@@ -22,7 +22,7 @@ type Item = {
 
 async function getItems(): Promise<Item[]> {
   try {
-    const r = await fetch(`${API}/api/outlook?limit=30`, { next: { revalidate: 600 } });
+    const r = await fetch(`${API}/api/outlook?limit=90`, { next: { revalidate: 600 } });
     const d = await r.json();
     return (d.items || []) as Item[];
   } catch { return []; }
@@ -77,7 +77,8 @@ export default async function MarketOutlook() {
         )}
 
         {items.map((it, i) => (
-          <article key={`${it.outlook_date}-${it.kind}-${i}`} style={{ border: "1px solid rgba(255,255,255,.08)", borderRadius: 14, padding: "22px 24px", marginBottom: 18, background: "rgba(255,255,255,.015)" }}>
+          <a key={`${it.outlook_date}-${it.kind}-${i}`} href={`/${it.kind === "outlook" ? "outlook" : "wrap"}/${it.outlook_date}`} style={{ textDecoration: "none", display: "block" }}>
+          <article style={{ border: "1px solid rgba(255,255,255,.08)", borderRadius: 14, padding: "22px 24px", marginBottom: 18, background: "rgba(255,255,255,.015)", transition: "border-color .15s", cursor: "pointer" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap", marginBottom: 6 }}>
               <span style={{ fontFamily: "var(--font-dm-mono,monospace)", fontSize: 11, letterSpacing: ".1em", color: "#0b0c10", background: "#d4a843", borderRadius: 999, padding: "4px 10px", fontWeight: 700 }}>
                 {(KIND_LABEL[it.kind] || it.kind).toUpperCase()}
@@ -93,7 +94,9 @@ export default async function MarketOutlook() {
             {it.narrative && (
               <div style={{ fontFamily: "var(--font-inter,sans-serif)", fontSize: 15, lineHeight: 1.7, color: "#cbd5e1" }} dangerouslySetInnerHTML={renderNarrative(it.narrative)} />
             )}
+            <div style={{ fontFamily: "var(--font-dm-mono,monospace)", fontSize: 12.5, color: "#93b4ff", marginTop: 14 }}>Read the full {it.kind === "outlook" ? "outlook" : "wrap"} →</div>
           </article>
+          </a>
         ))}
       </div>
     </main>

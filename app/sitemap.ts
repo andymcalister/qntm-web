@@ -2,10 +2,36 @@ import type { MetadataRoute } from "next";
 
 const SITE = "https://qntm.live";
 const LEGAL = "https://legal.qntm.live";
+const API = process.env.API_BASE || process.env.NEXT_PUBLIC_API_BASE || "https://qntm-api.onrender.com";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export const revalidate = 3600;
+
+async function datedEntries(now: Date): Promise<MetadataRoute.Sitemap> {
+  try {
+    const r = await fetch(`${API}/api/outlook?limit=90`, { next: { revalidate: 3600 } });
+    if (!r.ok) return [];
+    const d = await r.json();
+    const items: any[] = d.items || [];
+    return items
+      .filter((it) => it && it.outlook_date && it.kind)
+      .map((it) => {
+        const seg = it.kind === "outlook" ? "outlook" : "wrap";
+        return {
+          url: `${SITE}/${seg}/${it.outlook_date}`,
+          lastModified: it.created_at ? new Date(it.created_at) : now,
+          changeFrequency: "monthly" as const,
+          priority: 0.7,
+        };
+      });
+  } catch {
+    return [];
+  }
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
-  return [
+  const dated = await datedEntries(now);
+  const staticEntries: MetadataRoute.Sitemap = [
     // ── Public marketing / content (indexable) ──────────────────────────────
     { url: `${SITE}/`, lastModified: now, changeFrequency: "weekly", priority: 1.0 },
     { url: `${SITE}/market-outlook`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
@@ -20,4 +46,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${LEGAL}/disclaimer.html`, lastModified: now, changeFrequency: "monthly", priority: 0.3 },
     { url: `${LEGAL}/cookies.html`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
   ];
+  return [...staticEntries, ...dated];
 }
