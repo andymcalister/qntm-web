@@ -1,7 +1,5 @@
 // app/wrap/[date]/opengraph-image.tsx
-// Per-day OG card for a Day Wrap: Model vs SPY vs Beat, that date's real numbers.
-// Fresh URL per day = X can't serve a cached card, so daily shares always render
-// current data. Falls back to a branded card if the read fails.
+// Per-day OG card for a Day Wrap. params is a Promise in current Next.js.
 import { ImageResponse } from "next/og";
 
 export const runtime = "nodejs";
@@ -22,8 +20,8 @@ function prettyDate(d: string): string {
   catch { return d; }
 }
 
-export default async function Image({ params }: { params: { date: string } }) {
-  const date = params?.date || "";
+export default async function Image({ params }: { params: Promise<{ date: string }> }) {
+  const { date } = await params;
   let w: any = null;
   try {
     const r = await fetch(`${API}/api/outlook/by-date/${date}?kind=wrap`, { next: { revalidate } });
@@ -62,7 +60,7 @@ export default async function Image({ params }: { params: { date: string } }) {
             </div>
           </div>
         ) : (
-          <div style={{ marginTop: 56, fontSize: 44, fontWeight: 800, color: "#fff" }}>Model vs SPY · daily</div>
+          <div style={{ marginTop: 56, fontSize: 44, fontWeight: 800, color: "#fff", display: "flex" }}>Model vs SPY · daily</div>
         )}
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "auto", borderTop: "1px solid rgba(255,255,255,.10)", paddingTop: 24 }}>
