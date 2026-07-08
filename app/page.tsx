@@ -12,6 +12,13 @@ export const metadata: Metadata = {
     url: "https://qntm.live",
     siteName: "QNTM",
     type: "website",
+    images: [{ url: "/social-card.png", width: 1200, height: 630, alt: "QNTM — Quantitative Stock Conviction" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "QNTM — Quantitative Stock Conviction",
+    description: "Five-pillar factor model + live macro overlay scoring 1,400+ US stocks daily. Transparent methodology.",
+    images: ["/social-card.png"],
   },
   robots: { index: true, follow: true },
 };
