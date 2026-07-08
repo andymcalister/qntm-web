@@ -20,7 +20,7 @@ const ITEMS: { key: string; icon: string; label: string }[] = [
   { key: "methodology", icon: "📖", label: "How It Works" },
 ];
 
-const NEXT_ROUTES: Record<string, string> = { screener: "/screener", watchlist: "/watchlist", portfolio: "/portfolio", model_portfolio: "/model-portfolio", outlook: "/market-outlook", gems: "/hidden-gems", simulator: "/simulator", alerts: "/alerts", account: "/account", methodology: "/methodology" };
+const NEXT_ROUTES: Record<string, string> = { screener: "/screener", watchlist: "/watchlist", portfolio: "/portfolio", model_portfolio: "/model-portfolio", outlook: "/market-outlook", gems: "/hidden-gems", simulator: "/simulator", alerts: "/alerts", account: "/account", methodology: "/methodology", admin: "/admin" };
 
 export default function NavBar({
   uid, plan, active = "screener", onSignOut,
@@ -29,6 +29,7 @@ export default function NavBar({
 }) {
   const [open, setOpen] = useState(false);
   const [pill, setPill] = useState<{ label: string; color: string; bg: string; border: string } | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -36,6 +37,7 @@ export default function NavBar({
         const me = await fetch("/api/me", { cache: "no-store" }).then((r) => r.json());
         const paying = !!me?.billing_active;
         const founder = !!me?.founding_member;
+        setIsAdmin(!!me?.is_admin);
         const isPro = me?.plan === "pro" || me?.plan === "institutional";
         if (founder && !paying) setPill({ label: "FOUNDING MEMBER", color: "#0b0c10", bg: "#d4a843", border: "#d4a843" });
         else if (paying || isPro) setPill({ label: "PRO", color: "#04120c", bg: "#34d399", border: "#34d399" });
@@ -61,7 +63,7 @@ export default function NavBar({
 
         {/* desktop: inline nav */}
         <nav className="qntm-nav-desktop" style={{ gap: 3, flex: 1, flexWrap: "wrap" }}>
-          {ITEMS.map((it) => {
+          {(isAdmin ? [...ITEMS, { key: "admin", icon: "\u{1F6E0}", label: "Admin" }] : ITEMS).map((it) => {
             const isActive = it.key === active;
             return (
               <a key={it.key} href={hrefFor(it.key)} style={{ textDecoration: "none" }}>
