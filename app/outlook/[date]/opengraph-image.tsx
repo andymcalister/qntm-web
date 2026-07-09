@@ -53,9 +53,8 @@ export default async function Image({ params }: { params: Promise<{ date: string
     (
       <div style={{ display: "flex", flexDirection: "column", width: "1200px", height: "630px", background: "#08090c", padding: "56px 72px", fontFamily: "system-ui, sans-serif", color: "#ffffff" }}>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <div style={{ display: "flex", fontSize: 52, fontWeight: 800, color: "#ffffff" }}>Q</div>
-          <div style={{ display: "flex", fontSize: 52, fontWeight: 800, color: GREEN }}>NTM</div>
-          <div style={{ display: "flex", fontSize: 20, color: MUTED, marginLeft: 18, letterSpacing: "3px", paddingTop: 16 }}>MARKET OUTLOOK</div>
+          <img src="https://qntm.live/qntm-wordmark.png" height="52" style={{ display: "flex" }} />
+          <div style={{ display: "flex", fontSize: 20, color: MUTED, marginLeft: 20, letterSpacing: "3px", paddingTop: 16 }}>MARKET OUTLOOK</div>
         </div>
         <div style={{ display: "flex", fontSize: 24, color: MUTED, marginTop: 12 }}>{prettyDate(date)}</div>
 
