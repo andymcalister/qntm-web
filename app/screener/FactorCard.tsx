@@ -92,7 +92,7 @@ export default function FactorCard({
       </summary>
 
       {/* ── Expanded detail ── */}
-      <div style={{ padding: "0 20px 20px", borderTop: "1px solid rgba(255,255,255,.05)" }}>
+      <div style={{ padding: "0 14px 18px", borderTop: "1px solid rgba(255,255,255,.05)" }}>
         {/* price + sector + driver */}
         <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", padding: "10px 0 12px" }}>
           {r.price != null && (
@@ -106,12 +106,12 @@ export default function FactorCard({
         </div>
 
         {/* pillar bars */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 8, marginBottom: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(64px, 1fr))", gap: 8, marginBottom: 16 }}>
           {PILLARS.map((p) => {
             const v = r[p.key] as number;
             const pc = pillarColor(v);
             return (
-              <div key={p.short} style={{ flex: 1, minWidth: 72 }}>
+              <div key={p.short} style={{ minWidth: 0 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 3 }}>
                   <span style={{ fontSize: 13, color: "#9fabc0" }}>{p.full}</span>
                   <span style={{ fontFamily: FONT_MONO, fontSize: 13, color: pc, fontWeight: 700 }}>{v.toFixed(0)}</span>
@@ -125,7 +125,7 @@ export default function FactorCard({
         </div>
 
         {/* QUANT / MACRO / BLEND / PERCENTILE */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 5, paddingTop: 10, borderTop: "1px solid rgba(255,255,255,.04)" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(80px, 1fr))", gap: 5, paddingTop: 10, borderTop: "1px solid rgba(255,255,255,.04)" }}>
           {[
             { k: "QUANT", v: r.composite.toFixed(1), c: "#b3bed0" },
             { k: "MACRO", v: md.str, c: md.color },
