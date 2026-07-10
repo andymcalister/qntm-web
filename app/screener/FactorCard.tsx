@@ -57,12 +57,12 @@ export default function FactorCard({
             {cap && badge(cap, "#8896ac", "rgba(136,150,172,.10)", "rgba(136,150,172,.20)")}
             {callout === "cheap" && badge("◆ CHEAP", "#34d399", "rgba(52,211,153,.12)", "rgba(52,211,153,.32)")}
             {callout === "rich" && badge("◆ RICH", "#f87171", "rgba(248,113,113,.12)", "rgba(248,113,113,.32)")}
-            {name && (
-              <span style={{ fontSize: 13, color: "#94a3b8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                {name}
-              </span>
-            )}
           </div>
+          {name && (
+            <div style={{ fontSize: 12.5, color: "#94a3b8", marginTop: 2, lineHeight: 1.3, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              {name}
+            </div>
+          )}
           <div style={{ fontFamily: FONT_DISPLAY, fontSize: 13, fontWeight: 700, color: actC, letterSpacing: ".06em", marginTop: 1 }}>
             {arrow} {label}
           </div>
@@ -112,8 +112,8 @@ export default function FactorCard({
             const pc = pillarColor(v);
             return (
               <div key={p.short} style={{ minWidth: 0 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 3 }}>
-                  <span style={{ fontSize: 13, color: "#9fabc0" }}>{p.full}</span>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 4, marginBottom: 3 }}>
+                  <span style={{ fontSize: 11, color: "#9fabc0", letterSpacing: ".03em" }}>{p.short}</span>
                   <span style={{ fontFamily: FONT_MONO, fontSize: 13, color: pc, fontWeight: 700 }}>{v.toFixed(0)}</span>
                 </div>
                 <div style={{ background: "rgba(255,255,255,.05)", borderRadius: 3, height: 4, overflow: "hidden" }}>
