@@ -2,11 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 const API_BASE = process.env.API_BASE || process.env.NEXT_PUBLIC_API_BASE || "https://qntm-api.onrender.com";
 const COOKIE = "qntm_session";
 const tok = (req: NextRequest) => req.cookies.get(COOKIE)?.value || null;
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const t = tok(req);
   if (!t) return NextResponse.json({ error: "unauthenticated" }, { status: 401 });
+  const { id } = await params;
   try {
-    const res = await fetch(`${API_BASE}/api/copilot/${params.id}/skip`, { method: "POST", headers: { Authorization: `Bearer ${t}` }, cache: "no-store" });
+    const res = await fetch(`${API_BASE}/api/copilot/${id}/skip`, { method: "POST", headers: { Authorization: `Bearer ${t}` }, cache: "no-store" });
     const data = await res.json().catch(() => ({}));
     return NextResponse.json(data, { status: res.status });
   } catch { return NextResponse.json({ error: "upstream_unreachable" }, { status: 502 }); }
