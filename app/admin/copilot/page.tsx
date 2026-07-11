@@ -55,8 +55,15 @@ export default function Copilot() {
     if (!text) return flash("Pick or write a reply first");
     if (text.length > 280) return flash("Too long");
     const r = await fetch(`/api/copilot/${id}/approve`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text }) });
-    if (r.ok) { flash("Posted ✓"); await load(); }
-    else { const e = await r.json().catch(() => ({})); flash(e.detail || "Failed"); }
+    if (r.ok) { flash("Posted ✓"); await load(); return; }
+    const e = await r.json().catch(() => ({}));
+    if (r.status === 409) {
+      // Author restricts replies; item was marked blocked server-side. Drop it.
+      flash(e.detail || "Reply blocked — cleared");
+      setQ((prev) => (prev ? { ...prev, items: prev.items.filter((i) => i.id !== id) } : prev));
+      return;
+    }
+    flash(e.detail || "Failed");
   };
 
   const skip = async (id: string) => {
