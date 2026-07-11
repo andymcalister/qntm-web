@@ -20,7 +20,7 @@ const ITEMS: { key: string; icon: string; label: string }[] = [
   { key: "methodology", icon: "📖", label: "How It Works" },
 ];
 
-const NEXT_ROUTES: Record<string, string> = { screener: "/screener", watchlist: "/watchlist", portfolio: "/portfolio", model_portfolio: "/model-portfolio", outlook: "/market-outlook", gems: "/hidden-gems", simulator: "/simulator", alerts: "/alerts", account: "/account", methodology: "/methodology", admin: "/admin" };
+const NEXT_ROUTES: Record<string, string> = { screener: "/screener", watchlist: "/watchlist", portfolio: "/portfolio", model_portfolio: "/model-portfolio", outlook: "/market-outlook", gems: "/hidden-gems", simulator: "/simulator", alerts: "/alerts", account: "/account", methodology: "/methodology", admin: "/admin", copilot: "/admin/copilot" };
 
 export default function NavBar({
   uid, plan, active = "screener", onSignOut,
@@ -63,7 +63,7 @@ export default function NavBar({
 
         {/* desktop: inline nav */}
         <nav className="qntm-nav-desktop" style={{ gap: 3, flex: 1, flexWrap: "wrap" }}>
-          {(isAdmin ? [...ITEMS, { key: "admin", icon: "\u{1F6E0}", label: "Admin" }] : ITEMS).map((it) => {
+          {(isAdmin ? [...ITEMS, { key: "admin", icon: "\u{1F6E0}", label: "Admin" }, { key: "copilot", icon: "\u{1F4AC}", label: "Copilot" }] : ITEMS).map((it) => {
             const isActive = it.key === active;
             return (
               <a key={it.key} href={hrefFor(it.key)} style={{ textDecoration: "none" }}>
