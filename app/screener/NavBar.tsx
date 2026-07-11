@@ -53,6 +53,7 @@ export default function NavBar({
   };
   const hrefFor = (key: string) => NEXT_ROUTES[key] || streamlitHref(key);
   const activeItem = ITEMS.find((i) => i.key === active);
+  const navItems = isAdmin ? [...ITEMS, { key: "admin", icon: "\u{1F6E0}", label: "Admin" }, { key: "copilot", icon: "\u{1F4AC}", label: "Copilot" }] : ITEMS;
 
   return (
     <div style={{ position: "sticky", top: 0, zIndex: 50, background: "rgba(8,9,12,.9)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", borderBottom: "1px solid rgba(255,255,255,.07)" }}>
@@ -63,7 +64,7 @@ export default function NavBar({
 
         {/* desktop: inline nav */}
         <nav className="qntm-nav-desktop" style={{ gap: 3, flex: 1, flexWrap: "wrap" }}>
-          {(isAdmin ? [...ITEMS, { key: "admin", icon: "\u{1F6E0}", label: "Admin" }, { key: "copilot", icon: "\u{1F4AC}", label: "Copilot" }] : ITEMS).map((it) => {
+          {navItems.map((it) => {
             const isActive = it.key === active;
             return (
               <a key={it.key} href={hrefFor(it.key)} style={{ textDecoration: "none" }}>
@@ -108,7 +109,7 @@ export default function NavBar({
         <div className="qntm-nav-mobile">
           <div onClick={() => setOpen(false)} style={{ position: "fixed", inset: 0, top: 56, zIndex: 40, background: "rgba(0,0,0,.4)" }} />
           <div style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 45, background: "#0c0e14", borderBottom: "1px solid rgba(255,255,255,.1)", boxShadow: "0 12px 28px rgba(0,0,0,.5)", padding: "6px", maxHeight: "70vh", overflowY: "auto" }}>
-            {ITEMS.map((it) => {
+            {navItems.map((it) => {
               const isActive = it.key === active;
               return (
                 <a key={it.key} href={hrefFor(it.key)} onClick={() => setOpen(false)} style={{ textDecoration: "none", display: "block" }}>
