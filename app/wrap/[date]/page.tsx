@@ -20,9 +20,12 @@ type Wrap = {
 
 async function getWrap(date: string): Promise<Wrap | null> {
   try {
-    const r = await fetch(`${API}/api/outlook/by-date/${date}?kind=wrap`, { next: { revalidate } });
-    if (!r.ok) return null;
-    const d = await r.json();
+    let r = await fetch(`${API}/api/outlook/by-date/${date}?kind=wrap`, { next: { revalidate } });
+    let d = r.ok ? await r.json() : null;
+    if (!d || !d.outlook_date) {
+      r = await fetch(`${API}/api/outlook/by-date/${date}?kind=week`, { next: { revalidate } });
+      d = r.ok ? await r.json() : null;
+    }
     return d && d.outlook_date ? d : null;
   } catch {
     return null;

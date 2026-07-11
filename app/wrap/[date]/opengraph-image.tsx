@@ -29,10 +29,16 @@ export default async function Image({ params }: { params: Promise<{ date: string
 
   let model: number | null = null, spy: number | null = null;
   let regime = "", conviction: number | null = null, vix: number | null = null, wti: number | null = null;
+  let isWeek = false;
   try {
-    const r = await fetch(`${API}/api/outlook/by-date/${date}?kind=wrap`, { next: { revalidate } });
-    if (r.ok) {
-      const w = await r.json();
+    let r = await fetch(`${API}/api/outlook/by-date/${date}?kind=wrap`, { next: { revalidate } });
+    let w = r.ok ? await r.json() : null;
+    if (!w || !w.outlook_date) {
+      r = await fetch(`${API}/api/outlook/by-date/${date}?kind=week`, { next: { revalidate } });
+      w = r.ok ? await r.json() : null;
+    }
+    if (w && w.outlook_date) {
+      isWeek = w.kind === "week";
       model = typeof w?.model_return === "number" ? w.model_return : null;
       spy = typeof w?.spy_return === "number" ? w.spy_return : null;
       regime = typeof w?.regime === "string" ? w.regime : "";
@@ -71,7 +77,7 @@ export default async function Image({ params }: { params: Promise<{ date: string
         <div style={{ display: "flex", alignItems: "center" }}>
           <div style={{ display: "flex", fontSize: 54, fontWeight: 800, color: "#ffffff", letterSpacing: "-1px" }}>Q</div>
           <div style={{ display: "flex", fontSize: 54, fontWeight: 800, color: GREEN, letterSpacing: "-1px" }}>NTM</div>
-          <div style={{ display: "flex", fontSize: 20, color: MUTED, marginLeft: 20, letterSpacing: "3px", paddingTop: 16 }}>DAY WRAP</div>
+          <div style={{ display: "flex", fontSize: 20, color: MUTED, marginLeft: 20, letterSpacing: "3px", paddingTop: 16 }}>{isWeek ? "WEEK WRAP" : "DAY WRAP"}</div>
         </div>
         <div style={{ display: "flex", fontSize: 24, color: MUTED, marginTop: 12 }}>{prettyDate(date)}</div>
 
