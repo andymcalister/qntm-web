@@ -38,6 +38,7 @@ export default function EquityChart({ curve, day, benchmark = "spy" }: { curve: 
   const [hover, setHover] = useState<number | null>(null);
 
   const isDay = range === "DAY";
+  const benchLabel = (benchmark || "spy").toUpperCase();
 
   const data: CurvePoint[] = useMemo(() => {
     if (isDay) {
@@ -80,8 +81,13 @@ export default function EquityChart({ curve, day, benchmark = "spy" }: { curve: 
       if (v != null) _lastB = v;
       return v ?? p.spy;
     });
-    let lo = Math.min(...mv, ...sv);
-    let hi = Math.max(...mv, ...sv);
+    const _BASE = 100000;
+    const _m0 = mv[0] || 1;
+    const _s0 = sv[0] || 1;
+    const mvN = mv.map((v) => _BASE * v / _m0);
+    const svN = sv.map((v) => _BASE * v / _s0);
+    let lo = Math.min(...mvN, ...svN);
+    let hi = Math.max(...mvN, ...svN);
     if (hi === lo) hi = lo + 1;
     const pad = (hi - lo) * 0.1;
     lo -= pad; hi += pad;
@@ -96,9 +102,9 @@ export default function EquityChart({ curve, day, benchmark = "spy" }: { curve: 
     const xlabel = (i: number) => (isDay ? data[i].d : data[i].d.slice(5).replace("-", "/"));
     const tickIdx = isDay ? [0, n - 1] : Array.from(new Set([0, Math.floor(n / 2), n - 1]));
     const ticks = tickIdx.map((i) => ({ x: X(i), label: xlabel(i), anchor: i === 0 ? "start" : i === n - 1 ? "end" : "middle" }));
-    const mPct = mv[0] ? (mv[n - 1] / mv[0] - 1) * 100 : 0;
-    const sPct = sv[0] ? (sv[n - 1] / sv[0] - 1) * 100 : 0;
-    return { mv, sv, n, X, Y, line, area, grid, ref100, ticks, mPct, sPct };
+    const mPct = mvN[0] ? (mvN[n - 1] / mvN[0] - 1) * 100 : 0;
+    const sPct = svN[0] ? (svN[n - 1] / svN[0] - 1) * 100 : 0;
+    return { mv: mvN, sv: svN, n, X, Y, line, area, grid, ref100, ticks, mPct, sPct };
   }, [data, isDay, benchmark]);
 
   // header change line
@@ -114,8 +120,8 @@ export default function EquityChart({ curve, day, benchmark = "spy" }: { curve: 
         {hdr && (
           <div style={{ fontFamily: FONT_MONO, fontSize: 13 }}>
             <span style={{ color: GOLD }}>— QNTM Model </span><span style={{ color: pcol(hdr.m) }}>{pctstr(hdr.m)}</span>
-            <span style={{ color: SLATE }}>{"  — SPY "}</span><span style={{ color: pcol(hdr.s) }}>{pctstr(hdr.s)}</span>
-            <span style={{ color: "#8896ac" }}>{"  vs SPY "}</span><span style={{ color: pcol(hdr.vs) }}>{pctstr(hdr.vs)}</span>
+            <span style={{ color: SLATE }}>{"  — " + benchLabel + " "}</span><span style={{ color: pcol(hdr.s) }}>{pctstr(hdr.s)}</span>
+            <span style={{ color: "#8896ac" }}>{"  vs " + benchLabel + " "}</span><span style={{ color: pcol(hdr.vs) }}>{pctstr(hdr.vs)}</span>
             <span style={{ color: "#64748b" }}> {hdr.suffix}</span>
           </div>
         )}

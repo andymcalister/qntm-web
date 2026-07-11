@@ -204,7 +204,7 @@ export default function ModelPortfolio() {
                     </button>
                   ))}
                   <span style={{ fontFamily: FONT_MONO, fontSize: 10.5, color: "#64748b", marginLeft: 4 }}>
-                    since inception \u00b7 {s?.n_sessions ?? 0} sessions
+                    since inception · {s?.n_sessions ?? 0} sessions
                   </span>
                 </div>
                 <div style={{ fontFamily: FONT_MONO, fontSize: 11, color: "#8896ac", paddingLeft: 4, marginBottom: 10 }}>{benchNote}</div>
