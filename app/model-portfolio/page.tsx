@@ -17,6 +17,9 @@ type Position = Row & {
 type Stats = {
   inception: string | null; model_value: number; spy_value: number;
   model_ret: number; spy_ret: number; alpha: number; day_model: number; day_spy: number;
+  rsp_value?: number | null; qqq_value?: number | null;
+  rsp_ret?: number | null; qqq_ret?: number | null;
+  vs_rsp?: number | null; vs_qqq?: number | null;
   basis: number; n_sessions: number;
   pre_post?: { session: "pre" | "post"; model: number; spy: number | null; coverage: number; held: number } | null;
 };
@@ -45,6 +48,7 @@ function StatCard({ label, value, valueColor, sub, subColor }: { label: string; 
 
 export default function ModelPortfolio() {
   const [data, setData] = useState<MPResp | null>(null);
+  const [bench, setBench] = useState<"spy" | "rsp" | "qqq">("spy");
   const [univScores, setUnivScores] = useState<number[]>([]);
   const [uid, setUid] = useState("");
   const [plan, setPlan] = useState("free");
@@ -113,6 +117,12 @@ export default function ModelPortfolio() {
   const exits = data?.exits || [];
   const dollarChange = s ? s.model_value - s.basis : 0;
   const dollarVsSpy = s ? s.model_value - s.spy_value : 0;
+  const benchVs = s ? (bench === "spy" ? s.alpha : bench === "rsp" ? (s.vs_rsp ?? 0) : (s.vs_qqq ?? 0)) : 0;
+  const benchVal = s ? (bench === "spy" ? s.spy_value : bench === "rsp" ? (s.rsp_value ?? s.model_value) : (s.qqq_value ?? s.model_value)) : 0;
+  const benchDollar = s ? s.model_value - benchVal : 0;
+  const benchNote = bench === "spy" ? "S&P 500, cap-weighted \u2014 the market as most investors hold it"
+    : bench === "rsp" ? "S&P 500 Equal Weight \u2014 strips out the mega-cap size tilt"
+    : "Nasdaq-100 \u2014 a growth / tech lens";
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--color-bg,#060709)", color: "#cbd5e1" }}>
@@ -147,8 +157,8 @@ export default function ModelPortfolio() {
                 <StatCard label="TODAY" value={pct(day?.model_pct ?? s.day_model, 2)} valueColor={pcol(day?.model_pct ?? s.day_model)} sub={day ? dollarSigned(day.model_dollar) : undefined} />
                 <StatCard label="$ CHANGE" value={dollarSigned(dollarChange)} valueColor={pcol(dollarChange)} />
                 <StatCard label="% RETURN" value={pct(s.model_ret)} valueColor={pcol(s.model_ret)} />
-                <StatCard label="$ vs SPY" value={dollarSigned(dollarVsSpy)} valueColor={pcol(dollarVsSpy)} />
-                <StatCard label="% vs SPY" value={pct(s.alpha)} valueColor={pcol(s.alpha)} />
+                <StatCard label={`$ vs ${bench.toUpperCase()}`} value={dollarSigned(benchDollar)} valueColor={pcol(benchDollar)} />
+                <StatCard label={`% vs ${bench.toUpperCase()}`} value={pct(benchVs)} valueColor={pcol(benchVs)} />
               </div>
             )}
 
@@ -183,7 +193,22 @@ export default function ModelPortfolio() {
             {/* equity curve */}
             {data && data.curve.length >= 2 ? (
               <div style={{ marginTop: 16, padding: "16px 12px 12px", background: "rgba(255,255,255,.015)", border: "1px solid rgba(255,255,255,.06)", borderRadius: 12 }}>
-                <EquityChart curve={data.curve} day={day} />
+                <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4, paddingLeft: 4 }}>
+                  {(["spy", "rsp", "qqq"] as const).map((b) => (
+                    <button key={b} onClick={() => setBench(b)}
+                      style={{ fontFamily: FONT_MONO, fontSize: 11, letterSpacing: ".08em", padding: "4px 11px", borderRadius: 6, cursor: "pointer",
+                        border: bench === b ? "1px solid rgba(212,168,67,.5)" : "1px solid rgba(255,255,255,.10)",
+                        background: bench === b ? "rgba(212,168,67,.14)" : "transparent",
+                        color: bench === b ? "#d4a843" : "#8896ac", fontWeight: bench === b ? 700 : 500 }}>
+                      {b.toUpperCase()}
+                    </button>
+                  ))}
+                  <span style={{ fontFamily: FONT_MONO, fontSize: 10.5, color: "#64748b", marginLeft: 4 }}>
+                    since inception \u00b7 {s?.n_sessions ?? 0} sessions
+                  </span>
+                </div>
+                <div style={{ fontFamily: FONT_MONO, fontSize: 11, color: "#8896ac", paddingLeft: 4, marginBottom: 10 }}>{benchNote}</div>
+                <EquityChart curve={data.curve} day={day} benchmark={bench} />
               </div>
             ) : (
               <div style={{ marginTop: 16, padding: "24px", border: "1px dashed rgba(255,255,255,.12)", borderRadius: 12, color: "#8896ac", fontFamily: FONT_MONO, fontSize: 13 }}>

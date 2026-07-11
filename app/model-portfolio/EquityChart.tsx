@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { FONT_MONO } from "../screener/lib";
 
-export type CurvePoint = { d: string; model: number; spy: number };
+export type CurvePoint = { d: string; model: number; spy: number; rsp?: number | null; qqq?: number | null };
 export type DayMove = {
   model_now: number; model_prev: number; model_pct: number; model_dollar: number;
   spy_now: number; spy_prev: number; spy_pct: number; spy_dollar: number; vs_spy_pct: number;
@@ -33,7 +33,7 @@ function minusDays(iso: string, days: number): string {
   return dt.toISOString().slice(0, 10);
 }
 
-export default function EquityChart({ curve, day }: { curve: CurvePoint[]; day?: DayMove | null }) {
+export default function EquityChart({ curve, day, benchmark = "spy" }: { curve: CurvePoint[]; day?: DayMove | null; benchmark?: "spy" | "rsp" | "qqq" }) {
   const [range, setRange] = useState(day ? "DAY" : "1M");
   const [hover, setHover] = useState<number | null>(null);
 
@@ -72,7 +72,14 @@ export default function EquityChart({ curve, day }: { curve: CurvePoint[]; day?:
   const geom = useMemo(() => {
     if (data.length < 2) return null;
     const mv = data.map((p) => p.model);
-    const sv = data.map((p) => p.spy);
+    const _bk = (benchmark || "spy") as "spy" | "rsp" | "qqq";
+    let _lastB: number | null = null;
+    const sv = data.map((p) => {
+      const raw = _bk === "spy" ? p.spy : (p[_bk] ?? null);
+      const v = (raw == null || Number.isNaN(raw as number)) ? _lastB : (raw as number);
+      if (v != null) _lastB = v;
+      return v ?? p.spy;
+    });
     let lo = Math.min(...mv, ...sv);
     let hi = Math.max(...mv, ...sv);
     if (hi === lo) hi = lo + 1;
@@ -92,7 +99,7 @@ export default function EquityChart({ curve, day }: { curve: CurvePoint[]; day?:
     const mPct = mv[0] ? (mv[n - 1] / mv[0] - 1) * 100 : 0;
     const sPct = sv[0] ? (sv[n - 1] / sv[0] - 1) * 100 : 0;
     return { mv, sv, n, X, Y, line, area, grid, ref100, ticks, mPct, sPct };
-  }, [data, isDay]);
+  }, [data, isDay, benchmark]);
 
   // header change line
   const hdr = isDay && day
@@ -188,7 +195,7 @@ export default function EquityChart({ curve, day }: { curve: CurvePoint[]; day?:
               background: "#0d0e16", border: "1px solid rgba(255,255,255,.12)", borderRadius: 6, padding: "5px 9px", fontFamily: FONT_MONO, fontSize: 11, whiteSpace: "nowrap", boxShadow: "0 6px 18px rgba(0,0,0,.5)" }}>
               <div style={{ color: "#94a3b8", marginBottom: 2 }}>{data[hover].d}</div>
               <div style={{ color: GOLD }}>Model {fmtk(data[hover].model)}</div>
-              <div style={{ color: SLATE }}>SPY {fmtk(data[hover].spy)}</div>
+              <div style={{ color: SLATE }}>{(benchmark || "spy").toUpperCase()} {fmtk(geom.sv[hover])}</div>
             </div>
           )}
         </div>
