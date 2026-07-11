@@ -81,13 +81,8 @@ export default function EquityChart({ curve, day, benchmark = "spy" }: { curve: 
       if (v != null) _lastB = v;
       return v ?? p.spy;
     });
-    const _BASE = 100000;
-    const _m0 = mv[0] || 1;
-    const _s0 = sv[0] || 1;
-    const mvN = mv.map((v) => _BASE * v / _m0);
-    const svN = sv.map((v) => _BASE * v / _s0);
-    let lo = Math.min(...mvN, ...svN);
-    let hi = Math.max(...mvN, ...svN);
+    let lo = Math.min(...mv, ...sv);
+    let hi = Math.max(...mv, ...sv);
     if (hi === lo) hi = lo + 1;
     const pad = (hi - lo) * 0.1;
     lo -= pad; hi += pad;
@@ -102,9 +97,9 @@ export default function EquityChart({ curve, day, benchmark = "spy" }: { curve: 
     const xlabel = (i: number) => (isDay ? data[i].d : data[i].d.slice(5).replace("-", "/"));
     const tickIdx = isDay ? [0, n - 1] : Array.from(new Set([0, Math.floor(n / 2), n - 1]));
     const ticks = tickIdx.map((i) => ({ x: X(i), label: xlabel(i), anchor: i === 0 ? "start" : i === n - 1 ? "end" : "middle" }));
-    const mPct = mvN[0] ? (mvN[n - 1] / mvN[0] - 1) * 100 : 0;
-    const sPct = svN[0] ? (svN[n - 1] / svN[0] - 1) * 100 : 0;
-    return { mv: mvN, sv: svN, n, X, Y, line, area, grid, ref100, ticks, mPct, sPct };
+    const mPct = mv[0] ? (mv[n - 1] / mv[0] - 1) * 100 : 0;
+    const sPct = sv[0] ? (sv[n - 1] / sv[0] - 1) * 100 : 0;
+    return { mv, sv, n, X, Y, line, area, grid, ref100, ticks, mPct, sPct };
   }, [data, isDay, benchmark]);
 
   // header change line
