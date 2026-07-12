@@ -7,7 +7,7 @@ type Item = {
   id: string; tweet_id?: string; author?: string; post_text?: string; post_url?: string;
   engagement?: number; topic?: string; drafts?: string[];
 };
-type Queue = { cap: number; posted_today: number; items: Item[] };
+type Queue = { posted_today: number; items: Item[] };
 
 const wrap: React.CSSProperties = { minHeight: "100vh", background: "#060709", padding: "40px 24px" };
 const inner: React.CSSProperties = { maxWidth: 760, margin: "0 auto" };
@@ -90,7 +90,7 @@ export default function Copilot() {
         <a href="/screener" style={{ ...mono(12.5), textDecoration: "none" }}>&larr; Back to app</a>
         <div style={{ display: "flex", alignItems: "baseline", gap: 14, marginTop: 14, flexWrap: "wrap" }}>
           <h1 style={{ fontFamily: FONT_DISPLAY, fontWeight: 800, fontSize: 26, color: "#fff", margin: 0 }}>Copilot &middot; QNTM</h1>
-          {q && <span style={mono(12.5, "#64748b")}>{q.posted_today}/{q.cap} today</span>}
+          {q && <span style={mono(12.5, "#64748b")}>{q.posted_today} posted today</span>}
           <span style={{ flex: 1 }} />
           <button style={btn} onClick={harvest} disabled={harvesting}>{harvesting ? "Harvesting…" : "Harvest now"}</button>
           <button style={btn} onClick={load}>Refresh</button>
