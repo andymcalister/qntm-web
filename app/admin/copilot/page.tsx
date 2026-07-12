@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { FONT_DISPLAY, FONT_MONO } from "../../screener/lib";
 
 type Item = {
-  id: string; author?: string; post_text?: string; post_url?: string;
+  id: string; tweet_id?: string; author?: string; post_text?: string; post_url?: string;
   engagement?: number; topic?: string; drafts?: string[];
 };
 type Queue = { cap: number; posted_today: number; items: Item[] };
@@ -25,7 +25,7 @@ export default function Copilot() {
   const [drafts, setDrafts] = useState<Record<string, string>>({});
   const [toast, setToast] = useState("");
 
-  const flash = (m: string) => { setToast(m); setTimeout(() => setToast(""), 1800); };
+  const flash = (m: string) => { setToast(m); setTimeout(() => setToast(""), 2200); };
 
   const load = useCallback(async () => {
     try {
@@ -50,20 +50,32 @@ export default function Copilot() {
     finally { setHarvesting(false); }
   };
 
-  const approve = async (id: string) => {
+  const record = async (id: string, text: string) => {
+    await fetch(`/api/copilot/${id}/approve`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    }).catch(() => {});
+    setQ((prev) => (prev ? { ...prev, items: prev.items.filter((i) => i.id !== id) } : prev));
+  };
+
+  const postOnX = async (id: string) => {
+    const item = q?.items.find((i) => i.id === id);
     const text = (drafts[id] || "").trim();
     if (!text) return flash("Pick or write a reply first");
     if (text.length > 280) return flash("Too long");
-    const r = await fetch(`/api/copilot/${id}/approve`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text }) });
-    if (r.ok) { flash("Posted ✓"); await load(); return; }
-    const e = await r.json().catch(() => ({}));
-    if (r.status === 409) {
-      // Author restricts replies; item was marked blocked server-side. Drop it.
-      flash(e.detail || "Reply blocked — cleared");
-      setQ((prev) => (prev ? { ...prev, items: prev.items.filter((i) => i.id !== id) } : prev));
-      return;
-    }
-    flash(e.detail || "Failed");
+    if (!item?.tweet_id) return flash("Missing post id");
+    try { await navigator.clipboard.writeText(text); } catch { /* ignore */ }
+    const url = `https://x.com/intent/tweet?in_reply_to=${item.tweet_id}&text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank", "noopener");
+    await record(id, text);
+    flash("Opened on X (reply also copied)");
+  };
+
+  const copyOnly = async (id: string) => {
+    const text = (drafts[id] || "").trim();
+    if (!text) return flash("Pick or write a reply first");
+    try { await navigator.clipboard.writeText(text); flash("Copied"); }
+    catch { flash("Copy failed"); }
   };
 
   const skip = async (id: string) => {
@@ -78,7 +90,7 @@ export default function Copilot() {
         <a href="/screener" style={{ ...mono(12.5), textDecoration: "none" }}>&larr; Back to app</a>
         <div style={{ display: "flex", alignItems: "baseline", gap: 14, marginTop: 14, flexWrap: "wrap" }}>
           <h1 style={{ fontFamily: FONT_DISPLAY, fontWeight: 800, fontSize: 26, color: "#fff", margin: 0 }}>Copilot &middot; QNTM</h1>
-          {q && <span style={mono(12.5, "#64748b")}>{q.posted_today}/{q.cap} posted today</span>}
+          {q && <span style={mono(12.5, "#64748b")}>{q.posted_today}/{q.cap} today</span>}
           <span style={{ flex: 1 }} />
           <button style={btn} onClick={harvest} disabled={harvesting}>{harvesting ? "Harvesting…" : "Harvest now"}</button>
           <button style={btn} onClick={load}>Refresh</button>
@@ -99,7 +111,7 @@ export default function Copilot() {
                 <strong style={{ color: "#cbd5e1" }}>@{it.author || "?"}</strong>
                 <span>&middot; {it.engagement} eng</span>
                 <span>&middot; {it.topic}</span>
-                {it.post_url && <a href={it.post_url} target="_blank" rel="noopener noreferrer" style={{ color: "#34d399", textDecoration: "none" }}>open post &#8599;</a>}
+                {it.post_url && <a href={it.post_url} target="_blank" rel="noopener noreferrer" style={{ color: "#64748b", textDecoration: "none" }}>view post</a>}
               </div>
               <div style={postBox}>{it.post_text}</div>
               {(it.drafts || []).map((d, i) => (
@@ -111,8 +123,9 @@ export default function Copilot() {
                 placeholder="Pick a draft above, or write your own…"
                 style={{ width: "100%", minHeight: 68, marginTop: 4, fontFamily: FONT_MONO, fontSize: 13.5, color: "#e8edf2", background: "#0b0e13", border: "1px solid rgba(255,255,255,.1)", borderRadius: 8, padding: 10, resize: "vertical" }}
               />
-              <div style={{ display: "flex", gap: 8, alignItems: "center", marginTop: 8 }}>
-                <button style={{ ...btn, color: "#c9f5dd", background: "rgba(52,211,153,.1)", border: "1px solid rgba(52,211,153,.4)" }} onClick={() => approve(it.id)}>Approve &middot; Like + Reply</button>
+              <div style={{ display: "flex", gap: 8, alignItems: "center", marginTop: 8, flexWrap: "wrap" }}>
+                <button style={{ ...btn, color: "#c9f5dd", background: "rgba(52,211,153,.1)", border: "1px solid rgba(52,211,153,.4)" }} onClick={() => postOnX(it.id)}>Post on X &#8599;</button>
+                <button style={btn} onClick={() => copyOnly(it.id)}>Copy</button>
                 <button style={{ ...btn, color: "#94a3b8" }} onClick={() => skip(it.id)}>Skip</button>
                 <span style={{ flex: 1 }} />
                 <span style={mono(12, over ? "#e0a63b" : "#64748b")}>{val.length}/280</span>
