@@ -31,14 +31,12 @@ export default async function Image({ params }: { params: Promise<{ date: string
   let regime = "", conviction: number | null = null, vix: number | null = null, wti: number | null = null;
   let isWeek = false;
   try {
-    let r = await fetch(`${API}/api/outlook/by-date/${date}?kind=wrap`, { next: { revalidate } });
-    let w = r.ok ? await r.json() : null;
-    if (!w || !w.outlook_date) {
-      r = await fetch(`${API}/api/outlook/by-date/${date}?kind=week`, { next: { revalidate } });
-      w = r.ok ? await r.json() : null;
-    }
-    if (w && w.outlook_date) {
-      isWeek = w.kind === "week";
+    const r = await fetch(`${API}/api/outlook/by-date/${date}?kind=wrap`, { next: { revalidate } });
+    const w = r.ok ? await r.json() : null;
+    // Day-only: never fall back to the week row. A missing day row renders the
+    // neutral card rather than week numbers that contradict the tweet.
+    if (w && w.outlook_date && w.kind !== "week") {
+      isWeek = false;
       model = typeof w?.model_return === "number" ? w.model_return : null;
       spy = typeof w?.spy_return === "number" ? w.spy_return : null;
       regime = typeof w?.regime === "string" ? w.regime : "";
