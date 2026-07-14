@@ -6,7 +6,17 @@ import { FONT_DISPLAY, FONT_MONO } from "../../screener/lib";
 type Item = {
   id: string; tweet_id?: string; author?: string; post_text?: string; post_url?: string;
   engagement?: number; topic?: string; drafts?: string[];
+  author_followers?: number; tier?: string; reply_count?: number; posted_at_x?: string;
 };
+
+const ago = (iso?: string) => {
+  if (!iso) return "";
+  const mins = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 60000));
+  if (mins < 60) return `${mins}m old`;
+  const h = Math.floor(mins / 60);
+  return h < 24 ? `${h}h ${mins % 60}m old` : `${Math.floor(h / 24)}d old`;
+};
+const kf = (n?: number) => (n == null ? "?" : n >= 1000 ? `${(n / 1000).toFixed(1)}k` : `${n}`);
 type Queue = { posted_today: number; items: Item[] };
 
 const wrap: React.CSSProperties = { minHeight: "100vh", background: "#060709", padding: "40px 24px" };
@@ -109,8 +119,11 @@ export default function Copilot() {
             <div key={it.id} style={card}>
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap", ...mono(12.5, "#9fabc0") }}>
                 <strong style={{ color: "#cbd5e1" }}>@{it.author || "?"}</strong>
+                <span style={{ color: "#34d399" }}>&middot; {ago(it.posted_at_x)}</span>
+                <span>&middot; {kf(it.author_followers)} followers</span>
                 <span>&middot; {it.engagement} eng</span>
-                <span>&middot; {it.topic}</span>
+                <span>&middot; {it.reply_count ?? 0} replies</span>
+                <span>&middot; {it.tier}</span>
                 {it.post_url && <a href={it.post_url} target="_blank" rel="noopener noreferrer" style={{ color: "#64748b", textDecoration: "none" }}>view post</a>}
               </div>
               <div style={postBox}>{it.post_text}</div>
