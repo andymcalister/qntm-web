@@ -31,10 +31,10 @@ export const SECTIONS: Section[] = [
     "• Sentiment (10%) — short interest, insider buy ratio, institutional ownership\n\n" +
     "Scores are cross-sectional — a score of 75 means the stock ranks stronger than 75% of the universe." },
   { title: "Conviction Signals", color: "#34d399", body:
-    "• High Conviction (score ≥ 60) — model sees strong multi-factor alignment. Top 40% of universe.\n" +
-    "• Moderate Conviction (45–59) — mixed factor signals, neither strong nor deteriorating.\n" +
-    "• Low Conviction (score < 45) — weakest factor profile in the universe. Elevated model risk.\n\n" +
-    "Signals are quantitative rankings, not buy/sell/hold recommendations. Signals update nightly. In HIGH VOLATILITY regimes, conviction thresholds tighten — only scores ≥ 67 surface as High Conviction." },
+    "• High Conviction (score ≥ 65) — model sees strong multi-factor alignment.\n" +
+    "• Moderate Conviction (56–64) — mixed factor signals, neither strong nor deteriorating.\n" +
+    "• Low Conviction (score ≤ 55) — weakest factor profile in the universe. Elevated model risk.\n\n" +
+    "Signals are quantitative rankings, not buy/sell/hold recommendations. Signals update nightly. In HIGH VOLATILITY regimes, the portfolio entry bar tightens to ≥ 70 (the High Conviction label stays ≥ 65)." },
   { title: "Macro Overlay", color: "#d4a843", body:
     "A live macro regime overlay adjusts composite scores based on current market conditions:\n\n" +
     "• VIX level — real-time fear gauge (updates every 15 minutes)\n" +

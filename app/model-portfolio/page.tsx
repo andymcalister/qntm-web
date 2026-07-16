@@ -144,9 +144,9 @@ export default function ModelPortfolio() {
             <div style={{ background: "rgba(212,168,67,.04)", border: "1px solid rgba(212,168,67,.15)", borderRadius: 8, padding: "16px 20px", margin: "20px 0" }}>
               <div style={{ fontFamily: FONT_MONO, fontSize: 13, color: "#d4a843", letterSpacing: ".1em", marginBottom: 8 }}>⚡ INVESTMENT METHODOLOGY</div>
               <div style={{ fontSize: 13, color: "#b3bed0", lineHeight: 1.7 }}>
-                Built from <strong style={{ color: "#cbd5e1" }}>{s?.inception || data?.inception || "—"}</strong> — highest conviction signals entered each day. Entry threshold: <strong style={{ color: "#34d399" }}>≥ 67</strong> in HIGH VOLATILITY regime, <strong style={{ color: "#34d399" }}>≥ 60</strong> in normal regimes. Equal-weighted at <strong style={{ color: "#cbd5e1" }}>$2,000 per position</strong> ($100K total). 30% sector cap enforced at entry.
+                Built from <strong style={{ color: "#cbd5e1" }}>{s?.inception || data?.inception || "—"}</strong> — highest conviction signals entered each day. Entry threshold: <strong style={{ color: "#34d399" }}>≥ 70</strong> in HIGH VOLATILITY regimes, <strong style={{ color: "#34d399" }}>≥ 65</strong> otherwise. Equal-weighted at <strong style={{ color: "#cbd5e1" }}>$2,000 per position</strong> ($100K total). 30% sector cap enforced at entry.
                 <br /><br />
-                <strong style={{ color: "#cbd5e1" }}>Exit discipline:</strong> Positions exit when conviction drops below <strong style={{ color: "#f87171" }}>45</strong>. Capital redeploys into next highest conviction signal. No discretionary overrides.
+                <strong style={{ color: "#cbd5e1" }}>Exit discipline:</strong> Positions exit when conviction drops to <strong style={{ color: "#f87171" }}>55</strong> or under. Capital redeploys into next highest conviction signal. No discretionary overrides.
               </div>
             </div>
 
