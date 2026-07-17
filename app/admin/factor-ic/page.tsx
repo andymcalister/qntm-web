@@ -50,6 +50,7 @@ export default function FactorICPage() {
 
   return (
     <div style={{ fontFamily: MONO, color: text, maxWidth: 940, margin: "0 auto", padding: "32px 20px" }}>
+      <a href="/screener" style={{ display: "inline-block", marginBottom: 18, fontFamily: MONO, fontSize: 12.5, color: "#9fabc0", textDecoration: "none" }}>← Back to app</a>
       <h1 style={{ color: "#d4a843", fontSize: 20, letterSpacing: ".1em" }}>FACTOR IC — DIAGNOSTIC</h1>
       <p style={{ fontSize: 13, color: dim, lineHeight: 1.7 }}>
         Daily cross-sectional Spearman correlation between each factor sub-score and forward excess return vs SPY,
