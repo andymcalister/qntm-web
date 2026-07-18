@@ -17,6 +17,7 @@ const KINDS = [
   { key: "price_below", label: "Price drops to / below" },
   { key: "price_above", label: "Price rises to / above" },
   { key: "conviction_high", label: "Moves to HIGH conviction" },
+  { key: "model_portfolio_exit", label: "Removed from the model portfolio" },
   { key: "conviction_low", label: "Drops to LOW conviction" },
   { key: "gem", label: "Flagged a hidden gem" },
 ];
@@ -30,6 +31,7 @@ const PRESETS = [
   { label: "🟢  A watchlist stock gets cheap", scope: "watchlist", kind: "value_lower", threshold: 20 },
   { label: "📉  A holding drops to LOW conviction", scope: "portfolio", kind: "conviction_low", threshold: null },
   { label: "📈  A watchlist stock hits HIGH conviction", scope: "watchlist", kind: "conviction_high", threshold: null },
+  { label: "🚪  A watchlist stock leaves the model portfolio", scope: "watchlist", kind: "model_portfolio_exit", threshold: null },
   { label: "💎  A model name becomes a hidden gem", scope: "model", kind: "gem", threshold: null },
 ];
 const FILTERS = ["All", "HIGH", "LOW", "Macro", "Gems"];
