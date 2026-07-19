@@ -8,6 +8,26 @@ import { useWatchlist } from "../screener/useWatchlist";
 import EquityChart, { CurvePoint, DayMove } from "./EquityChart";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://qntm-api.onrender.com";
+
+// Dated portfolio changes shown above the methodology box. Entries auto-expire
+// after 30 days so this can't go stale the way the digest's "New in QNTM" did.
+const PORTFOLIO_CHANGES: { iso: string; date: string; body: string }[] = [
+  {
+    iso: "2026-07-17",
+    date: "Jul 17",
+    body: "The macro overlay moved to risk-off as tariff and conflict pressure widened, lowering adjusted conviction across the universe. Twelve positions fell below the exit line and were closed. The book holds cash when no name meets the entry bar.",
+  },
+  {
+    iso: "2026-07-16",
+    date: "Jul 16",
+    body: "Conviction bands raised \u2014 High Conviction now means 65+ (was 60), and positions exit at 55 or under (was 45). Six holdings below the new bar were closed. Applies going forward; the record before this date reflects the earlier rule.",
+  },
+];
+
+const RECENT_CHANGES = PORTFOLIO_CHANGES.filter(
+  (c) => (Date.now() - new Date(c.iso + "T00:00:00Z").getTime()) / 86400000 <= 30
+);
+
 const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "/login";
 
 type Position = Row & {
@@ -140,6 +160,19 @@ export default function ModelPortfolio() {
           <div style={{ color: "#f87171", fontFamily: FONT_MONO, fontSize: 13, padding: "48px 0" }}>{error}</div>
         ) : (
           <>
+            {/* what changed */}
+            {RECENT_CHANGES.length > 0 && (
+              <div style={{ background: "rgba(147,180,255,.04)", border: "1px solid rgba(147,180,255,.18)", borderRadius: 8, padding: "16px 20px", margin: "20px 0 0" }}>
+                <div style={{ fontFamily: FONT_MONO, fontSize: 13, color: "#93b4ff", letterSpacing: ".1em", marginBottom: 10 }}>WHAT CHANGED RECENTLY</div>
+                {RECENT_CHANGES.map((c) => (
+                  <div key={c.iso} style={{ display: "flex", gap: 12, marginBottom: 8 }}>
+                    <div style={{ fontFamily: FONT_MONO, fontSize: 12, color: "#93b4ff", flexShrink: 0, width: 46, paddingTop: 2 }}>{c.date}</div>
+                    <div style={{ fontSize: 13, color: "#b3bed0", lineHeight: 1.7 }}>{c.body}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+
             {/* methodology */}
             <div style={{ background: "rgba(212,168,67,.04)", border: "1px solid rgba(212,168,67,.15)", borderRadius: 8, padding: "16px 20px", margin: "20px 0" }}>
               <div style={{ fontFamily: FONT_MONO, fontSize: 13, color: "#d4a843", letterSpacing: ".1em", marginBottom: 8 }}>⚡ INVESTMENT METHODOLOGY</div>
