@@ -7,7 +7,8 @@ const green = "#34d399", red = "#f87171", amber = "#f59e0b", dim = "#9fabc0", te
 type Agg = { mean: number | null; tstat: number | null; pct_pos: number | null; ndays: number };
 type Row = { weight: number | null; overall: Agg; by_regime: Record<string, Agg> };
 type FwdBlk = { table: Record<string, Row>; composite_series: [string, number][]; regime_days: Record<string, number> };
-type Report = { start: string; weights: Record<string, number>; fwds: Record<string, FwdBlk>; error?: string };
+type Narrative = { verdict: string; bullets: [string, string][]; guidance: string; confidence: string; ndays: number };
+type Report = { start: string; weights: Record<string, number>; fwds: Record<string, FwdBlk>; narrative?: Narrative; error?: string };
 
 function icColor(v: number | null | undefined): string {
   if (v == null) return dim;
@@ -63,6 +64,25 @@ export default function FactorICPage() {
       </div>
       {loading && <p style={{ color: dim }}>Loading…</p>}
       {err && <p style={{ color: red }}>{err}</p>}
+      {rep?.narrative && (
+        <div style={{ background: "rgba(147,180,255,.05)", border: "1px solid rgba(147,180,255,.2)", borderRadius: 8, padding: "16px 20px", marginBottom: 28 }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: "#fff", marginBottom: 4 }}>{rep.narrative.verdict}</div>
+          <div style={{ fontSize: 11, color: dim, marginBottom: 12 }}>
+            confidence: {rep.narrative.confidence} · {rep.narrative.ndays} sessions measured
+          </div>
+          {rep.narrative.bullets.map(([lvl, text], i) => (
+            <div key={i} style={{ display: "flex", gap: 8, marginBottom: 6, fontSize: 13, lineHeight: 1.6 }}>
+              <span style={{ color: lvl === "good" ? green : lvl === "bad" ? red : lvl === "warn" ? amber : dim, flexShrink: 0 }}>
+                {lvl === "good" ? "\u2191" : lvl === "bad" ? "\u2193" : lvl === "warn" ? "\u26a0" : "\u2013"}
+              </span>
+              <span style={{ color: text }}>{text}</span>
+            </div>
+          ))}
+          <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid rgba(255,255,255,.08)", fontSize: 13, lineHeight: 1.7, color: "#cbd5e1" }}>
+            {rep.narrative.guidance}
+          </div>
+        </div>
+      )}
       {rep && Object.entries(rep.fwds).map(([fwd, blk]) => (
         <div key={fwd} style={{ marginBottom: 40 }}>
           <h2 style={{ fontSize: 15, color: text }}>
