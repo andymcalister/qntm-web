@@ -122,6 +122,11 @@ export default async function SignalsPage() {
             That is close to a coin flip, and it is the number measured on every
             qualifying signal &mdash; not a selected subset. It is computed on the
             full population, including signals inside the withheld window.
+            <br />
+            This measures each signal over a fixed {win}-session window from the
+            date it fired. It is a test of the signal itself, not of the traded
+            model portfolio, which enters and exits on conviction rather than on a
+            calendar and is reported separately.
           </div>
         </section>
         {gated && (
