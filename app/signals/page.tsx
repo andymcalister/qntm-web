@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import SignalsNav from "./SignalsNav";
 //
-export const dynamic = "force-dynamic";
-//
 export const metadata: Metadata = {
   title: "Signal Archive | QNTM",
   description:
@@ -54,11 +52,18 @@ export default async function SignalsPage() {
   const signedIn = !!token;
   let data: Payload | null = null;
   try {
+    // Members must see live data, so their request bypasses the cache. The
+    // public view is delayed 14 days and changes once a day, so it is served
+    // from the data cache - this is the X-link path and it needs to be fast.
     const headers: Record<string, string> = {};
     if (token) headers.Authorization = `Bearer ${token}`;
-    const r = await fetch(`${API_BASE}/api/signals?scope=${signedIn ? "full" : "public"}`, {
-      headers, cache: "no-store",
-    });
+    const opts: RequestInit & { next?: { revalidate: number } } = signedIn
+      ? { headers, cache: "no-store" }
+      : { headers, next: { revalidate: 1800 } };
+    const r = await fetch(
+      `${API_BASE}/api/signals?scope=${signedIn ? "full" : "public"}`,
+      opts,
+    );
     if (r.ok) data = await r.json();
   } catch {}
   //
