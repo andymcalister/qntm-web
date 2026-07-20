@@ -17,10 +17,11 @@ const ITEMS: { key: string; icon: string; label: string }[] = [
   { key: "outlook", icon: "🗞️", label: "Market Outlook" },
   { key: "alerts", icon: "🔔", label: "Alerts" },
   { key: "account", icon: "⚙️", label: "Account" },
+  { key: "signals", icon: "📜", label: "Signal Archive" },
   { key: "methodology", icon: "📖", label: "How It Works" },
 ];
 
-const NEXT_ROUTES: Record<string, string> = { screener: "/screener", watchlist: "/watchlist", portfolio: "/portfolio", model_portfolio: "/model-portfolio", outlook: "/market-outlook", gems: "/hidden-gems", simulator: "/simulator", alerts: "/alerts", account: "/account", methodology: "/methodology", admin: "/admin", copilot: "/admin/copilot", factor_ic: "/admin/factor-ic" };
+const NEXT_ROUTES: Record<string, string> = { screener: "/screener", watchlist: "/watchlist", portfolio: "/portfolio", model_portfolio: "/model-portfolio", outlook: "/market-outlook", gems: "/hidden-gems", simulator: "/simulator", alerts: "/alerts", account: "/account", methodology: "/methodology", signals: "/signals", admin: "/admin", copilot: "/admin/copilot", factor_ic: "/admin/factor-ic" };
 
 export default function NavBar({
   uid, plan, active = "screener", onSignOut,
