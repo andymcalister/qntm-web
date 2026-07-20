@@ -96,8 +96,8 @@ export default async function SignalsPage() {
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "28px 24px 80px" }}>
         <h1 style={{ fontSize: 26, margin: "0 0 6px", color: C.text }}>Signal Archive</h1>
         <p style={{ color: C.dim, fontSize: 14, lineHeight: 1.6, margin: "0 0 28px", maxWidth: 740 }}>
-          Every signal the model has produced, winners and losers, measured against {data?.benchmark || "SPY"}.
-          Nothing is removed.{" "}
+          The model&apos;s most recent signal on every name it has flagged, winners and losers,
+          measured against {data?.benchmark || "SPY"}. Nothing is filtered by outcome.{" "}
           {signedIn
             ? "You are seeing the complete record, including the current window."
             : `Recent signals are withheld for ${data?.delay_days ?? 14} days \u2014 by date only, never by outcome.`}
