@@ -45,9 +45,12 @@ type Stats = {
 };
 type Exit = { ticker: string; sector: string; entry_date: string; exit_date: string; ret: number; reason: string };
 type SectorCount = { sector: string; count: number };
+type ExitedTicker = { ticker: string; score: number | null; reason: string };
+type TodayMoves = { date: string | null; entered: string[]; exited: ExitedTicker[] };
 type MPResp = {
   inception: string | null; curve: CurvePoint[]; stats: Stats | null; day: DayMove | null;
   prices_as_of: string | null; positions: Position[]; exits: Exit[]; sector_counts: SectorCount[];
+  today_moves?: TodayMoves | null;
 };
 
 const money0 = (n: number | null | undefined) => (n == null ? "—" : `$${Math.round(n).toLocaleString()}`);
@@ -192,6 +195,33 @@ export default function ModelPortfolio() {
                 <StatCard label="% RETURN" value={pct(s.model_ret)} valueColor={pcol(s.model_ret)} />
                 <StatCard label={`$ vs ${bench.toUpperCase()}`} value={dollarSigned(benchDollar)} valueColor={pcol(benchDollar)} />
                 <StatCard label={`% vs ${bench.toUpperCase()}`} value={pct(benchVs)} valueColor={pcol(benchVs)} />
+              </div>
+            )}
+
+            {data?.today_moves && (data.today_moves.entered.length > 0 || data.today_moves.exited.length > 0) && (
+              <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "6px 12px", marginTop: 10, padding: "10px 14px", background: "rgba(255,255,255,.02)", border: "1px solid rgba(255,255,255,.08)", borderRadius: 8 }}>
+                <span style={{ fontFamily: FONT_MONO, fontSize: 11.5, letterSpacing: ".1em", color: "#8896ac", fontWeight: 700 }}>TODAY</span>
+                {data.today_moves.entered.length > 0 && (
+                  <>
+                    <span style={{ color: "#4b5568" }}>·</span>
+                    <span style={{ fontFamily: FONT_MONO, fontSize: 13, color: "#cbd5e1" }}>
+                      <strong style={{ color: "#34d399" }}>Entered</strong> {data.today_moves.entered.join(", ")}
+                    </span>
+                  </>
+                )}
+                {data.today_moves.exited.length > 0 && (
+                  <>
+                    <span style={{ color: "#4b5568" }}>·</span>
+                    <span style={{ fontFamily: FONT_MONO, fontSize: 13, color: "#cbd5e1" }}>
+                      <strong style={{ color: "#f87171" }}>Exited</strong>{" "}
+                      {data.today_moves.exited.map((e, i) => (
+                        <span key={e.ticker}>{i > 0 ? ", " : ""}{e.ticker}{e.score != null ? ` (${e.score})` : ""}</span>
+                      ))}
+                    </span>
+                    <span style={{ color: "#4b5568" }}>·</span>
+                    <span style={{ fontFamily: FONT_MONO, fontSize: 11, color: "#64748b" }}>SELL_SIGNAL</span>
+                  </>
+                )}
               </div>
             )}
 
