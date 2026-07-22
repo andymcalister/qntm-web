@@ -48,9 +48,10 @@ type Stats = {
 type Exit = { ticker: string; sector: string; entry_date: string; exit_date: string; ret: number; reason: string };
 type SectorCount = { sector: string; count: number };
 type ExitedTicker = { ticker: string; score: number | null; reason: string };
-type TodayMoves = { date: string | null; entered: string[]; exited: ExitedTicker[] };
+type TodayMoves = { date: string | null; is_today?: boolean; entered: string[]; exited: ExitedTicker[] };
 type MPResp = {
-  inception: string | null; curve: CurvePoint[]; stats: Stats | null; day: DayMove | null;
+  inception: string | null; curve: CurvePoint[]; stats: Stats | null;
+  day: (DayMove & { as_of_date?: string | null; is_current_session?: boolean }) | null;
   prices_as_of: string | null; positions: Position[]; exits: Exit[]; sector_counts: SectorCount[];
   today_moves?: TodayMoves | null;
 };
@@ -192,7 +193,7 @@ export default function ModelPortfolio() {
             {s && (
               <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                 <StatCard label="PORTFOLIO VALUE" value={money0(s.model_value)} valueColor="#d4a843" />
-                <StatCard label="TODAY" value={pct(day?.model_pct ?? s.day_model, 2)} valueColor={pcol(day?.model_pct ?? s.day_model)} sub={day ? dollarSigned(day.model_dollar) : undefined} />
+                <StatCard label={day?.is_current_session === false ? "LAST SESSION" : "TODAY"} value={pct(day?.model_pct ?? s.day_model, 2)} valueColor={pcol(day?.model_pct ?? s.day_model)} sub={day ? dollarSigned(day.model_dollar) : undefined} />
                 <StatCard label="$ CHANGE" value={dollarSigned(dollarChange)} valueColor={pcol(dollarChange)} />
                 <StatCard label="% RETURN" value={pct(s.model_ret)} valueColor={pcol(s.model_ret)} />
                 <StatCard label={`$ vs ${bench.toUpperCase()}`} value={dollarSigned(benchDollar)} valueColor={pcol(benchDollar)} />
@@ -202,7 +203,7 @@ export default function ModelPortfolio() {
 
             {data?.today_moves && (data.today_moves.entered.length > 0 || data.today_moves.exited.length > 0) && (
               <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "6px 12px", marginTop: 10, padding: "10px 14px", background: "rgba(255,255,255,.02)", border: "1px solid rgba(255,255,255,.08)", borderRadius: 8 }}>
-                <span style={{ fontFamily: FONT_MONO, fontSize: 11.5, letterSpacing: ".1em", color: "#8896ac", fontWeight: 700 }}>TODAY</span>
+                <span style={{ fontFamily: FONT_MONO, fontSize: 11.5, letterSpacing: ".1em", color: "#8896ac", fontWeight: 700 }}>{data?.today_moves?.is_today === false ? (data.today_moves.date || "LAST SESSION") : "TODAY"}</span>
                 {data.today_moves.entered.length > 0 && (
                   <>
                     <span style={{ color: "#4b5568" }}>·</span>
