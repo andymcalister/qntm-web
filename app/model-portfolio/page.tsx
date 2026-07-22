@@ -33,6 +33,8 @@ const LOGIN_URL = process.env.NEXT_PUBLIC_LOGIN_URL || "/login";
 type Position = Row & {
   entry_date: string | null; entry_price: number | null; entry_score: number | null;
   current_price: number | null; ret_since_entry: number | null;
+  day_pct?: number | null; day_dollar?: number | null;
+  ext_pct?: number | null; ext_session?: string | null;
 };
 type Stats = {
   inception: string | null; model_value: number; spy_value: number;
@@ -304,6 +306,24 @@ export default function ModelPortfolio() {
                       <>
                         <span style={{ color: "#6b7686" }}>·</span>
                         <span style={{ color: pcol(p.ret_since_entry) }}>{p.ret_since_entry >= 0 ? "▲" : "▼"} {pct(p.ret_since_entry, 1)} since entry</span>
+                      </>
+                    )}
+                    {p.day_pct != null && (
+                      <>
+                        <span style={{ color: "#6b7686" }}>·</span>
+                        <span style={{ color: pcol(p.day_pct) }}>
+                          {p.day_pct >= 0 ? "▲" : "▼"} {pct(p.day_pct, 2)}
+                          {p.day_dollar != null ? ` (${dollarSigned(p.day_dollar)})` : ""} today
+                        </span>
+                      </>
+                    )}
+                    {p.ext_pct != null && p.ext_session && (
+                      <>
+                        <span style={{ color: "#6b7686" }}>·</span>
+                        <span style={{ color: "#7c8aa0" }}>
+                          <span style={{ color: pcol(p.ext_pct) }}>{pct(p.ext_pct, 2)}</span>
+                          {" "}{p.ext_session === "pre" ? "PRE" : "AH"}
+                        </span>
                       </>
                     )}
                     {p.entry_score != null && (<><span style={{ color: "#6b7686" }}>·</span><span>entry score {p.entry_score.toFixed(0)}</span></>)}
