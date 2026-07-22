@@ -13,6 +13,11 @@ const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://qntm-api.onrender.
 // after 30 days so this can't go stale the way the digest's "New in QNTM" did.
 const PORTFOLIO_CHANGES: { iso: string; date: string; body: string }[] = [
   {
+    iso: "2026-07-21",
+    date: "Jul 21",
+    body: "Corrected \u2014 19 holdings were closed in error. An intraday scoring pass exited them on conviction scores that were never saved to the record; the published scores for those names were above the exit line. Those exits have been voided and the positions restored at their original entry prices. Intraday passes now refresh scores only \u2014 exits run once a day on settled scores.",
+  },
+  {
     iso: "2026-07-17",
     date: "Jul 17",
     body: "The macro overlay moved to risk-off as tariff and conflict pressure widened, lowering adjusted conviction across the universe. Twelve positions fell below the exit line and were closed. The book holds cash when no name meets the entry bar.",
