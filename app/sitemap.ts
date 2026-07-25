@@ -28,9 +28,35 @@ async function datedEntries(now: Date): Promise<MetadataRoute.Sitemap> {
   }
 }
 
+async function stockEntries(now: Date): Promise<MetadataRoute.Sitemap> {
+  try {
+    const r = await fetch(`${API}/api/screener?limit=2000`, { next: { revalidate: 3600 } });
+    if (!r.ok) return [];
+    const d = await r.json();
+    const items: any[] = Array.isArray(d) ? d : (d.items || d.rows || d.data || []);
+    const seen = new Set<string>();
+    const out: MetadataRoute.Sitemap = [];
+    for (const it of items) {
+      const tk = (it && it.ticker ? String(it.ticker) : "").toUpperCase();
+      if (!tk || seen.has(tk)) continue;
+      seen.add(tk);
+      out.push({
+        url: `${SITE}/stocks/${tk}`,
+        lastModified: now,
+        changeFrequency: "daily" as const,
+        priority: 0.7,
+      });
+    }
+    return out;
+  } catch {
+    return [];
+  }
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
   const dated = await datedEntries(now);
+  const stocks = await stockEntries(now);
   const staticEntries: MetadataRoute.Sitemap = [
     // ── Public marketing / content (indexable) ──────────────────────────────
     { url: `${SITE}/`, lastModified: now, changeFrequency: "weekly", priority: 1.0 },
@@ -47,5 +73,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${LEGAL}/disclaimer.html`, lastModified: now, changeFrequency: "monthly", priority: 0.3 },
     { url: `${LEGAL}/cookies.html`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
   ];
-  return [...staticEntries, ...dated];
+  return [...staticEntries, ...dated, ...stocks];
 }
