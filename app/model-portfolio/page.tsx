@@ -13,6 +13,11 @@ const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://qntm-api.onrender.
 // after 30 days so this can't go stale the way the digest's "New in QNTM" did.
 const PORTFOLIO_CHANGES: { iso: string; date: string; body: string }[] = [
   {
+    iso: "2026-07-25",
+    date: "Jul 25",
+    body: "The exit rule now requires two consecutive sessions at or below the conviction floor before a position is sold, and blocks re-entering a name the same day it left. A sharp one-day swing in the macro overlay no longer forces holdings out \u2014 the drop has to confirm on a second session first.",
+  },
+  {
     iso: "2026-07-21",
     date: "Jul 21",
     body: "Corrected \u2014 19 holdings were closed in error. An intraday scoring pass exited them on conviction scores that were never saved to the record; the published scores for those names were above the exit line. Those exits have been voided and the positions restored at their original entry prices. Intraday passes now refresh scores only \u2014 exits run once a day on settled scores.",
@@ -190,7 +195,7 @@ export default function ModelPortfolio() {
               <div style={{ fontSize: 13, color: "#b3bed0", lineHeight: 1.7 }}>
                 Built from <strong style={{ color: "#cbd5e1" }}>{s?.inception || data?.inception || "—"}</strong> — highest conviction signals entered each day. Entry threshold: <strong style={{ color: "#34d399" }}>≥ 70</strong> in HIGH VOLATILITY regimes, <strong style={{ color: "#34d399" }}>≥ 65</strong> otherwise. Equal-weighted at <strong style={{ color: "#cbd5e1" }}>$2,000 per position</strong> ($100K total). 30% sector cap enforced at entry.
                 <br /><br />
-                <strong style={{ color: "#cbd5e1" }}>Exit discipline:</strong> Positions exit when conviction drops to <strong style={{ color: "#f87171" }}>55</strong> or under. Capital redeploys into next highest conviction signal. No discretionary overrides.
+                <strong style={{ color: "#cbd5e1" }}>Exit discipline:</strong> A position exits only after conviction sits at <strong style={{ color: "#f87171" }}>55</strong> or under for two consecutive sessions \u2014 a single day below the line holds, so a name isn\u2019t churned out on one day of macro noise. A name that exits or enters is never round-tripped the same day. Capital redeploys into the next highest conviction signal. No discretionary overrides.
               </div>
             </div>
 
