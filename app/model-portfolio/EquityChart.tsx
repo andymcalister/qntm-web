@@ -7,6 +7,8 @@ export type CurvePoint = { d: string; model: number; spy: number; rsp?: number |
 export type DayMove = {
   model_now: number; model_prev: number; model_pct: number; model_dollar: number;
   spy_now: number; spy_prev: number; spy_pct: number; spy_dollar: number; vs_spy_pct: number;
+  rsp_now?: number; rsp_prev?: number; rsp_pct?: number; rsp_dollar?: number; vs_rsp_pct?: number;
+  qqq_now?: number; qqq_prev?: number; qqq_pct?: number; qqq_dollar?: number; vs_qqq_pct?: number;
 };
 
 // DAY = intraday "prev close → now" (2-point, position-weighted, includes pre/
@@ -33,6 +35,27 @@ function minusDays(iso: string, days: number): string {
   return dt.toISOString().slice(0, 10);
 }
 
+function _bDayPrev(d: DayMove, b: "spy" | "rsp" | "qqq"): number {
+  if (b === "rsp" && d.rsp_prev != null) return d.rsp_prev;
+  if (b === "qqq" && d.qqq_prev != null) return d.qqq_prev;
+  return d.spy_prev;
+}
+function _bDayNow(d: DayMove, b: "spy" | "rsp" | "qqq"): number {
+  if (b === "rsp" && d.rsp_now != null) return d.rsp_now;
+  if (b === "qqq" && d.qqq_now != null) return d.qqq_now;
+  return d.spy_now;
+}
+function _bDayPct(d: DayMove, b: "spy" | "rsp" | "qqq"): number {
+  if (b === "rsp" && d.rsp_pct != null) return d.rsp_pct;
+  if (b === "qqq" && d.qqq_pct != null) return d.qqq_pct;
+  return d.spy_pct;
+}
+function _bDayVs(d: DayMove, b: "spy" | "rsp" | "qqq"): number {
+  if (b === "rsp" && d.vs_rsp_pct != null) return d.vs_rsp_pct;
+  if (b === "qqq" && d.vs_qqq_pct != null) return d.vs_qqq_pct;
+  return d.vs_spy_pct;
+}
+
 export default function EquityChart({ curve, day, benchmark = "spy" }: { curve: CurvePoint[]; day?: DayMove | null; benchmark?: "spy" | "rsp" | "qqq" }) {
   const [range, setRange] = useState(day ? "DAY" : "1M");
   const [hover, setHover] = useState<number | null>(null);
@@ -44,8 +67,8 @@ export default function EquityChart({ curve, day, benchmark = "spy" }: { curve: 
     if (isDay) {
       if (!day) return [];
       return [
-        { d: "prev close", model: day.model_prev, spy: day.spy_prev },
-        { d: "now", model: day.model_now, spy: day.spy_now },
+        { d: "prev close", model: day.model_prev, spy: _bDayPrev(day, benchmark) },
+        { d: "now", model: day.model_now, spy: _bDayNow(day, benchmark) },
       ];
     }
     const days = RANGES.find((r) => r.key === range)?.days ?? null;
@@ -104,7 +127,7 @@ export default function EquityChart({ curve, day, benchmark = "spy" }: { curve: 
 
   // header change line
   const hdr = isDay && day
-    ? { m: day.model_pct, s: day.spy_pct, vs: day.vs_spy_pct, suffix: "today" }
+    ? { m: day.model_pct, s: _bDayPct(day, benchmark), vs: _bDayVs(day, benchmark), suffix: "today" }
     : geom
     ? { m: geom.mPct, s: geom.sPct, vs: geom.mPct - geom.sPct, suffix: range }
     : null;
