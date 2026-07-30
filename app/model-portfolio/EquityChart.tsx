@@ -67,8 +67,10 @@ export default function EquityChart({ curve, day, benchmark = "spy" }: { curve: 
     if (isDay) {
       if (!day) return [];
       return [
-        { d: "prev close", model: day.model_prev, spy: _bDayPrev(day, benchmark) },
-        { d: "now", model: day.model_now, spy: _bDayNow(day, benchmark) },
+        { d: "prev close", model: day.model_prev, spy: day.spy_prev,
+          rsp: day.rsp_prev ?? null, qqq: day.qqq_prev ?? null },
+        { d: "now", model: day.model_now, spy: day.spy_now,
+          rsp: day.rsp_now ?? null, qqq: day.qqq_now ?? null },
       ];
     }
     const days = RANGES.find((r) => r.key === range)?.days ?? null;
