@@ -6,6 +6,7 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
+import StocksHeader from "./StocksHeader";
 
 const API =
   process.env.API_BASE ||
@@ -83,6 +84,7 @@ export default async function StocksIndex() {
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--color-bg,#060709)", color: "#cbd5e1" }}>
+      <StocksHeader />
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "40px 24px 72px" }}>
         <h1 style={{ fontFamily: FONT_DISPLAY, fontSize: 32, fontWeight: 800, margin: 0, color: "#f1f5f9" }}>
           All Stocks

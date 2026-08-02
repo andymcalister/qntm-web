@@ -6,6 +6,7 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
+import StocksHeader from "../StocksHeader";
 import { notFound } from "next/navigation";
 
 const API =
@@ -150,6 +151,7 @@ export default async function StockPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <StocksHeader back />
       <div style={{ maxWidth: 780, margin: "0 auto", padding: "40px 24px 72px" }}>
         {/* Header */}
         <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap" }}>
