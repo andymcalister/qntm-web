@@ -74,10 +74,10 @@ export default async function Home() {
   const tickerNames = hero.signals.length ? hero.signals.map((s) => s.ticker) : fallbackTickerNames;
 
   const gemsCount = hero.gems ?? 12;
-  const totalCount = hero.total ?? 1402;
+  const totalCount = hero.total ?? 1423;
 
   const whyCards = [
-    { title: "1402 stocks", color: "text-mint", body: "Russell 1000 + top Russell 2000 small-caps, rescored daily" },
+    { title: "1423 stocks", color: "text-mint", body: "Russell 1000 + top Russell 2000 small-caps, rescored daily" },
     { title: "5-factor model", color: "text-mint", body: "Momentum, Quality, Volume, Value, Sentiment" },
     { title: "Plain-English", color: "text-gold", body: "A written rationale behind every conviction score" },
     { title: "Live portfolio", color: "text-mint", body: "Rules-based entries & exits, marked daily vs SPY" },
@@ -149,7 +149,7 @@ export default async function Home() {
   }
 
   const freeFeatures = [
-    "Screener — top 50 of 1402",
+    "Screener — top 50 of 1423",
     "HIGH / MOD / LOW conviction signals",
     "5-pillar breakdown + plain-English why",
     "Valuation range on every card",
@@ -161,7 +161,7 @@ export default async function Home() {
   ];
   const proFeatures = [
     "Everything in Free",
-    "Full 1402-stock screener",
+    "Full 1423-stock screener",
     "Unlimited portfolio positions",
     "Hidden Gems detection",
     "Portfolio Simulator (risk profiles)",
@@ -221,7 +221,7 @@ export default async function Home() {
           </h1>
 
           <p className="mt-6 text-lg text-slate-400 max-w-md leading-relaxed">
-            A multi-factor quantitative model scoring 1,402 stocks daily — blended with a live macro regime overlay.
+            Every trading day, QNTM ranks 1,423 stocks and explains every score in plain English — so you know what deserves your research first.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
