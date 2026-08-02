@@ -1,4 +1,5 @@
 "use client";
+import { MODERATE_MIN } from "../lib/conviction";
 
 import { useEffect, useState } from "react";
 
@@ -65,7 +66,7 @@ export default function PortfolioBrief() {
   }
 
   const s = data!.summary!;
-  const lows = (data!.holdings || []).filter((x) => (x.score ?? 100) < 45).map((x) => x.ticker).slice(0, 8);
+  const lows = (data!.holdings || []).filter((x) => (x.score ?? 100) < MODERATE_MIN).map((x) => x.ticker).slice(0, 8);
   const pnl = s.total_pnl_pct;
   const pnlCol = pnl == null ? "#94a3b8" : pnl >= 0 ? "#34d399" : "#f87171";
 
