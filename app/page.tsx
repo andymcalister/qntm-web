@@ -180,6 +180,9 @@ export default async function Home() {
           <a href="/market-outlook" className="hidden sm:inline-flex items-center justify-center font-mono text-xs tracking-widest text-slate-300 px-5 py-2.5 rounded-md border border-white/10 hover:border-white/25 transition">
             MARKET OUTLOOK
           </a>
+          <a href="/stocks" className="hidden sm:inline-flex items-center justify-center font-mono text-xs tracking-widest text-slate-300 px-5 py-2.5 rounded-md border border-white/10 hover:border-white/25 transition">
+            Browse Stocks
+          </a>
           <a href="/how-it-works" className="hidden sm:inline-flex items-center justify-center font-mono text-xs tracking-widest text-slate-300 px-5 py-2.5 rounded-md border border-white/10 hover:border-white/25 transition">
             HOW IT WORKS
           </a>
@@ -259,19 +262,19 @@ export default async function Home() {
             <p className="font-mono text-xs tracking-widest text-slate-400 mb-3">TOP SIGNALS TODAY</p>
             <div className="divide-y divide-white/5">
               {panelSignals.map((s) => (
-                <div key={s.ticker} className="flex items-center justify-between py-3">
+                <a key={s.ticker} href={`/stocks/${s.ticker}`} className="flex items-center justify-between py-3 hover:bg-white/5 -mx-2 px-2 rounded transition">
                   <span className="font-display font-bold text-lg text-slate-100">{s.ticker}</span>
                   <span className={`font-mono ${s.dir === "up" ? "text-mint" : "text-red-400"}`}>
                     {s.score} {s.dir === "up" ? "▲" : "▼"}
                   </span>
-                </div>
+                </a>
               ))}
             </div>
           </div>
 
           {/* View all CTA */}
-          <a href={JOIN_URL} className="inline-flex items-center justify-center w-full font-mono text-xs tracking-widest text-gold border border-gold/30 rounded-lg py-3 hover:bg-gold/5 transition">
-            VIEW ALL HIGH CONVICTION SIGNALS →
+          <a href="/stocks" className="inline-flex items-center justify-center w-full font-mono text-xs tracking-widest text-gold border border-gold/30 rounded-lg py-3 hover:bg-gold/5 transition">
+            BROWSE ALL {totalCount} SCORES →
           </a>
 
           {/* Stat grid */}
