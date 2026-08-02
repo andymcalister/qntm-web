@@ -116,10 +116,10 @@ export default async function Home() {
   ];
 
   const beyondCards = [
-    { title: "Valuation range", color: "text-mint", badge: "FREE", body: "Every card shows where the price sits in its own value band — cheap or rich at a glance." },
-    { title: "Weekly recap", color: "text-mint", badge: "FREE", body: "A Saturday email on your watchlist and the macro backdrop behind the week's moves." },
-    { title: "Custom alerts", color: "text-gold", badge: "PRO", body: "Price, valuation and conviction alerts — per stock, or a whole watchlist at once." },
-    { title: "Hidden Gems", color: "text-gold", badge: null, body: "Under-followed mid- and small-caps the model rates highly, surfaced fresh each scan." },
+    { title: "Valuation range", color: "text-mint", badge: "FREE", body: "Know instantly whether a stock is cheap or rich — every card shows where price sits in its own value band." },
+    { title: "Weekly recap", color: "text-mint", badge: "FREE", body: "Never miss what changed in your watchlist — a Saturday email on your names and the macro backdrop behind the week's moves." },
+    { title: "Custom alerts", color: "text-gold", badge: "PRO", body: "Get told the moment conviction shifts — price, valuation and conviction alerts, per stock or a whole watchlist." },
+    { title: "Hidden Gems", color: "text-gold", badge: null, body: "Find overlooked opportunities before they're obvious — under-followed mid- and small-caps the model rates highly, fresh each scan." },
   ];
 
   // Comparison table — "·" = ✓, "x" = ✗, "~" = partial
