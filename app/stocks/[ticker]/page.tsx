@@ -38,6 +38,7 @@ type Stock = {
   val_basis: string | null;
   signal_date: string;
   pct_rank: number;
+  peers?: { ticker: string; score: number; conviction?: string | null }[];
 };
 
 async function getStock(ticker: string): Promise<Stock | null> {
@@ -259,6 +260,29 @@ export default async function StockPage({
             Start free →
           </Link>
         </div>
+
+        {s.peers && s.peers.length > 0 && (
+          <>
+            <h2 style={{ fontFamily: FONT_DISPLAY, fontSize: 16, fontWeight: 700, color: "#93b4ff", margin: "32px 0 12px", letterSpacing: ".04em" }}>
+              OTHER {s.sector.toUpperCase()} NAMES
+            </h2>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+              {s.peers.map((pk) => {
+                const c = pk.conviction === "HIGH" ? "#34d399" : pk.conviction === "LOW" ? "#f87171" : "#d4a843";
+                return (
+                  <Link key={pk.ticker} href={`/stocks/${pk.ticker}`}
+                    style={{ fontFamily: FONT_MONO, fontSize: 13, color: "#cbd5e1",
+                      textDecoration: "none", padding: "8px 12px",
+                      border: "1px solid rgba(255,255,255,.08)", borderRadius: 8,
+                      display: "inline-flex", alignItems: "center", gap: 8 }}>
+                    <span style={{ fontWeight: 700 }}>{pk.ticker}</span>
+                    <span style={{ color: c, fontSize: 12 }}>{pk.score.toFixed(0)}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </>
+        )}
 
         {/* Disclaimer */}
         <p style={{ fontFamily: FONT_MONO, fontSize: 11, color: "#4b5568", marginTop: 32, lineHeight: 1.7 }}>
