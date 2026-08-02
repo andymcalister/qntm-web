@@ -6,6 +6,7 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
+import StocksSearch from "./StocksSearch";
 import StocksHeader from "./StocksHeader";
 
 const API =
@@ -95,6 +96,8 @@ export default async function StocksIndex() {
           volume and sentiment, adjusted for the macro regime. Pick a name to see
           its full factor breakdown, conviction reading and valuation context.
         </p>
+
+        <StocksSearch rows={rows} />
 
         {rows.length === 0 && (
           <p style={{ fontFamily: FONT_MONO, fontSize: 13, color: "#8896ac", marginTop: 24 }}>
