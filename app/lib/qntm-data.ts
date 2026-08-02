@@ -51,6 +51,29 @@ async function sb(path: string): Promise<any | null> {
   }
 }
 
+// Exact row count via PostgREST content-range header (no payload). Used for the
+// live universe total so we don't depend on the stale platform_stats.n_total.
+async function sbCount(path: string): Promise<number | null> {
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return null;
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+      method: "HEAD",
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        Prefer: "count=exact",
+      },
+      next: { revalidate: REVALIDATE },
+    });
+    if (!res.ok) return null;
+    const cr = res.headers.get("content-range");
+    const n = cr ? parseInt(cr.split("/").pop() || "", 10) : NaN;
+    return Number.isFinite(n) ? n : null;
+  } catch {
+    return null;
+  }
+}
+
 // Map a stored regime string → display label + icon + tone.
 // Handles both "MILDLY BULLISH" and "RISK_ON"-style values.
 function mapRegime(raw: string | null, vix: number | null, event: string | null): Regime {
@@ -90,6 +113,14 @@ export async function getHeroData(): Promise<HeroData> {
     sb("platform_stats?select=n_gems,n_total&stat_key=eq.daily_summary&limit=1"),
   ]);
 
+  let liveTotal: number | null = null;
+  const latestDate = Array.isArray(sigRows) && sigRows[0]?.signal_date
+    ? String(sigRows[0].signal_date).slice(0, 10)
+    : null;
+  if (latestDate) {
+    liveTotal = await sbCount(`signal_log?select=ticker&signal_date=eq.${latestDate}`);
+  }
+
   if (!macroRows && !sigRows && !statRows) return FALLBACK;
 
   // Regime (parse overlay; it may arrive as a JSON string or an object)
@@ -118,7 +149,7 @@ export async function getHeroData(): Promise<HeroData> {
     : [];
 
   const gems = statRows?.[0]?.n_gems ?? null;
-  const total = statRows?.[0]?.n_total ?? null;
+  const total = liveTotal ?? (statRows?.[0]?.n_total ?? null);
 
   return { regime, signals, gems, total, ok: signals.length > 0 };
 }

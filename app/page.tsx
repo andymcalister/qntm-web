@@ -201,7 +201,7 @@ export default async function Home() {
 
           <div className="mt-8 flex flex-wrap gap-3">
             <a href={JOIN_URL} className="inline-flex items-center justify-center font-display font-bold text-black bg-gold hover:bg-gold-bright px-8 py-4 rounded-lg transition">
-              Start free — see today\u2019s signals →
+              Start free — see today’s signals →
             </a>
             <a href={SIGNIN_URL} className="inline-flex items-center justify-center font-display font-bold text-slate-200 bg-card border border-white/10 hover:border-white/25 px-8 py-4 rounded-lg transition">
               SIGN IN
