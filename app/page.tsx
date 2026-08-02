@@ -337,6 +337,10 @@ export default async function Home() {
           cherry-picked history. The track record we show is the live Model Portfolio, reported as it happens.
         </p>
 
+        <a href="/model-portfolio" className="inline-flex items-center gap-2 mt-6 font-mono text-sm tracking-widest text-gold border border-gold/30 rounded-lg px-6 py-3 hover:bg-gold/5 transition">
+          See the complete track record →
+        </a>
+
         <div className="mt-12 grid sm:grid-cols-2 gap-5">
           {whyCards.map((c) => (
             <div key={c.title} className="rounded-2xl border border-white/10 bg-card/40 p-8">
