@@ -480,6 +480,24 @@ export default async function Home() {
         </p>
       </section>
 
+      {/* Why we built this — philosophy */}
+      <section className="max-w-7xl mx-auto px-6 pt-0 pb-24">
+        <p className="font-mono text-sm tracking-widest text-gold mb-6">— WHY WE BUILT THIS</p>
+        <h2 className="font-display font-extrabold text-4xl sm:text-5xl leading-tight">
+          <span className="text-white">Investing shouldn’t be</span>
+          <br />
+          <span className="text-gold">a black box.</span>
+        </h2>
+        <p className="mt-6 text-lg text-slate-400 max-w-3xl leading-relaxed">
+          Most tools either hand you a “buy” with no reasoning, or bury you in data you have to
+          interpret alone. QNTM takes a third path: a transparent, rules-based model that scores every stock
+          the same way, every day, and shows its work — the factors, the weighting, and the plain-English
+          reasoning behind each call. No hunches, no hidden edits, no cherry-picked wins. Just a consistent
+          process you can inspect, question, and follow — the systematic discipline institutions apply,
+          made legible for the individual doing their own research.
+        </p>
+      </section>
+
       {/* Pricing */}
       <section className="max-w-7xl mx-auto px-6 pt-0 pb-24">
         <p className="font-mono text-sm tracking-widest text-gold mb-6">— PRICING</p>
