@@ -94,21 +94,21 @@ export default async function Home() {
   const tiers = [
     {
       label: "▲ HIGH",
-      score: "Score ≥ 60",
+      score: "Score ≥ 65",
       text: "text-mint",
       border: "border-mint/30",
-      body: "Strongest factor profile in the universe. Historically associated with multi-month relative outperformance. In high-volatility or risk-off regimes the model tightens this threshold to 62 to stay selective. Not a recommendation to buy.",
+      body: "Strongest factor profile in the universe. Historically associated with multi-month relative outperformance. In high-volatility regimes the model-portfolio entry bar tightens to 70 to stay selective. Not a recommendation to buy.",
     },
     {
       label: "— MODERATE",
-      score: "Score 45–59",
+      score: "Score 55–64",
       text: "text-gold",
       border: "border-gold/30",
       body: "Mixed factor profile — neither strong nor deteriorating on the model's measures. Not a recommendation to hold.",
     },
     {
       label: "▼ LOW",
-      score: "Score < 45",
+      score: "Score < 55",
       text: "text-red-400",
       border: "border-red-400/30",
       body: "Weakest factor profile. The model flagged UNH here at month 3, ahead of a −49% full-year drawdown. Not a recommendation to sell.",
