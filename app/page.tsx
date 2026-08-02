@@ -123,31 +123,6 @@ export default async function Home() {
   ];
 
   // Comparison table — "·" = ✓, "x" = ✗, "~" = partial
-  const compCols = ["QNTM Free", "QNTM Pro", "Motley Fool", "Seeking Alpha", "Morningstar", "TipRanks", "Bloomberg"];
-  const compRows = [
-    { feature: "Quant factor model", cells: ["·", "·", "x", "·", "~", "~", "·"] },
-    { feature: "Live macro regime overlay", cells: ["·", "·", "x", "x", "x", "x", "·"] },
-    { feature: "Multi-factor conviction score", cells: ["·", "·", "x", "·", "~", "~", "·"] },
-    { feature: "Plain-English signal rationale", cells: ["·", "·", "x", "~", "~", "~", "x"] },
-    { feature: "Valuation range on every card", cells: ["·", "·", "x", "~", "·", "~", "·"] },
-    { feature: "Weekly recap email", cells: ["·", "·", "·", "·", "~", "~", "x"] },
-    { feature: "Live model portfolio", cells: ["·", "·", "~", "~", "x", "x", "x"] },
-    { feature: "Daily signal refresh", cells: ["·", "·", "x", "·", "~", "~", "·"] },
-    { feature: "Full-universe screener", cells: ["~", "·", "x", "·", "·", "·", "·"] },
-    { feature: "Hidden-gem detection", cells: ["x", "·", "~", "x", "x", "x", "x"] },
-    { feature: "Portfolio simulator", cells: ["x", "·", "x", "x", "~", "~", "·"] },
-    { feature: "Custom price & conviction alerts", cells: ["x", "·", "x", "·", "~", "·", "·"] },
-    { feature: "Mobile optimized", cells: ["·", "·", "·", "·", "·", "·", "~"] },
-  ];
-  const compPrices = ["$0", "$29", "$17", "$25", "$21", "$30", "$2,665"];
-
-  // Renders one comparison cell based on its mark
-  function Cell({ mark }: { mark: string }) {
-    if (mark === "·") return <span className="text-mint">✓</span>;
-    if (mark === "x") return <span className="text-red-400">✗</span>;
-    return <span className="text-gold text-sm">partial</span>;
-  }
-
   const freeFeatures = [
     "Screener — top 50 of 1423",
     "HIGH / MOD / LOW conviction signals",
@@ -414,70 +389,6 @@ export default async function Home() {
             </div>
           ))}
         </div>
-      </section>
-
-      {/* VS the market — comparison table */}
-      <section className="max-w-7xl mx-auto px-6 pt-0 pb-24">
-        <p className="font-mono text-sm tracking-widest text-gold mb-6">— VS THE MARKET</p>
-        <h2 className="font-display font-extrabold text-4xl sm:text-5xl leading-tight">
-          <span className="text-white">Institutional tools.</span>
-          <br />
-          <span className="text-gold">Retail price.</span>
-        </h2>
-        <p className="mt-6 text-lg text-slate-400 max-w-3xl leading-relaxed">
-          Institutional-grade quant signals — at roughly 1% of a Bloomberg terminal.
-        </p>
-
-        <div className="mt-12 overflow-x-auto">
-          <table className="w-full min-w-[900px] border-collapse text-sm">
-            <thead>
-              <tr className="border-b border-white/10">
-                <th className="text-left font-normal text-slate-500 py-4 pr-4"></th>
-                {compCols.map((c, i) => (
-                  <th
-                    key={c}
-                    className={`font-mono tracking-wider py-4 px-3 text-center ${
-                      i === 0 || i === 1 ? "text-gold" : "text-slate-300"
-                    }`}
-                  >
-                    {c}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-white/10">
-                <td className="text-slate-400 py-4 pr-4">Price / mo*</td>
-                {compPrices.map((p, i) => (
-                  <td
-                    key={i}
-                    className={`font-mono text-center py-4 px-3 ${
-                      i === 0 || i === 1 ? "text-gold font-bold" : "text-slate-400"
-                    }`}
-                  >
-                    {p}
-                  </td>
-                ))}
-              </tr>
-              {compRows.map((row) => (
-                <tr key={row.feature} className="border-b border-white/5">
-                  <td className="text-slate-300 py-4 pr-4">{row.feature}</td>
-                  {row.cells.map((mark, i) => (
-                    <td key={i} className="text-center py-4 px-3">
-                      <Cell mark={mark} />
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <p className="mt-6 text-xs text-slate-500 leading-relaxed">
-          *Monthly equivalent — most plans bill annually: Motley Fool $199/yr, Seeking Alpha $299/yr,
-          Morningstar $249/yr, TipRanks $360/yr (Premium); Bloomberg ≈$31,980/yr per terminal. Features &
-          pricing verified June 2026 from public sources. Partial = limited or higher-tier only.
-        </p>
       </section>
 
       {/* Why we built this — philosophy */}
