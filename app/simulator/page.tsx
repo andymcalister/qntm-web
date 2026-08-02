@@ -1,4 +1,5 @@
 "use client";
+import { convictionColor } from "../lib/conviction";
 
 import { useEffect, useMemo, useState } from "react";
 import NavBar from "../screener/NavBar";
@@ -17,7 +18,7 @@ const PROFILES: { key: string; label: string; desc: string; color: string }[] = 
 ];
 
 const money = (n: number) => `$${n.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
-const scoreColor = (s: number) => (s >= 60 ? "#34d399" : s < 45 ? "#f87171" : "#fbbf24");
+const scoreColor = (s: number) => convictionColor(s);
 
 export default function Simulator() {
   const [profile, setProfile] = useState("MEDIUM");

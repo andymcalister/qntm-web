@@ -239,7 +239,7 @@ export default function Screener() {
 
         <p style={{ marginTop: 28, fontSize: 11, color: "#5b6677", lineHeight: 1.6, maxWidth: 680 }}>
           Research and factor-analysis output, not investment advice. Conviction reflects the macro-adjusted
-          composite (HIGH ≥ 60 · MODERATE ≥ 45 · LOW &lt; 45). ◆ CHEAP = high conviction trading low in its
+          composite (HIGH ≥ 65 · MODERATE ≥ 55 · LOW &lt; 55). ◆ CHEAP = high conviction trading low in its
           valuation range; ◆ RICH = low conviction trading high. 💎 marks hidden gems.
         </p>
       </div>

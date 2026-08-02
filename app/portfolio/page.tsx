@@ -1,4 +1,5 @@
 "use client";
+import { convictionLabelTitle } from "../lib/conviction";
 
 import { useEffect, useMemo, useState } from "react";
 import NavBar from "../screener/NavBar";
@@ -145,7 +146,7 @@ export default function Portfolio() {
   }
 
   const pnlColor = (n: number | null | undefined) => (n == null ? "#8896ac" : n >= 0 ? "#34d399" : "#f87171");
-  const avgLabel = (s: number | null) => (s == null ? "—" : s >= 60 ? "High" : s < 45 ? "Low" : "Moderate");
+  const avgLabel = (s: number | null) => (s == null ? "—" : convictionLabelTitle(s));
   const inputStyle = { background: "rgba(13,14,22,.8)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 8, padding: "9px 12px", fontSize: 14, color: "#e2e8f0", fontFamily: FONT_MONO, letterSpacing: ".04em" } as const;
 
   return (

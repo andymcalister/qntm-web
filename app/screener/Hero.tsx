@@ -1,4 +1,5 @@
 "use client";
+import { convictionLabelTitle, convictionColor } from "../lib/conviction";
 
 import { FONT_DISPLAY, FONT_MONO, companyName, Row } from "./lib";
 
@@ -115,8 +116,8 @@ export default function Hero({ movers, regime, fallback }: { movers: Mover[]; re
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
           {fallback.slice(0, 3).map((r) => {
             const score = r.score;
-            const lbl = score >= 60 ? "High" : score >= 45 ? "Moderate" : "Low";
-            const lc = score >= 60 ? "#34d399" : score >= 45 ? "#fbbf24" : "#f87171";
+            const lbl = convictionLabelTitle(score);
+            const lc = convictionColor(score);
             const nm = companyName(r.ticker) || r.ticker;
             return (
               <div key={r.ticker} style={{ flex: 1, minWidth: 118, background: "rgba(255,255,255,.02)", border: "1px solid rgba(255,255,255,.06)", borderRadius: 8, padding: "10px 12px" }}>

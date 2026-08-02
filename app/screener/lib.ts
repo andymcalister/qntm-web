@@ -1,3 +1,4 @@
+import { HIGH_MIN, MODERATE_MIN } from "../lib/conviction";
 // Shared types + logic for the screener, ported faithfully from the Streamlit
 // app (factor_panel_html, _build_why_html, _blend_buy_score/_sell_score,
 // _val_pos, get_company_info KNOWN map). Pure functions — no "use client".
@@ -79,8 +80,8 @@ export function blendSell(r: Row): number {
 export function valueCallout(r: Row): "cheap" | "rich" | null {
   const vp = valPos(r);
   if (vp == null) return null;
-  if (r.action === "BUY" && r.score >= 60 && vp <= 25) return "cheap";
-  if (r.action === "SELL" && r.score < 45 && vp >= 75) return "rich";
+  if (r.action === "BUY" && r.score >= HIGH_MIN && vp <= 25) return "cheap";
+  if (r.action === "SELL" && r.score < MODERATE_MIN && vp >= 75) return "rich";
   return null;
 }
 
