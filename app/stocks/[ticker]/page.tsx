@@ -5,6 +5,7 @@
 // score" search intent. Full interactive tools stay gated behind signup.
 
 import type { Metadata } from "next";
+import { buildStockNarrative } from "./narrative";
 import Link from "next/link";
 import StocksHeader from "../StocksHeader";
 import { notFound } from "next/navigation";
@@ -202,6 +203,13 @@ export default async function StockPage({
           sentiment, then adjusts for the current macro regime. {ticker} trades at{" "}
           ${s.price.toFixed(2)}, {belowBand}.
         </p>
+
+        {/* Rich, data-driven narrative — unique per ticker for indexing */}
+        {buildStockNarrative(s).map((para, i) => (
+          <p key={i} style={{ fontFamily: FONT_MONO, fontSize: 14, lineHeight: 1.7, color: "#a9b4c6", marginTop: 16 }}>
+            {para}
+          </p>
+        ))}
 
         {/* Factor breakdown */}
         <h2 style={{ fontFamily: FONT_DISPLAY, fontSize: 16, fontWeight: 700, color: "#93b4ff", margin: "32px 0 16px", letterSpacing: ".04em" }}>
