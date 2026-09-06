@@ -191,7 +191,7 @@ export default async function StockPage({
             {s.conviction} CONVICTION
           </div>
           <div style={{ fontFamily: FONT_MONO, fontSize: 12, color: "#8896ac" }}>
-            top {100 - s.pct_rank}% of the universe
+            top {Math.max(1, Math.round(100 - s.pct_rank))}% of the universe
           </div>
         </div>
 

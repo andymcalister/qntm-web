@@ -100,9 +100,10 @@ export function buildStockNarrative(s: StockLike): string[] {
   const bottom = pillars[pillars.length - 1];
 
   const rankPct = Math.max(0, Math.min(100, s.pct_rank));
+  const topPct = Math.max(1, Math.round(100 - rankPct));
   const rankClause =
     rankPct >= 50
-      ? `ranks in roughly the top ${(100 - rankPct).toFixed(0)}% of the ${s.sector} names the model scores`
+      ? `ranks in roughly the top ${topPct}% of the ${s.sector} names the model scores`
       : `sits in the lower ${rankPct.toFixed(0)}% of ${s.sector} names by composite`;
 
   // Paragraph 1 — the headline read.
