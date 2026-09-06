@@ -236,6 +236,33 @@ export default async function StockPage({
           </>
         )}
 
+        {/* Category hub reverse-links — completes the internal-link web. */}
+        {(() => {
+          const hubs: { slug: string; label: string; ok: boolean }[] = [
+            { slug: "conviction", label: "Highest Conviction", ok: Math.round(s.score) >= 65 },
+            { slug: "momentum",   label: "Top Momentum",       ok: s.momentum >= 80 },
+            { slug: "quality",    label: "Highest Quality",    ok: s.quality  >= 80 },
+            { slug: "value",      label: "Top Value",          ok: s.value    >= 80 },
+          ].filter((h) => h.ok);
+          if (!hubs.length) return null;
+          return (
+            <div style={{ marginTop: 28 }}>
+              <h2 style={{ fontFamily: FONT_DISPLAY, fontSize: 16, fontWeight: 700, color: "#93b4ff", margin: "0 0 12px", letterSpacing: ".04em" }}>
+                {ticker} APPEARS IN
+              </h2>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                {hubs.map((h) => (
+                  <a key={h.slug} href={`/stocks/top/${h.slug}`}
+                     style={{ fontFamily: FONT_MONO, fontSize: 13, color: "#93b4ff", textDecoration: "none",
+                              border: "1px solid rgba(147,180,255,.28)", borderRadius: 8, padding: "7px 12px" }}>
+                    {h.label} →
+                  </a>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
+
         {/* Conversion CTA — the searcher -> signup path */}
         <div
           style={{
