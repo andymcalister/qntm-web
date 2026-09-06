@@ -53,6 +53,17 @@ async function stockEntries(now: Date): Promise<MetadataRoute.Sitemap> {
   }
 }
 
+function categoryEntries(now: Date): MetadataRoute.Sitemap {
+  // Category / ranking hub pages — kept in sync with app/stocks/top/[category].
+  const cats = ["momentum", "conviction", "value", "quality"];
+  return cats.map((c) => ({
+    url: `${SITE}/stocks/top/${c}`,
+    lastModified: now,
+    changeFrequency: "daily" as const,
+    priority: 0.8,
+  }));
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
   const dated = await datedEntries(now);
@@ -74,5 +85,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${LEGAL}/disclaimer.html`, lastModified: now, changeFrequency: "monthly", priority: 0.3 },
     { url: `${LEGAL}/cookies.html`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
   ];
-  return [...staticEntries, ...dated, ...stocks];
+  const categories = categoryEntries(now);
+  return [...staticEntries, ...categories, ...dated, ...stocks];
 }
